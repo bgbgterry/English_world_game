@@ -1,0 +1,4020 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spelling Bee Grade 2B - 真真英文 (v3.0)</title>
+    <style>
+        :root {
+            --primary: #4FC3F7;
+            /* Sky Blue */
+            --secondary: #FFF176;
+            /* Light Yellow */
+            --accent: #FF7043;
+            /* Orange */
+            --danger: #ef5350;
+            /* Red for mistakes */
+            --dark: #37474F;
+            --success: #66BB6A;
+            --white: #ffffff;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #E1F5FE;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            user-select: none;
+        }
+
+        /* Header Area */
+        header {
+            background-color: var(--primary);
+            padding: 10px 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Challenger Capsule Switcher */
+        .challenger-box {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 4px 10px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        .challenger-box select {
+            padding: 3px 8px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.88rem;
+            font-weight: bold;
+            color: var(--dark);
+            background: var(--white);
+            cursor: pointer;
+            max-width: 130px;
+        }
+
+        .btn-icon-pill {
+            background: var(--secondary);
+            color: var(--dark);
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 0 #FBC02D;
+            transition: transform 0.1s;
+            padding: 0;
+        }
+
+        .btn-icon-pill:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        .score-board {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        select {
+            padding: 6px 10px;
+            border-radius: 15px;
+            border: none;
+            font-size: 0.9rem;
+            background: var(--white);
+            color: var(--dark);
+            outline: none;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            background: white;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 6px;
+            border: none;
+            background: none;
+            font-size: 0.98rem;
+            font-weight: bold;
+            color: #78909C;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background-color: #FAFAFA;
+        }
+
+        .tab-badge {
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.75rem;
+            padding: 1px 7px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Mode Specifics */
+        .word-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            word-break: break-word;
+        }
+
+        .syllable-mode .word-display {
+            letter-spacing: 0.2em;
+        }
+
+        .vowel {
+            color: #E53935;
+        }
+
+        .consonant {
+            color: #1E88E5;
+        }
+
+        .chinese-meaning {
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #0288D1;
+            transition: transform 0.1s;
+            margin: 4px;
+            font-weight: bold;
+        }
+
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        .btn-sm {
+            padding: 5px 13px;
+            font-size: 0.88rem;
+            margin: 2px;
+        }
+
+        .btn-audio {
+            background-color: var(--secondary);
+            color: var(--dark);
+            box-shadow: 0 3px 0 #FBC02D;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            padding: 0;
+        }
+
+        .btn-check {
+            background-color: var(--success);
+            box-shadow: 0 3px 0 #388E3C;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            box-shadow: 0 3px 0 #D84315;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            box-shadow: 0 3px 0 #c62828;
+        }
+
+        /* Mistake Button */
+        .btn-mistake {
+            background-color: var(--danger);
+            color: white;
+            box-shadow: 0 3px 0 #c62828;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Upload Button */
+        .btn-upload {
+            background-color: #78909C;
+            box-shadow: 0 3px 0 #546E7A;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-nav {
+            background-color: #90A4AE;
+            box-shadow: 0 3px 0 #546E7A;
+            padding: 8px 15px;
+            font-size: 1rem;
+        }
+
+        /* Block Mode */
+        .scramble-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+            min-height: 55px;
+        }
+
+        .letter-block {
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .letter-block.used {
+            background: #EEEEEE;
+            color: #BDBDBD;
+            border-color: #E0E0E0;
+            pointer-events: none;
+            box-shadow: none;
+            transform: translateY(3px);
+        }
+
+        .answer-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 15px;
+            min-height: 50px;
+        }
+
+        .answer-slot {
+            width: 35px;
+            height: 45px;
+            border-bottom: 3px solid var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Dictation Input */
+        input[type="text"].dictation-input {
+            font-size: 1.8rem;
+            padding: 8px;
+            width: 85%;
+            text-align: center;
+            border: 3px solid var(--primary);
+            border-radius: 12px;
+            outline: none;
+            margin-bottom: 15px;
+            user-select: text;
+        }
+
+        .feedback {
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-height: 28px;
+            margin-top: 5px;
+        }
+
+        .correct {
+            color: var(--success);
+        }
+
+        .wrong {
+            color: #E53935;
+        }
+
+        /* Nav */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        /* Review Banner */
+        .review-banner {
+            background: #FFEBEE;
+            border: 2px solid var(--danger);
+            color: #c62828;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Notebook Mode Styles */
+        .notebook-container {
+            width: 100%;
+            text-align: left;
+        }
+
+        .notebook-header {
+            background: #E1F5FE;
+            padding: 12px 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notebook-stats {
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .notebook-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .notebook-filters select,
+        .notebook-filters input {
+            border: 2px solid #B3E5FC;
+            border-radius: 12px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+            background: white;
+            color: var(--dark);
+            outline: none;
+        }
+
+        .mistake-card {
+            background: #FAFAFA;
+            border: 2px solid #E1F5FE;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .mistake-card.is-mastered {
+            opacity: 0.78;
+            background: #F1F8E9;
+            border-color: #C5E1A5;
+        }
+
+        .mistake-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .mistake-word-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .badge-tag {
+            font-size: 0.78rem;
+            padding: 3px 9px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .badge-bank {
+            background: #E1F5FE;
+            color: #0277BD;
+        }
+
+        .badge-wrong-count {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .badge-last-wrong {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .badge-mastered {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .note-row {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .note-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 7px 12px;
+            border: 2px solid #FFE082;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            background: #FFFDE7;
+            color: var(--dark);
+            outline: none;
+            user-select: text;
+        }
+
+        .note-input:focus {
+            border-color: var(--accent);
+            background: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(55, 71, 79, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 22px 20px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+            text-align: left;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #E1F5FE;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: #ECEFF1;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .sub-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sub-tab-btn {
+            flex: 1;
+            padding: 8px 10px;
+            border-radius: 12px;
+            border: 2px solid #B3E5FC;
+            background: #F5F5F5;
+            font-weight: bold;
+            font-size: 0.88rem;
+            color: #546E7A;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .sub-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #B3E5FC;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            user-select: text;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .drop-zone {
+            border: 3px dashed var(--primary);
+            background: #F1F9FF;
+            border-radius: 16px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            background: #E1F5FE;
+        }
+
+        .challenger-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #F5F9FC;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #E1F5FE;
+        }
+
+        /* Animations */
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pop-anim {
+            animation: pop 0.3s ease-in-out;
+        }
+
+        /* Key hint */
+        .key-hint {
+            font-size: 0.8rem;
+            color: #90A4AE;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-top">
+            <h1>🐝 真真英文 (Grade 2B)</h1>
+            <div class="header-right">
+                <div class="challenger-box" title="切換或新增挑戰者（自動紀錄於 Cookie）">
+                    <span>👤</span>
+                    <select id="challengerSelect" onchange="handleChallengerSelectChange(event)">
+                    </select>
+                    <button class="btn-icon-pill" onclick="openChallengerModal()" title="挑戰者管理">⚙️</button>
+                </div>
+                <div class="score-board">
+                    <span>⭐</span>
+                    <span id="scoreVal">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <select id="bankSelect" style="max-width: 175px;" onchange="switchBank()">
+                <option value="2026_Part1">🐝 2026 Part 1 (25字)</option>
+            </select>
+            <select id="voiceSelect" style="max-width: 120px;">
+                <option value="">語音載入中</option>
+            </select>
+            <select id="levelSelect" style="max-width: 155px;">
+            </select>
+            <button id="btnMistakeReview" class="btn btn-mistake btn-sm" onclick="startMistakeReview()">
+                📕 複習錯題 (0)
+            </button>
+            <button class="btn btn-upload btn-sm" onclick="openBankModal()">
+                📁 題庫管理 / 載入
+            </button>
+            <input type="file" id="fileInput" accept=".json,.csv" style="display: none;"
+                onchange="loadCustomWords(event)">
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" id="tabStudy" onclick="setMode('study')">📖 學習</button>
+        <button class="tab-btn" id="tabBlock" onclick="setMode('block')">🧩 積木</button>
+        <button class="tab-btn" id="tabDictation" onclick="setMode('dictation')">✍️ 聽寫</button>
+        <button class="tab-btn" id="tabNotebook" onclick="setMode('notebook')">
+            📓 錯題筆記 <span id="notebookBadge" class="tab-badge">0</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <div id="gameArea" class="card">
+        </div>
+
+        <div id="navControls" class="nav-controls">
+            <button class="btn btn-nav" onclick="prevWord()">⬅️ (左鍵)</button>
+            <span id="progressText" style="font-weight: bold; font-size: 1.1rem;">1 / 25</span>
+            <button class="btn btn-nav" onclick="nextWord()">(右鍵) ➡️</button>
+        </div>
+
+        <div class="key-hint">
+            ⌨️ 鍵盤控制：⬆️ 聽發音 | ⬇️ 檢查答案 | ⬅️ ➡️ 換題
+        </div>
+    </div>
+
+    <!-- Modal 1: 挑戰者管理 (Cookie 紀錄系統) -->
+    <div id="challengerModal" class="modal-overlay" onclick="handleOverlayClick(event, 'challengerModal')">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">👤 挑戰者管理（Cookie 紀錄）</h3>
+                <button class="modal-close" onclick="closeModal('challengerModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label>➕ 新增挑戰者：</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="newChallengerInput" class="form-control" placeholder="輸入挑戰者名字（例如：真真、Leo）..."
+                        onkeydown="if(event.key==='Enter') addNewChallengerFromModal()">
+                    <button class="btn btn-check btn-sm" style="white-space: nowrap;"
+                        onclick="addNewChallengerFromModal()">新增並切換</button>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 8px;">📋
+                    已建立的挑戰者名單（自動儲存於 Cookie）：</label>
+                <div id="challengerListContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: 題庫管理與快速載入單字 -->
+    <div id="bankModal" class="modal-overlay" onclick="handleOverlayClick(event, 'bankModal')">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">📁 題庫管理 / 快速匯入單字</h3>
+                <button class="modal-close" onclick="closeModal('bankModal')">✕</button>
+            </div>
+
+            <!-- 當前題庫操作列 -->
+            <div style="background: #E1F5FE; padding: 10px 14px; border-radius: 14px; margin-bottom: 15px;">
+                <div style="font-weight: bold; margin-bottom: 8px; color: var(--dark);">
+                    📌 目前選取題庫：<span id="modalCurrentBankLabel" style="color: #0277BD;"></span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <button class="btn btn-sm" onclick="exportCurrentBank('csv')">💾 匯出 CSV</button>
+                    <button class="btn btn-sm" style="background-color: #26A69A; box-shadow: 0 3px 0 #00796B;"
+                        onclick="exportCurrentBank('json')">💾 匯出 JSON</button>
+                    <button id="btnDeleteOrResetBank" class="btn btn-danger btn-sm"
+                        onclick="deleteOrResetCurrentBank()">🗑️ 刪除/重置此題庫</button>
+                </div>
+            </div>
+
+            <!-- 3 種匯入方式切換 -->
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" id="importTabFile" onclick="switchImportTab('file')">📄 A. 檔案上傳
+                    (CSV/JSON)</button>
+                <button class="sub-tab-btn" id="importTabPaste" onclick="switchImportTab('paste')">📋 B. 快速貼上文字 /
+                    Excel</button>
+                <button class="sub-tab-btn" id="importTabSingle" onclick="switchImportTab('single')">✏️ C.
+                    單筆快速新增/修改</button>
+            </div>
+
+            <!-- 方式 A: 檔案上傳 -->
+            <div id="importPanelFile">
+                <div id="dropZone" class="drop-zone" onclick="document.getElementById('modalFileInput').click()">
+                    <div style="font-size: 2rem; margin-bottom: 6px;">📂</div>
+                    <div style="font-weight: bold; color: var(--dark);">點擊選擇檔案，或將 .csv / .json 拖曳至此處</div>
+                    <div style="font-size: 0.82rem; color: #78909C; margin-top: 4px;">支援欄位：word, sentence, trans,
+                        meaning</div>
+                    <div id="selectedFileInfo" style="margin-top: 8px; font-weight: bold; color: var(--accent);"></div>
+                </div>
+                <input type="file" id="modalFileInput" accept=".csv,.json" style="display: none;"
+                    onchange="handleModalFileSelect(event)">
+            </div>
+
+            <!-- 方式 B: 快速貼上多行文字 -->
+            <div id="importPanelPaste" style="display: none;">
+                <div class="form-group">
+                    <label>直接貼上 Excel 表格內容或多行文字（每行一筆，支援逗號或 Tab 分隔）：</label>
+                    <textarea id="pasteWordsTextarea" class="form-control" rows="5"
+                        placeholder="格式範例 1 (完整四欄)：&#10;apple, I eat an apple., 我吃蘋果。, 蘋果&#10;格式範例 2 (簡略兩欄)：&#10;banana, 香蕉"></textarea>
+                </div>
+            </div>
+
+            <!-- 方式 C: 單筆新增或修改 -->
+            <div id="importPanelSingle" style="display: none;">
+                <div style="margin-bottom: 8px; text-align: right;">
+                    <button class="btn btn-sm" style="background-color: #78909C; box-shadow: 0 2px 0 #546E7A;"
+                        onclick="fillCurrentWordToSingleForm()">📥 帶入目前畫面單字進行修改</button>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div class="form-group">
+                        <label>英文單字 (word) *</label>
+                        <input type="text" id="singleWordInput" class="form-control" placeholder="例如：believe">
+                    </div>
+                    <div class="form-group">
+                        <label>中文解釋 (meaning) *</label>
+                        <input type="text" id="singleMeaningInput" class="form-control" placeholder="例如：相信；認為">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>英文例句 (sentence)</label>
+                    <input type="text" id="singleSentenceInput" class="form-control"
+                        placeholder="例如：I believe you can do it!">
+                </div>
+                <div class="form-group">
+                    <label>例句中文翻譯 (trans)</label>
+                    <input type="text" id="singleTransInput" class="form-control" placeholder="例如：我相信你做得到！">
+                </div>
+            </div>
+
+            <!-- 更新模式選擇與執行 -->
+            <div style="border-top: 2px solid #E1F5FE; padding-top: 12px; margin-top: 10px;">
+                <div class="form-group">
+                    <label>🔄 選擇資料庫更新方式：</label>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <label style="font-weight: normal; cursor: pointer;">
+                            <input type="radio" name="bankUpdateMode" value="upsert" checked
+                                onchange="toggleNewBankNameInput()">
+                            🔄 合併／更新至目前題庫 (Upsert)
+                        </label>
+                        <label style="font-weight: normal; cursor: pointer;">
+                            <input type="radio" name="bankUpdateMode" value="new" onchange="toggleNewBankNameInput()">
+                            ➕ 新增為獨立題庫
+                        </label>
+                    </div>
+                    <div id="newBankNameGroup" style="display: none;">
+                        <input type="text" id="newBankNameInput" class="form-control" placeholder="請輸入新題庫名稱（例如：2026 補充單字）...">
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <button class="btn btn-check" onclick="executeQuickImport()">🚀 確認匯入並更新題庫</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Data ---
+        const defaultData = [
+            { word: "album", sentence: "I put my vacation photos in an album.", trans: "我把度假照片放進相簿裡。", meaning: "專輯；相簿" },
+            { word: "anybody", sentence: "Did anybody see my pencil?", trans: "有人看到我的鉛筆嗎？", meaning: "任何人" },
+            { word: "anything", sentence: "You can eat anything you like.", trans: "你可以吃你喜歡的任何東西。", meaning: "任何事物" },
+            { word: "apartment", sentence: "We live in a small apartment in the city.", trans: "我們住在城市裡一間小公寓。", meaning: "公寓" },
+            { word: "armadillo", sentence: "The armadillo has a hard shell to protect itself.", trans: "犰狳有堅硬的外殼來保護自己。", meaning: "犰狳" },
+            { word: "belief", sentence: "She has a strong belief in kindness.", trans: "她深信善良的力量。", meaning: "信仰；信念" },
+            { word: "blacktop", sentence: "The children played on the blacktop playground.", trans: "孩子們在柏油操場上玩耍。", meaning: "柏油路" },
+            { word: "block", sentence: "Our school is one block away.", trans: "我們的學校在一個街區之外。", meaning: "街區；積木" },
+            { word: "border", sentence: "The river forms the border between two countries.", trans: "那條河形成了兩國的邊界。", meaning: "邊界" },
+            { word: "brake", sentence: "He pressed the brake to stop the car.", trans: "他踩煞車讓車停下來。", meaning: "煞車" },
+            { word: "brave", sentence: "The brave firefighter saved the cat.", trans: "那位勇敢的消防員救了貓。", meaning: "勇敢的" },
+            { word: "breathe", sentence: "Take a deep breath and relax.", trans: "深呼吸，放鬆一下。", meaning: "呼吸" },
+            { word: "buffalo", sentence: "A buffalo is a large animal that lives on the grassland.", trans: "水牛是生活在草原上的大型動物。", meaning: "水牛" },
+            { word: "bulldog", sentence: "The bulldog is strong but friendly.", trans: "鬥牛犬強壯但友善。", meaning: "鬥牛犬" },
+            { word: "bulldozer", sentence: "The bulldozer cleared the land for new buildings.", trans: "推土機清理土地以建新建築。", meaning: "推土機" },
+            { word: "burglar", sentence: "The burglar broke into the house at night.", trans: "竊賊在晚上闖入房子。", meaning: "竊賊" },
+            { word: "button", sentence: "I lost a button on my shirt.", trans: "我的襯衫少了一顆鈕扣。", meaning: "鈕扣" },
+            { word: "campfire", sentence: "We roasted marshmallows over the campfire.", trans: "我們在營火上烤棉花糖。", meaning: "營火" },
+            { word: "cellar", sentence: "The old house has a dark cellar.", trans: "那棟老房子有個黑暗的地下室。", meaning: "地下室" },
+            { word: "certainly", sentence: "I will certainly help you.", trans: "我當然會幫你。", meaning: "當然" },
+            { word: "computer", sentence: "I use my computer to do homework.", trans: "我用電腦做功課。", meaning: "電腦" },
+            { word: "country", sentence: "Japan is a beautiful country.", trans: "日本是一個美麗的國家。", meaning: "國家" },
+            { word: "crocodile", sentence: "A crocodile lives near the river.", trans: "鱷魚住在河邊。", meaning: "鱷魚" },
+            { word: "darkness", sentence: "He was afraid of the darkness.", trans: "他害怕黑暗。", meaning: "黑暗" },
+            { word: "decide", sentence: "She can’t decide what to wear today.", trans: "她今天決定不了要穿什麼。", meaning: "決定" }
+        ];
+
+        // --- BEGIN_PRESET_BANKS ---
+        const presetBanks = {
+          "2026_Part1": {
+                    "name": "🐝 2026 Part 1 (25字)",
+                    "data": [
+                              {
+                                        "word": "aboard",
+                                        "sentence": "All passengers are now aboard the plane.",
+                                        "trans": "所有乘客現在都登機了。",
+                                        "meaning": "在船（飛機、車）上"
+                              },
+                              {
+                                        "word": "advance",
+                                        "sentence": "The soldiers began to advance through the forest.",
+                                        "trans": "士兵們開始穿過森林向前推進。",
+                                        "meaning": "前進；進步"
+                              },
+                              {
+                                        "word": "affair",
+                                        "sentence": "The party was a grand affair with music and dancing.",
+                                        "trans": "這場聚會是個有音樂和舞蹈的盛大活動。",
+                                        "meaning": "事情；事件"
+                              },
+                              {
+                                        "word": "airfield",
+                                        "sentence": "Small planes land on the grassy airfield.",
+                                        "trans": "小型飛機降落在草地起降場上。",
+                                        "meaning": "小型機場；飛機場"
+                              },
+                              {
+                                        "word": "apply",
+                                        "sentence": "You should apply sunscreen before going outside.",
+                                        "trans": "出門前你應該塗防曬乳。",
+                                        "meaning": "塗抹；申請；應用"
+                              },
+                              {
+                                        "word": "attempt",
+                                        "sentence": "She made an attempt to climb the tall tree.",
+                                        "trans": "她嘗試爬上那棵高樹。",
+                                        "meaning": "嘗試；企圖"
+                              },
+                              {
+                                        "word": "attention",
+                                        "sentence": "Please pay attention to the teacher in class.",
+                                        "trans": "上課時請注意聽老師講課。",
+                                        "meaning": "注意力；專心"
+                              },
+                              {
+                                        "word": "basis",
+                                        "sentence": "Trust is the basis of good friendship.",
+                                        "trans": "信任是良好友誼的基礎。",
+                                        "meaning": "基礎；根據"
+                              },
+                              {
+                                        "word": "beautify",
+                                        "sentence": "We planted flowers to beautify our school garden.",
+                                        "trans": "我們種花來美化學校花園。",
+                                        "meaning": "美化；使美麗"
+                              },
+                              {
+                                        "word": "blueberry",
+                                        "sentence": "Mom baked a sweet blueberry pie for dessert.",
+                                        "trans": "媽媽烤了一個香甜的藍莓派當點心。",
+                                        "meaning": "藍莓"
+                              },
+                              {
+                                        "word": "branch",
+                                        "sentence": "A little bird is singing on the tree branch.",
+                                        "trans": "一隻小鳥在樹枝上唱歌。",
+                                        "meaning": "樹枝；分枝"
+                              },
+                              {
+                                        "word": "brook",
+                                        "sentence": "The clear water flows gently in the brook.",
+                                        "trans": "清澈的水在小溪裡緩緩流動。",
+                                        "meaning": "小溪；小河"
+                              },
+                              {
+                                        "word": "brownie",
+                                        "sentence": "He ate a delicious chocolate brownie after lunch.",
+                                        "trans": "他午餐後吃了一塊美味的巧克力布朗尼。",
+                                        "meaning": "布朗尼蛋糕"
+                              },
+                              {
+                                        "word": "bulb",
+                                        "sentence": "Dad changed the light bulb in my bedroom.",
+                                        "trans": "爸爸換了我臥室的燈泡。",
+                                        "meaning": "燈泡；球莖"
+                              },
+                              {
+                                        "word": "business",
+                                        "sentence": "My uncle runs a small bakery business.",
+                                        "trans": "我的叔叔經營一家小麵包店生意。",
+                                        "meaning": "商業；生意；事務"
+                              },
+                              {
+                                        "word": "capital",
+                                        "sentence": "Taipei is the capital city of Taiwan.",
+                                        "trans": "台北是台灣的首都。",
+                                        "meaning": "首都；大寫字母；資金"
+                              },
+                              {
+                                        "word": "cause",
+                                        "sentence": "Heavy rain can cause flooding in the streets.",
+                                        "trans": "大雨會導致街道淹水。",
+                                        "meaning": "引起；原因"
+                              },
+                              {
+                                        "word": "century",
+                                        "sentence": "This ancient castle was built a century ago.",
+                                        "trans": "這座古老的城堡是一百年前建造的。",
+                                        "meaning": "世紀；一百年"
+                              },
+                              {
+                                        "word": "chubby",
+                                        "sentence": "The baby has chubby cheeks and a cute smile.",
+                                        "trans": "那個小寶寶有著圓滾滾的臉頰和可愛的笑容。",
+                                        "meaning": "圓胖的；豐滿的"
+                              },
+                              {
+                                        "word": "closet",
+                                        "sentence": "I hang my jackets neatly in the closet.",
+                                        "trans": "我把外套整齊地掛在衣櫥裡。",
+                                        "meaning": "衣櫥；壁櫥"
+                              },
+                              {
+                                        "word": "coast",
+                                        "sentence": "We walked along the sandy coast and found seashells.",
+                                        "trans": "我們沿著沙灘海岸漫步並撿到了貝殼。",
+                                        "meaning": "海岸；海濱"
+                              },
+                              {
+                                        "word": "company",
+                                        "sentence": "Her mother works for a computer company.",
+                                        "trans": "她的媽媽在一間電腦公司上班。",
+                                        "meaning": "公司；陪伴"
+                              },
+                              {
+                                        "word": "continue",
+                                        "sentence": "Please continue reading the story from page ten.",
+                                        "trans": "請從第十頁繼續讀這個故事。",
+                                        "meaning": "繼續；持續"
+                              },
+                              {
+                                        "word": "craft",
+                                        "sentence": "We made paper lanterns in arts and crafts class.",
+                                        "trans": "我們在美勞課上製作了紙燈籠。",
+                                        "meaning": "手工藝；技藝"
+                              },
+                              {
+                                        "word": "crew",
+                                        "sentence": "The ship's crew worked hard to sail safely.",
+                                        "trans": "全體船員努力工作以安全航行。",
+                                        "meaning": "全體工作人員；船員；機組人員"
+                              }
+                    ]
+          },
+          "2026_Part2": {
+                    "name": "🐝 2026 Part 2 (25字)",
+                    "data": [
+                              {
+                                        "word": "crime",
+                                        "sentence": "Stealing is a serious crime that hurts others.",
+                                        "trans": "偷竊是一種傷害他人的嚴重犯罪行為。",
+                                        "meaning": "罪行；犯罪"
+                              },
+                              {
+                                        "word": "crop",
+                                        "sentence": "Corn is an important crop grown by farmers here.",
+                                        "trans": "玉米是這裡農夫種植的重要農作物。",
+                                        "meaning": "農作物；莊稼"
+                              },
+                              {
+                                        "word": "crowd",
+                                        "sentence": "A cheerful crowd cheered for the runners.",
+                                        "trans": "熱情的人群為跑者歡呼。",
+                                        "meaning": "人群；群眾"
+                              },
+                              {
+                                        "word": "dare",
+                                        "sentence": "He did not dare to jump into the cold water.",
+                                        "trans": "他不敢跳進冰冷的水裡。",
+                                        "meaning": "敢；膽敢"
+                              },
+                              {
+                                        "word": "disagree",
+                                        "sentence": "It is okay to disagree as long as we are polite.",
+                                        "trans": "只要我們有禮貌，意見不同也是沒關係的。",
+                                        "meaning": "不同意；意見不合"
+                              },
+                              {
+                                        "word": "dresser",
+                                        "sentence": "She keeps her socks and t-shirts in the dresser.",
+                                        "trans": "她把襪子和T恤收在梳妝台衣櫃裡。",
+                                        "meaning": "梳妝台；矮衣櫃"
+                              },
+                              {
+                                        "word": "drift",
+                                        "sentence": "Leaves drift slowly down the quiet river.",
+                                        "trans": "樹葉在平靜的小河上緩緩漂流。",
+                                        "meaning": "漂流；漂移"
+                              },
+                              {
+                                        "word": "elevator",
+                                        "sentence": "We took the elevator to the tenth floor.",
+                                        "trans": "我們搭電梯到十樓。",
+                                        "meaning": "電梯"
+                              },
+                              {
+                                        "word": "everywhere",
+                                        "sentence": "In spring, colorful flowers bloom everywhere.",
+                                        "trans": "春天時，到處都盛開著繽紛的花朵。",
+                                        "meaning": "到處；處處"
+                              },
+                              {
+                                        "word": "expect",
+                                        "sentence": "We expect sunny weather for our picnic tomorrow.",
+                                        "trans": "我們期盼明天的野餐會是晴天。",
+                                        "meaning": "預期；期待"
+                              },
+                              {
+                                        "word": "explain",
+                                        "sentence": "Can you explain how to solve this math problem?",
+                                        "trans": "你能解釋一下如何解這道數學題嗎？",
+                                        "meaning": "解釋；說明"
+                              },
+                              {
+                                        "word": "famous",
+                                        "sentence": "The Eiffel Tower is a famous landmark in Paris.",
+                                        "trans": "艾菲爾鐵塔是巴黎著名的地標。",
+                                        "meaning": "著名的；出名的"
+                              },
+                              {
+                                        "word": "figure",
+                                        "sentence": "I saw a shadowy figure standing in the doorway.",
+                                        "trans": "我看見一個模糊的身影站在門口。",
+                                        "meaning": "身影；身材；數字；圖形"
+                              },
+                              {
+                                        "word": "fitting",
+                                        "sentence": "A warm coat is fitting for a cold winter day.",
+                                        "trans": "一件暖和的外套適合寒冷的冬日穿著。",
+                                        "meaning": "合適的；恰當的"
+                              },
+                              {
+                                        "word": "flaw",
+                                        "sentence": "The diamond has a tiny flaw, but it still sparkles.",
+                                        "trans": "這顆鑽石有個微小的瑕疵，但依然閃閃發光。",
+                                        "meaning": "瑕疵；缺點"
+                              },
+                              {
+                                        "word": "flood",
+                                        "sentence": "The river overflowed and caused a flood in the village.",
+                                        "trans": "河水暴漲，導致村莊發生水災。",
+                                        "meaning": "水災；洪水"
+                              },
+                              {
+                                        "word": "forth",
+                                        "sentence": "The little swing moved back and forth in the wind.",
+                                        "trans": "小鞦韆在風中前後擺動。",
+                                        "meaning": "向前；向外"
+                              },
+                              {
+                                        "word": "friendship",
+                                        "sentence": "Their friendship grew stronger over the school years.",
+                                        "trans": "經過這些學年，他們的友誼更加深厚了。",
+                                        "meaning": "友誼；友情"
+                              },
+                              {
+                                        "word": "gale",
+                                        "sentence": "The strong gale blew hats off people's heads.",
+                                        "trans": "強勁的大風把人們頭上的帽子吹跑了。",
+                                        "meaning": "強風；大風"
+                              },
+                              {
+                                        "word": "gallon",
+                                        "sentence": "Mom bought a gallon of fresh milk at the store.",
+                                        "trans": "媽媽在商店買了一加侖的新鮮牛奶。",
+                                        "meaning": "加侖（容量單位）"
+                              },
+                              {
+                                        "word": "general",
+                                        "sentence": "The general led his army with great courage.",
+                                        "trans": "將軍以無比的勇氣率領他的軍隊。",
+                                        "meaning": "將軍；一般的；普遍的"
+                              },
+                              {
+                                        "word": "hale",
+                                        "sentence": "My grandfather is eighty years old, yet still hale and healthy.",
+                                        "trans": "我爺爺八十歲了，但身體依然健壯硬朗。",
+                                        "meaning": "健壯的；矍鑠的"
+                              },
+                              {
+                                        "word": "handle",
+                                        "sentence": "Turn the door handle gently to open the door.",
+                                        "trans": "輕輕轉動門把來打開門。",
+                                        "meaning": "把手；處理"
+                              },
+                              {
+                                        "word": "haste",
+                                        "sentence": "In his haste to catch the bus, he dropped his bag.",
+                                        "trans": "在他匆忙趕公車時，他不小心把書包掉了。",
+                                        "meaning": "匆忙；倉促"
+                              },
+                              {
+                                        "word": "hunger",
+                                        "sentence": "After a long hike, the boys felt great hunger.",
+                                        "trans": "長途健行後，男孩們感到非常飢餓。",
+                                        "meaning": "飢餓；渴望"
+                              }
+                    ]
+          },
+          "2026_Part3": {
+                    "name": "🐝 2026 Part 3 (25字)",
+                    "data": [
+                              {
+                                        "word": "invent",
+                                        "sentence": "Thomas Edison helped invent the electric light bulb.",
+                                        "trans": "愛迪生協助發明了電燈泡。",
+                                        "meaning": "發明；創造"
+                              },
+                              {
+                                        "word": "jingle",
+                                        "sentence": "The keys jingle in my pocket when I run.",
+                                        "trans": "當我跑步時，口袋裡的鑰匙發出叮噹聲。",
+                                        "meaning": "叮噹響；短歌；短曲"
+                              },
+                              {
+                                        "word": "kilogram",
+                                        "sentence": "A bag of flour weighs about one kilogram.",
+                                        "trans": "一袋麵粉大約重一公斤。",
+                                        "meaning": "公斤"
+                              },
+                              {
+                                        "word": "kilometer",
+                                        "sentence": "We walked one kilometer around the park.",
+                                        "trans": "我們繞著公園走了一公里。",
+                                        "meaning": "公里"
+                              },
+                              {
+                                        "word": "lawn",
+                                        "sentence": "Dad mowed the green lawn in the front yard.",
+                                        "trans": "爸爸修剪了前院的綠色草坪。",
+                                        "meaning": "草坪；草地"
+                              },
+                              {
+                                        "word": "length",
+                                        "sentence": "The swimmer swam the entire length of the pool.",
+                                        "trans": "游泳選手游完了整座泳池的長度。",
+                                        "meaning": "長度"
+                              },
+                              {
+                                        "word": "lord",
+                                        "sentence": "The medieval lord lived in a magnificent castle.",
+                                        "trans": "中世紀的領主住在一座壯麗的城堡裡。",
+                                        "meaning": "領主；貴族；主人"
+                              },
+                              {
+                                        "word": "malt",
+                                        "sentence": "Malt is used to make cereal and yummy drinks.",
+                                        "trans": "麥芽可用來製作穀麥食品和美味飲料。",
+                                        "meaning": "麥芽"
+                              },
+                              {
+                                        "word": "meek",
+                                        "sentence": "The meek little rabbit hid quietly under the bush.",
+                                        "trans": "那隻溫順的小兔子安靜地躲在灌木叢下。",
+                                        "meaning": "溫順的；謙恭的"
+                              },
+                              {
+                                        "word": "method",
+                                        "sentence": "She discovered an easy method to memorize words.",
+                                        "trans": "她發現了一個背單字的簡單方法。",
+                                        "meaning": "方法；辦法"
+                              },
+                              {
+                                        "word": "modern",
+                                        "sentence": "The new library has many modern computers.",
+                                        "trans": "新圖書館裡有許多現代化的電腦。",
+                                        "meaning": "現代的；新式的"
+                              },
+                              {
+                                        "word": "mount",
+                                        "sentence": "The rider will mount the brown horse.",
+                                        "trans": "騎士準備騎上那匹棕色的馬。",
+                                        "meaning": "登上；騎上；山峰"
+                              },
+                              {
+                                        "word": "natural",
+                                        "sentence": "Honey is a natural sweetener made by bees.",
+                                        "trans": "蜂蜜是由蜜蜂製造的天然甜味劑。",
+                                        "meaning": "天然的；自然的"
+                              },
+                              {
+                                        "word": "neighbor",
+                                        "sentence": "Our friendly neighbor waved hello across the fence.",
+                                        "trans": "我們友善的鄰居越過籬笆向我們揮手問好。",
+                                        "meaning": "鄰居"
+                              },
+                              {
+                                        "word": "objective",
+                                        "sentence": "Our main objective is to finish the project on time.",
+                                        "trans": "我們的主要目標是準時完成專案。",
+                                        "meaning": "目標；客觀的"
+                              },
+                              {
+                                        "word": "parade",
+                                        "sentence": "We watched the marching band in the holiday parade.",
+                                        "trans": "我們在節慶遊行中觀看樂旗隊表演。",
+                                        "meaning": "遊行；閱兵"
+                              },
+                              {
+                                        "word": "pitch",
+                                        "sentence": "The pitcher threw a fastball pitch to the batter.",
+                                        "trans": "投手向打擊者投出了一記快速球。",
+                                        "meaning": "投球；瀝青；音高"
+                              },
+                              {
+                                        "word": "plentiful",
+                                        "sentence": "Apples are plentiful in the orchard during autumn.",
+                                        "trans": "秋天時果園裡的蘋果非常豐富充足。",
+                                        "meaning": "豐富的；充足的"
+                              },
+                              {
+                                        "word": "position",
+                                        "sentence": "The goalkeeper moved into position before the kick.",
+                                        "trans": "守門員在球被踢出前就定位了。",
+                                        "meaning": "位置；姿勢；職位"
+                              },
+                              {
+                                        "word": "produce",
+                                        "sentence": "Bees produce sweet honey in their hives.",
+                                        "trans": "蜜蜂在蜂巢裡生產香甜的蜂蜜。",
+                                        "meaning": "生產；製造；農產品"
+                              },
+                              {
+                                        "word": "raindrops",
+                                        "sentence": "Cool raindrops began to patter on the window.",
+                                        "trans": "冰涼的雨滴開始滴滴答答落在窗戶上。",
+                                        "meaning": "雨滴；雨點"
+                              },
+                              {
+                                        "word": "refrigerator",
+                                        "sentence": "Please put the milk back into the refrigerator.",
+                                        "trans": "請把牛奶放回冰箱裡。",
+                                        "meaning": "冰箱"
+                              },
+                              {
+                                        "word": "refuse",
+                                        "sentence": "He had to refuse the invitation because he was sick.",
+                                        "trans": "他因為生病而不得不拒絕這份邀請。",
+                                        "meaning": "拒絕"
+                              },
+                              {
+                                        "word": "respect",
+                                        "sentence": "We should always show respect to our elders.",
+                                        "trans": "我們應該時常對長輩展現尊敬。",
+                                        "meaning": "尊敬；尊重"
+                              },
+                              {
+                                        "word": "slide",
+                                        "sentence": "The children love to slide down the playground slide.",
+                                        "trans": "孩子們喜歡在遊樂場的溜滑梯上滑下來。",
+                                        "meaning": "滑動；溜滑梯"
+                              }
+                    ]
+          },
+          "2026_Part4": {
+                    "name": "🐝 2026 Part 4 (25字)",
+                    "data": [
+                              {
+                                        "word": "smooth",
+                                        "sentence": "The polished stone felt cool and smooth in my hand.",
+                                        "trans": "磨光的石頭在我手中感覺冰涼且平滑。",
+                                        "meaning": "平滑的；光滑的"
+                              },
+                              {
+                                        "word": "special",
+                                        "sentence": "Today is a special day because it is my birthday.",
+                                        "trans": "今天是個特別的日子，因為是我的生日。",
+                                        "meaning": "特別的；特殊的"
+                              },
+                              {
+                                        "word": "spirit",
+                                        "sentence": "The soccer team played with energetic team spirit.",
+                                        "trans": "足球隊帶著充沛的團隊精神比賽。",
+                                        "meaning": "精神；靈魂；氣魄"
+                              },
+                              {
+                                        "word": "spread",
+                                        "sentence": "She used a butter knife to spread jam on toast.",
+                                        "trans": "她用奶油刀在吐司上抹果醬。",
+                                        "meaning": "塗抹；展開；傳播"
+                              },
+                              {
+                                        "word": "stink",
+                                        "sentence": "Rotten eggs produce a terrible stink.",
+                                        "trans": "腐爛的蛋會散發可怕的臭味。",
+                                        "meaning": "發出臭味；惡臭"
+                              },
+                              {
+                                        "word": "stomach",
+                                        "sentence": "Eating too much candy gave him a stomach ache.",
+                                        "trans": "吃太多糖果讓他胃痛肚子痛。",
+                                        "meaning": "胃；肚子"
+                              },
+                              {
+                                        "word": "strike",
+                                        "sentence": "Lightning can strike tall trees during a thunderstorm.",
+                                        "trans": "雷雨時閃電可能會擊中高大的樹木。",
+                                        "meaning": "擊打；襲擊；罷工"
+                              },
+                              {
+                                        "word": "suggest",
+                                        "sentence": "I suggest we read a book while waiting.",
+                                        "trans": "我建議我們在等待的時候看本書。",
+                                        "meaning": "建議；提議"
+                              },
+                              {
+                                        "word": "suntan",
+                                        "sentence": "He got a golden suntan after spending the day at the beach.",
+                                        "trans": "在海灘度過一天後，他曬出了金黃的古銅色肌膚。",
+                                        "meaning": "曬黑；曬成棕褐色的皮膚"
+                              },
+                              {
+                                        "word": "suppose",
+                                        "sentence": "I suppose we should leave now before it starts raining.",
+                                        "trans": "我想我們應該在下雨前現在就出發。",
+                                        "meaning": "猜想；以為；假定"
+                              },
+                              {
+                                        "word": "sweetness",
+                                        "sentence": "The natural sweetness of ripe watermelon is delightful.",
+                                        "trans": "熟透西瓜的天然甜味令人心情愉悅。",
+                                        "meaning": "甜味；芳香；溫柔"
+                              },
+                              {
+                                        "word": "system",
+                                        "sentence": "The planets travel around the sun in the solar system.",
+                                        "trans": "太陽系中的行星繞著太陽運轉。",
+                                        "meaning": "系統；體制"
+                              },
+                              {
+                                        "word": "talent",
+                                        "sentence": "She has a wonderful talent for playing the piano.",
+                                        "trans": "她很有彈鋼琴的才華。",
+                                        "meaning": "天賦；才華"
+                              },
+                              {
+                                        "word": "taught",
+                                        "sentence": "Our teacher taught us how to draw funny cartoons.",
+                                        "trans": "我們的老師教我們如何畫有趣的卡通漫畫。",
+                                        "meaning": "教導（teach 的過去式）"
+                              },
+                              {
+                                        "word": "teaspoon",
+                                        "sentence": "Add one teaspoon of sugar into your warm tea.",
+                                        "trans": "在溫茶裡加入一茶匙的糖。",
+                                        "meaning": "茶匙；一茶匙的量"
+                              },
+                              {
+                                        "word": "toothpaste",
+                                        "sentence": "Squeeze a little toothpaste onto your toothbrush.",
+                                        "trans": "擠一點牙膏在你的牙刷上。",
+                                        "meaning": "牙膏"
+                              },
+                              {
+                                        "word": "trend",
+                                        "sentence": "Wearing colorful sneakers is a popular fashion trend.",
+                                        "trans": "穿彩色球鞋是一種流行的時尚趨勢。",
+                                        "meaning": "趨勢；潮流"
+                              },
+                              {
+                                        "word": "trio",
+                                        "sentence": "The trio of musicians played sweet violin melodies.",
+                                        "trans": "這三人音樂組演奏了悠揚的小提琴旋律。",
+                                        "meaning": "三人組；三重奏"
+                              },
+                              {
+                                        "word": "tulip",
+                                        "sentence": "A bright yellow tulip bloomed in the spring sun.",
+                                        "trans": "一朵亮黃色的鬱金香在春陽下盛開。",
+                                        "meaning": "鬱金香"
+                              },
+                              {
+                                        "word": "useless",
+                                        "sentence": "An umbrella with holes is useless in heavy rain.",
+                                        "trans": "破了洞的雨傘在大雨中是毫無用處的。",
+                                        "meaning": "無用的；無效的"
+                              },
+                              {
+                                        "word": "vacation",
+                                        "sentence": "Our family went to the beach during summer vacation.",
+                                        "trans": "暑假期間我們全家去了海灘度假。",
+                                        "meaning": "假期；度假"
+                              },
+                              {
+                                        "word": "valley",
+                                        "sentence": "A quiet village lies peacefully between the green valley.",
+                                        "trans": "一座安靜的村莊座落在綠意盎然的山谷之間。",
+                                        "meaning": "山谷；溪谷"
+                              },
+                              {
+                                        "word": "woodpecker",
+                                        "sentence": "The woodpecker used its sharp beak to peck the tree trunk.",
+                                        "trans": "啄木鳥用牠尖銳的鳥喙啄著樹幹。",
+                                        "meaning": "啄木鳥"
+                              },
+                              {
+                                        "word": "yank",
+                                        "sentence": "Give the rope a firm yank to ring the bell.",
+                                        "trans": "用力猛拉一下繩子來敲鐘。",
+                                        "meaning": "猛拉；急抽"
+                              },
+                              {
+                                        "word": "yeast",
+                                        "sentence": "Bakers use yeast to make dough rise into fluffy bread.",
+                                        "trans": "烘焙師使用酵母讓麵團發酵成蓬鬆的麵包。",
+                                        "meaning": "酵母；酵母菌"
+                              }
+                    ]
+          },
+          "2026_All": {
+                    "name": "🌟 2026 全部單字 (100字)",
+                    "data": [
+                              {
+                                        "word": "aboard",
+                                        "sentence": "All passengers are now aboard the plane.",
+                                        "trans": "所有乘客現在都登機了。",
+                                        "meaning": "在船（飛機、車）上"
+                              },
+                              {
+                                        "word": "advance",
+                                        "sentence": "The soldiers began to advance through the forest.",
+                                        "trans": "士兵們開始穿過森林向前推進。",
+                                        "meaning": "前進；進步"
+                              },
+                              {
+                                        "word": "affair",
+                                        "sentence": "The party was a grand affair with music and dancing.",
+                                        "trans": "這場聚會是個有音樂和舞蹈的盛大活動。",
+                                        "meaning": "事情；事件"
+                              },
+                              {
+                                        "word": "airfield",
+                                        "sentence": "Small planes land on the grassy airfield.",
+                                        "trans": "小型飛機降落在草地起降場上。",
+                                        "meaning": "小型機場；飛機場"
+                              },
+                              {
+                                        "word": "apply",
+                                        "sentence": "You should apply sunscreen before going outside.",
+                                        "trans": "出門前你應該塗防曬乳。",
+                                        "meaning": "塗抹；申請；應用"
+                              },
+                              {
+                                        "word": "attempt",
+                                        "sentence": "She made an attempt to climb the tall tree.",
+                                        "trans": "她嘗試爬上那棵高樹。",
+                                        "meaning": "嘗試；企圖"
+                              },
+                              {
+                                        "word": "attention",
+                                        "sentence": "Please pay attention to the teacher in class.",
+                                        "trans": "上課時請注意聽老師講課。",
+                                        "meaning": "注意力；專心"
+                              },
+                              {
+                                        "word": "basis",
+                                        "sentence": "Trust is the basis of good friendship.",
+                                        "trans": "信任是良好友誼的基礎。",
+                                        "meaning": "基礎；根據"
+                              },
+                              {
+                                        "word": "beautify",
+                                        "sentence": "We planted flowers to beautify our school garden.",
+                                        "trans": "我們種花來美化學校花園。",
+                                        "meaning": "美化；使美麗"
+                              },
+                              {
+                                        "word": "blueberry",
+                                        "sentence": "Mom baked a sweet blueberry pie for dessert.",
+                                        "trans": "媽媽烤了一個香甜的藍莓派當點心。",
+                                        "meaning": "藍莓"
+                              },
+                              {
+                                        "word": "branch",
+                                        "sentence": "A little bird is singing on the tree branch.",
+                                        "trans": "一隻小鳥在樹枝上唱歌。",
+                                        "meaning": "樹枝；分枝"
+                              },
+                              {
+                                        "word": "brook",
+                                        "sentence": "The clear water flows gently in the brook.",
+                                        "trans": "清澈的水在小溪裡緩緩流動。",
+                                        "meaning": "小溪；小河"
+                              },
+                              {
+                                        "word": "brownie",
+                                        "sentence": "He ate a delicious chocolate brownie after lunch.",
+                                        "trans": "他午餐後吃了一塊美味的巧克力布朗尼。",
+                                        "meaning": "布朗尼蛋糕"
+                              },
+                              {
+                                        "word": "bulb",
+                                        "sentence": "Dad changed the light bulb in my bedroom.",
+                                        "trans": "爸爸換了我臥室的燈泡。",
+                                        "meaning": "燈泡；球莖"
+                              },
+                              {
+                                        "word": "business",
+                                        "sentence": "My uncle runs a small bakery business.",
+                                        "trans": "我的叔叔經營一家小麵包店生意。",
+                                        "meaning": "商業；生意；事務"
+                              },
+                              {
+                                        "word": "capital",
+                                        "sentence": "Taipei is the capital city of Taiwan.",
+                                        "trans": "台北是台灣的首都。",
+                                        "meaning": "首都；大寫字母；資金"
+                              },
+                              {
+                                        "word": "cause",
+                                        "sentence": "Heavy rain can cause flooding in the streets.",
+                                        "trans": "大雨會導致街道淹水。",
+                                        "meaning": "引起；原因"
+                              },
+                              {
+                                        "word": "century",
+                                        "sentence": "This ancient castle was built a century ago.",
+                                        "trans": "這座古老的城堡是一百年前建造的。",
+                                        "meaning": "世紀；一百年"
+                              },
+                              {
+                                        "word": "chubby",
+                                        "sentence": "The baby has chubby cheeks and a cute smile.",
+                                        "trans": "那個小寶寶有著圓滾滾的臉頰和可愛的笑容。",
+                                        "meaning": "圓胖的；豐滿的"
+                              },
+                              {
+                                        "word": "closet",
+                                        "sentence": "I hang my jackets neatly in the closet.",
+                                        "trans": "我把外套整齊地掛在衣櫥裡。",
+                                        "meaning": "衣櫥；壁櫥"
+                              },
+                              {
+                                        "word": "coast",
+                                        "sentence": "We walked along the sandy coast and found seashells.",
+                                        "trans": "我們沿著沙灘海岸漫步並撿到了貝殼。",
+                                        "meaning": "海岸；海濱"
+                              },
+                              {
+                                        "word": "company",
+                                        "sentence": "Her mother works for a computer company.",
+                                        "trans": "她的媽媽在一間電腦公司上班。",
+                                        "meaning": "公司；陪伴"
+                              },
+                              {
+                                        "word": "continue",
+                                        "sentence": "Please continue reading the story from page ten.",
+                                        "trans": "請從第十頁繼續讀這個故事。",
+                                        "meaning": "繼續；持續"
+                              },
+                              {
+                                        "word": "craft",
+                                        "sentence": "We made paper lanterns in arts and crafts class.",
+                                        "trans": "我們在美勞課上製作了紙燈籠。",
+                                        "meaning": "手工藝；技藝"
+                              },
+                              {
+                                        "word": "crew",
+                                        "sentence": "The ship's crew worked hard to sail safely.",
+                                        "trans": "全體船員努力工作以安全航行。",
+                                        "meaning": "全體工作人員；船員；機組人員"
+                              },
+                              {
+                                        "word": "crime",
+                                        "sentence": "Stealing is a serious crime that hurts others.",
+                                        "trans": "偷竊是一種傷害他人的嚴重犯罪行為。",
+                                        "meaning": "罪行；犯罪"
+                              },
+                              {
+                                        "word": "crop",
+                                        "sentence": "Corn is an important crop grown by farmers here.",
+                                        "trans": "玉米是這裡農夫種植的重要農作物。",
+                                        "meaning": "農作物；莊稼"
+                              },
+                              {
+                                        "word": "crowd",
+                                        "sentence": "A cheerful crowd cheered for the runners.",
+                                        "trans": "熱情的人群為跑者歡呼。",
+                                        "meaning": "人群；群眾"
+                              },
+                              {
+                                        "word": "dare",
+                                        "sentence": "He did not dare to jump into the cold water.",
+                                        "trans": "他不敢跳進冰冷的水裡。",
+                                        "meaning": "敢；膽敢"
+                              },
+                              {
+                                        "word": "disagree",
+                                        "sentence": "It is okay to disagree as long as we are polite.",
+                                        "trans": "只要我們有禮貌，意見不同也是沒關係的。",
+                                        "meaning": "不同意；意見不合"
+                              },
+                              {
+                                        "word": "dresser",
+                                        "sentence": "She keeps her socks and t-shirts in the dresser.",
+                                        "trans": "她把襪子和T恤收在梳妝台衣櫃裡。",
+                                        "meaning": "梳妝台；矮衣櫃"
+                              },
+                              {
+                                        "word": "drift",
+                                        "sentence": "Leaves drift slowly down the quiet river.",
+                                        "trans": "樹葉在平靜的小河上緩緩漂流。",
+                                        "meaning": "漂流；漂移"
+                              },
+                              {
+                                        "word": "elevator",
+                                        "sentence": "We took the elevator to the tenth floor.",
+                                        "trans": "我們搭電梯到十樓。",
+                                        "meaning": "電梯"
+                              },
+                              {
+                                        "word": "everywhere",
+                                        "sentence": "In spring, colorful flowers bloom everywhere.",
+                                        "trans": "春天時，到處都盛開著繽紛的花朵。",
+                                        "meaning": "到處；處處"
+                              },
+                              {
+                                        "word": "expect",
+                                        "sentence": "We expect sunny weather for our picnic tomorrow.",
+                                        "trans": "我們期盼明天的野餐會是晴天。",
+                                        "meaning": "預期；期待"
+                              },
+                              {
+                                        "word": "explain",
+                                        "sentence": "Can you explain how to solve this math problem?",
+                                        "trans": "你能解釋一下如何解這道數學題嗎？",
+                                        "meaning": "解釋；說明"
+                              },
+                              {
+                                        "word": "famous",
+                                        "sentence": "The Eiffel Tower is a famous landmark in Paris.",
+                                        "trans": "艾菲爾鐵塔是巴黎著名的地標。",
+                                        "meaning": "著名的；出名的"
+                              },
+                              {
+                                        "word": "figure",
+                                        "sentence": "I saw a shadowy figure standing in the doorway.",
+                                        "trans": "我看見一個模糊的身影站在門口。",
+                                        "meaning": "身影；身材；數字；圖形"
+                              },
+                              {
+                                        "word": "fitting",
+                                        "sentence": "A warm coat is fitting for a cold winter day.",
+                                        "trans": "一件暖和的外套適合寒冷的冬日穿著。",
+                                        "meaning": "合適的；恰當的"
+                              },
+                              {
+                                        "word": "flaw",
+                                        "sentence": "The diamond has a tiny flaw, but it still sparkles.",
+                                        "trans": "這顆鑽石有個微小的瑕疵，但依然閃閃發光。",
+                                        "meaning": "瑕疵；缺點"
+                              },
+                              {
+                                        "word": "flood",
+                                        "sentence": "The river overflowed and caused a flood in the village.",
+                                        "trans": "河水暴漲，導致村莊發生水災。",
+                                        "meaning": "水災；洪水"
+                              },
+                              {
+                                        "word": "forth",
+                                        "sentence": "The little swing moved back and forth in the wind.",
+                                        "trans": "小鞦韆在風中前後擺動。",
+                                        "meaning": "向前；向外"
+                              },
+                              {
+                                        "word": "friendship",
+                                        "sentence": "Their friendship grew stronger over the school years.",
+                                        "trans": "經過這些學年，他們的友誼更加深厚了。",
+                                        "meaning": "友誼；友情"
+                              },
+                              {
+                                        "word": "gale",
+                                        "sentence": "The strong gale blew hats off people's heads.",
+                                        "trans": "強勁的大風把人們頭上的帽子吹跑了。",
+                                        "meaning": "強風；大風"
+                              },
+                              {
+                                        "word": "gallon",
+                                        "sentence": "Mom bought a gallon of fresh milk at the store.",
+                                        "trans": "媽媽在商店買了一加侖的新鮮牛奶。",
+                                        "meaning": "加侖（容量單位）"
+                              },
+                              {
+                                        "word": "general",
+                                        "sentence": "The general led his army with great courage.",
+                                        "trans": "將軍以無比的勇氣率領他的軍隊。",
+                                        "meaning": "將軍；一般的；普遍的"
+                              },
+                              {
+                                        "word": "hale",
+                                        "sentence": "My grandfather is eighty years old, yet still hale and healthy.",
+                                        "trans": "我爺爺八十歲了，但身體依然健壯硬朗。",
+                                        "meaning": "健壯的；矍鑠的"
+                              },
+                              {
+                                        "word": "handle",
+                                        "sentence": "Turn the door handle gently to open the door.",
+                                        "trans": "輕輕轉動門把來打開門。",
+                                        "meaning": "把手；處理"
+                              },
+                              {
+                                        "word": "haste",
+                                        "sentence": "In his haste to catch the bus, he dropped his bag.",
+                                        "trans": "在他匆忙趕公車時，他不小心把書包掉了。",
+                                        "meaning": "匆忙；倉促"
+                              },
+                              {
+                                        "word": "hunger",
+                                        "sentence": "After a long hike, the boys felt great hunger.",
+                                        "trans": "長途健行後，男孩們感到非常飢餓。",
+                                        "meaning": "飢餓；渴望"
+                              },
+                              {
+                                        "word": "invent",
+                                        "sentence": "Thomas Edison helped invent the electric light bulb.",
+                                        "trans": "愛迪生協助發明了電燈泡。",
+                                        "meaning": "發明；創造"
+                              },
+                              {
+                                        "word": "jingle",
+                                        "sentence": "The keys jingle in my pocket when I run.",
+                                        "trans": "當我跑步時，口袋裡的鑰匙發出叮噹聲。",
+                                        "meaning": "叮噹響；短歌；短曲"
+                              },
+                              {
+                                        "word": "kilogram",
+                                        "sentence": "A bag of flour weighs about one kilogram.",
+                                        "trans": "一袋麵粉大約重一公斤。",
+                                        "meaning": "公斤"
+                              },
+                              {
+                                        "word": "kilometer",
+                                        "sentence": "We walked one kilometer around the park.",
+                                        "trans": "我們繞著公園走了一公里。",
+                                        "meaning": "公里"
+                              },
+                              {
+                                        "word": "lawn",
+                                        "sentence": "Dad mowed the green lawn in the front yard.",
+                                        "trans": "爸爸修剪了前院的綠色草坪。",
+                                        "meaning": "草坪；草地"
+                              },
+                              {
+                                        "word": "length",
+                                        "sentence": "The swimmer swam the entire length of the pool.",
+                                        "trans": "游泳選手游完了整座泳池的長度。",
+                                        "meaning": "長度"
+                              },
+                              {
+                                        "word": "lord",
+                                        "sentence": "The medieval lord lived in a magnificent castle.",
+                                        "trans": "中世紀的領主住在一座壯麗的城堡裡。",
+                                        "meaning": "領主；貴族；主人"
+                              },
+                              {
+                                        "word": "malt",
+                                        "sentence": "Malt is used to make cereal and yummy drinks.",
+                                        "trans": "麥芽可用來製作穀麥食品和美味飲料。",
+                                        "meaning": "麥芽"
+                              },
+                              {
+                                        "word": "meek",
+                                        "sentence": "The meek little rabbit hid quietly under the bush.",
+                                        "trans": "那隻溫順的小兔子安靜地躲在灌木叢下。",
+                                        "meaning": "溫順的；謙恭的"
+                              },
+                              {
+                                        "word": "method",
+                                        "sentence": "She discovered an easy method to memorize words.",
+                                        "trans": "她發現了一個背單字的簡單方法。",
+                                        "meaning": "方法；辦法"
+                              },
+                              {
+                                        "word": "modern",
+                                        "sentence": "The new library has many modern computers.",
+                                        "trans": "新圖書館裡有許多現代化的電腦。",
+                                        "meaning": "現代的；新式的"
+                              },
+                              {
+                                        "word": "mount",
+                                        "sentence": "The rider will mount the brown horse.",
+                                        "trans": "騎士準備騎上那匹棕色的馬。",
+                                        "meaning": "登上；騎上；山峰"
+                              },
+                              {
+                                        "word": "natural",
+                                        "sentence": "Honey is a natural sweetener made by bees.",
+                                        "trans": "蜂蜜是由蜜蜂製造的天然甜味劑。",
+                                        "meaning": "天然的；自然的"
+                              },
+                              {
+                                        "word": "neighbor",
+                                        "sentence": "Our friendly neighbor waved hello across the fence.",
+                                        "trans": "我們友善的鄰居越過籬笆向我們揮手問好。",
+                                        "meaning": "鄰居"
+                              },
+                              {
+                                        "word": "objective",
+                                        "sentence": "Our main objective is to finish the project on time.",
+                                        "trans": "我們的主要目標是準時完成專案。",
+                                        "meaning": "目標；客觀的"
+                              },
+                              {
+                                        "word": "parade",
+                                        "sentence": "We watched the marching band in the holiday parade.",
+                                        "trans": "我們在節慶遊行中觀看樂旗隊表演。",
+                                        "meaning": "遊行；閱兵"
+                              },
+                              {
+                                        "word": "pitch",
+                                        "sentence": "The pitcher threw a fastball pitch to the batter.",
+                                        "trans": "投手向打擊者投出了一記快速球。",
+                                        "meaning": "投球；瀝青；音高"
+                              },
+                              {
+                                        "word": "plentiful",
+                                        "sentence": "Apples are plentiful in the orchard during autumn.",
+                                        "trans": "秋天時果園裡的蘋果非常豐富充足。",
+                                        "meaning": "豐富的；充足的"
+                              },
+                              {
+                                        "word": "position",
+                                        "sentence": "The goalkeeper moved into position before the kick.",
+                                        "trans": "守門員在球被踢出前就定位了。",
+                                        "meaning": "位置；姿勢；職位"
+                              },
+                              {
+                                        "word": "produce",
+                                        "sentence": "Bees produce sweet honey in their hives.",
+                                        "trans": "蜜蜂在蜂巢裡生產香甜的蜂蜜。",
+                                        "meaning": "生產；製造；農產品"
+                              },
+                              {
+                                        "word": "raindrops",
+                                        "sentence": "Cool raindrops began to patter on the window.",
+                                        "trans": "冰涼的雨滴開始滴滴答答落在窗戶上。",
+                                        "meaning": "雨滴；雨點"
+                              },
+                              {
+                                        "word": "refrigerator",
+                                        "sentence": "Please put the milk back into the refrigerator.",
+                                        "trans": "請把牛奶放回冰箱裡。",
+                                        "meaning": "冰箱"
+                              },
+                              {
+                                        "word": "refuse",
+                                        "sentence": "He had to refuse the invitation because he was sick.",
+                                        "trans": "他因為生病而不得不拒絕這份邀請。",
+                                        "meaning": "拒絕"
+                              },
+                              {
+                                        "word": "respect",
+                                        "sentence": "We should always show respect to our elders.",
+                                        "trans": "我們應該時常對長輩展現尊敬。",
+                                        "meaning": "尊敬；尊重"
+                              },
+                              {
+                                        "word": "slide",
+                                        "sentence": "The children love to slide down the playground slide.",
+                                        "trans": "孩子們喜歡在遊樂場的溜滑梯上滑下來。",
+                                        "meaning": "滑動；溜滑梯"
+                              },
+                              {
+                                        "word": "smooth",
+                                        "sentence": "The polished stone felt cool and smooth in my hand.",
+                                        "trans": "磨光的石頭在我手中感覺冰涼且平滑。",
+                                        "meaning": "平滑的；光滑的"
+                              },
+                              {
+                                        "word": "special",
+                                        "sentence": "Today is a special day because it is my birthday.",
+                                        "trans": "今天是個特別的日子，因為是我的生日。",
+                                        "meaning": "特別的；特殊的"
+                              },
+                              {
+                                        "word": "spirit",
+                                        "sentence": "The soccer team played with energetic team spirit.",
+                                        "trans": "足球隊帶著充沛的團隊精神比賽。",
+                                        "meaning": "精神；靈魂；氣魄"
+                              },
+                              {
+                                        "word": "spread",
+                                        "sentence": "She used a butter knife to spread jam on toast.",
+                                        "trans": "她用奶油刀在吐司上抹果醬。",
+                                        "meaning": "塗抹；展開；傳播"
+                              },
+                              {
+                                        "word": "stink",
+                                        "sentence": "Rotten eggs produce a terrible stink.",
+                                        "trans": "腐爛的蛋會散發可怕的臭味。",
+                                        "meaning": "發出臭味；惡臭"
+                              },
+                              {
+                                        "word": "stomach",
+                                        "sentence": "Eating too much candy gave him a stomach ache.",
+                                        "trans": "吃太多糖果讓他胃痛肚子痛。",
+                                        "meaning": "胃；肚子"
+                              },
+                              {
+                                        "word": "strike",
+                                        "sentence": "Lightning can strike tall trees during a thunderstorm.",
+                                        "trans": "雷雨時閃電可能會擊中高大的樹木。",
+                                        "meaning": "擊打；襲擊；罷工"
+                              },
+                              {
+                                        "word": "suggest",
+                                        "sentence": "I suggest we read a book while waiting.",
+                                        "trans": "我建議我們在等待的時候看本書。",
+                                        "meaning": "建議；提議"
+                              },
+                              {
+                                        "word": "suntan",
+                                        "sentence": "He got a golden suntan after spending the day at the beach.",
+                                        "trans": "在海灘度過一天後，他曬出了金黃的古銅色肌膚。",
+                                        "meaning": "曬黑；曬成棕褐色的皮膚"
+                              },
+                              {
+                                        "word": "suppose",
+                                        "sentence": "I suppose we should leave now before it starts raining.",
+                                        "trans": "我想我們應該在下雨前現在就出發。",
+                                        "meaning": "猜想；以為；假定"
+                              },
+                              {
+                                        "word": "sweetness",
+                                        "sentence": "The natural sweetness of ripe watermelon is delightful.",
+                                        "trans": "熟透西瓜的天然甜味令人心情愉悅。",
+                                        "meaning": "甜味；芳香；溫柔"
+                              },
+                              {
+                                        "word": "system",
+                                        "sentence": "The planets travel around the sun in the solar system.",
+                                        "trans": "太陽系中的行星繞著太陽運轉。",
+                                        "meaning": "系統；體制"
+                              },
+                              {
+                                        "word": "talent",
+                                        "sentence": "She has a wonderful talent for playing the piano.",
+                                        "trans": "她很有彈鋼琴的才華。",
+                                        "meaning": "天賦；才華"
+                              },
+                              {
+                                        "word": "taught",
+                                        "sentence": "Our teacher taught us how to draw funny cartoons.",
+                                        "trans": "我們的老師教我們如何畫有趣的卡通漫畫。",
+                                        "meaning": "教導（teach 的過去式）"
+                              },
+                              {
+                                        "word": "teaspoon",
+                                        "sentence": "Add one teaspoon of sugar into your warm tea.",
+                                        "trans": "在溫茶裡加入一茶匙的糖。",
+                                        "meaning": "茶匙；一茶匙的量"
+                              },
+                              {
+                                        "word": "toothpaste",
+                                        "sentence": "Squeeze a little toothpaste onto your toothbrush.",
+                                        "trans": "擠一點牙膏在你的牙刷上。",
+                                        "meaning": "牙膏"
+                              },
+                              {
+                                        "word": "trend",
+                                        "sentence": "Wearing colorful sneakers is a popular fashion trend.",
+                                        "trans": "穿彩色球鞋是一種流行的時尚趨勢。",
+                                        "meaning": "趨勢；潮流"
+                              },
+                              {
+                                        "word": "trio",
+                                        "sentence": "The trio of musicians played sweet violin melodies.",
+                                        "trans": "這三人音樂組演奏了悠揚的小提琴旋律。",
+                                        "meaning": "三人組；三重奏"
+                              },
+                              {
+                                        "word": "tulip",
+                                        "sentence": "A bright yellow tulip bloomed in the spring sun.",
+                                        "trans": "一朵亮黃色的鬱金香在春陽下盛開。",
+                                        "meaning": "鬱金香"
+                              },
+                              {
+                                        "word": "useless",
+                                        "sentence": "An umbrella with holes is useless in heavy rain.",
+                                        "trans": "破了洞的雨傘在大雨中是毫無用處的。",
+                                        "meaning": "無用的；無效的"
+                              },
+                              {
+                                        "word": "vacation",
+                                        "sentence": "Our family went to the beach during summer vacation.",
+                                        "trans": "暑假期間我們全家去了海灘度假。",
+                                        "meaning": "假期；度假"
+                              },
+                              {
+                                        "word": "valley",
+                                        "sentence": "A quiet village lies peacefully between the green valley.",
+                                        "trans": "一座安靜的村莊座落在綠意盎然的山谷之間。",
+                                        "meaning": "山谷；溪谷"
+                              },
+                              {
+                                        "word": "woodpecker",
+                                        "sentence": "The woodpecker used its sharp beak to peck the tree trunk.",
+                                        "trans": "啄木鳥用牠尖銳的鳥喙啄著樹幹。",
+                                        "meaning": "啄木鳥"
+                              },
+                              {
+                                        "word": "yank",
+                                        "sentence": "Give the rope a firm yank to ring the bell.",
+                                        "trans": "用力猛拉一下繩子來敲鐘。",
+                                        "meaning": "猛拉；急抽"
+                              },
+                              {
+                                        "word": "yeast",
+                                        "sentence": "Bakers use yeast to make dough rise into fluffy bread.",
+                                        "trans": "烘焙師使用酵母讓麵團發酵成蓬鬆的麵包。",
+                                        "meaning": "酵母；酵母菌"
+                              }
+                    ]
+          },
+          "default": {
+                    "name": "📚 Grade 1C 原題庫 (25字)",
+                    "data": [
+                              {
+                                        "word": "album",
+                                        "sentence": "I put my vacation photos in an album.",
+                                        "trans": "我把度假照片放進相簿裡。",
+                                        "meaning": "專輯；相簿"
+                              },
+                              {
+                                        "word": "anybody",
+                                        "sentence": "Did anybody see my pencil?",
+                                        "trans": "有人看到我的鉛筆嗎？",
+                                        "meaning": "任何人"
+                              },
+                              {
+                                        "word": "anything",
+                                        "sentence": "You can eat anything you like.",
+                                        "trans": "你可以吃你喜歡的任何東西。",
+                                        "meaning": "任何事物"
+                              },
+                              {
+                                        "word": "apartment",
+                                        "sentence": "We live in a small apartment in the city.",
+                                        "trans": "我們住在城市裡一間小公寓。",
+                                        "meaning": "公寓"
+                              },
+                              {
+                                        "word": "armadillo",
+                                        "sentence": "The armadillo has a hard shell to protect itself.",
+                                        "trans": "犰狳有堅硬的外殼來保護自己。",
+                                        "meaning": "犰狳"
+                              },
+                              {
+                                        "word": "belief",
+                                        "sentence": "She has a strong belief in kindness.",
+                                        "trans": "她深信善良的力量。",
+                                        "meaning": "信仰；信念"
+                              },
+                              {
+                                        "word": "blacktop",
+                                        "sentence": "The children played on the blacktop playground.",
+                                        "trans": "孩子們在柏油操場上玩耍。",
+                                        "meaning": "柏油路"
+                              },
+                              {
+                                        "word": "block",
+                                        "sentence": "Our school is one block away.",
+                                        "trans": "我們的學校在一個街區之外。",
+                                        "meaning": "街區；積木"
+                              },
+                              {
+                                        "word": "border",
+                                        "sentence": "The river forms the border between two countries.",
+                                        "trans": "那條河形成了兩國的邊界。",
+                                        "meaning": "邊界"
+                              },
+                              {
+                                        "word": "brake",
+                                        "sentence": "He pressed the brake to stop the car.",
+                                        "trans": "他踩煞車讓車停下來。",
+                                        "meaning": "煞車"
+                              },
+                              {
+                                        "word": "brave",
+                                        "sentence": "The brave firefighter saved the cat.",
+                                        "trans": "那位勇敢的消防員救了貓。",
+                                        "meaning": "勇敢的"
+                              },
+                              {
+                                        "word": "breathe",
+                                        "sentence": "Take a deep breath and relax.",
+                                        "trans": "深呼吸，放鬆一下。",
+                                        "meaning": "呼吸"
+                              },
+                              {
+                                        "word": "buffalo",
+                                        "sentence": "A buffalo is a large animal that lives on the grassland.",
+                                        "trans": "水牛是生活在草原上的大型動物。",
+                                        "meaning": "水牛"
+                              },
+                              {
+                                        "word": "bulldog",
+                                        "sentence": "The bulldog is strong but friendly.",
+                                        "trans": "鬥牛犬強壯但友善。",
+                                        "meaning": "鬥牛犬"
+                              },
+                              {
+                                        "word": "bulldozer",
+                                        "sentence": "The bulldozer cleared the land for new buildings.",
+                                        "trans": "推土機清理土地以建新建築。",
+                                        "meaning": "推土機"
+                              },
+                              {
+                                        "word": "burglar",
+                                        "sentence": "The burglar broke into the house at night.",
+                                        "trans": "竊賊在晚上闖入房子。",
+                                        "meaning": "竊賊"
+                              },
+                              {
+                                        "word": "button",
+                                        "sentence": "I lost a button on my shirt.",
+                                        "trans": "我的襯衫少了一顆鈕扣。",
+                                        "meaning": "鈕扣"
+                              },
+                              {
+                                        "word": "campfire",
+                                        "sentence": "We roasted marshmallows over the campfire.",
+                                        "trans": "我們在營火上烤棉花糖。",
+                                        "meaning": "營火"
+                              },
+                              {
+                                        "word": "cellar",
+                                        "sentence": "The old house has a dark cellar.",
+                                        "trans": "那棟老房子有個黑暗的地下室。",
+                                        "meaning": "地下室"
+                              },
+                              {
+                                        "word": "certainly",
+                                        "sentence": "I will certainly help you.",
+                                        "trans": "我當然會幫你。",
+                                        "meaning": "當然"
+                              },
+                              {
+                                        "word": "computer",
+                                        "sentence": "I use my computer to do homework.",
+                                        "trans": "我用電腦做功課。",
+                                        "meaning": "電腦"
+                              },
+                              {
+                                        "word": "country",
+                                        "sentence": "Japan is a beautiful country.",
+                                        "trans": "日本是一個美麗的國家。",
+                                        "meaning": "國家"
+                              },
+                              {
+                                        "word": "crocodile",
+                                        "sentence": "A crocodile lives near the river.",
+                                        "trans": "鱷魚住在河邊。",
+                                        "meaning": "鱷魚"
+                              },
+                              {
+                                        "word": "darkness",
+                                        "sentence": "He was afraid of the darkness.",
+                                        "trans": "他害怕黑暗。",
+                                        "meaning": "黑暗"
+                              },
+                              {
+                                        "word": "decide",
+                                        "sentence": "She can’t decide what to wear today.",
+                                        "trans": "她今天決定不了要穿什麼。",
+                                        "meaning": "決定"
+                              }
+                    ]
+          }
+};
+        // --- END_PRESET_BANKS ---
+
+        // 保留原始預設題庫深拷貝供重置使用
+        const originalPresetBanks = JSON.parse(JSON.stringify(presetBanks));
+
+        let rawData = [...presetBanks['2026_Part1'].data];
+        let customBanks = {};
+        let presetOverrides = {};
+        let currentBankName = '2026_Part1';
+
+        // --- 2. State & Config ---
+        const GROUP_SIZE = 10;
+        let currentMode = 'study';
+        let currentLevel = -1;
+        let currentIndex = 0;
+        let currentLevelWords = [];
+
+        // Challenger & Mistake Notebook State
+        let currentChallenger = 'Guest';
+        let challengersList = ['Guest'];
+        let score = 0;
+        let mistakeList = new Set(); // Stores active unmastered mistake words (lowercase key or word)
+        let mistakeDetails = {};     // { [wordLower]: { word, sentence, trans, meaning, bank, bankLabel, count, lastWrong, note, mastered, updatedAt } }
+        let isReviewMode = false;
+
+        // Notebook Filter State
+        let nbFilterBank = 'all';
+        let nbFilterStatus = 'unmastered';
+        let nbSearchQuery = '';
+
+        // Quick Import Modal State
+        let currentImportTab = 'file';
+        let pendingUploadedWords = null;
+        let pendingUploadedFileName = '';
+
+        let voices = [];
+        let syllableToggle = false;
+
+        // --- 2.5 Cookie & ChallengerStorage Module ---
+        const ChallengerStorage = {
+            setCookie(name, value, days = 365) {
+                try {
+                    const d = new Date();
+                    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+                    const expires = "expires=" + d.toUTCString();
+                    document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+                } catch (e) { }
+            },
+            getCookie(name) {
+                try {
+                    const cname = name + "=";
+                    const ca = (document.cookie || '').split(';');
+                    for (let i = 0; i < ca.length; i++) {
+                        let c = ca[i].trim();
+                        if (c.indexOf(cname) === 0) {
+                            return decodeURIComponent(c.substring(cname.length, c.length));
+                        }
+                    }
+                } catch (e) { }
+                return null;
+            },
+            deleteCookie(name) {
+                try {
+                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax";
+                } catch (e) { }
+            },
+            safeKey(name) {
+                return encodeURIComponent(name).replace(/%/g, '_');
+            },
+            loadChallengersList() {
+                let list = [];
+                const cookieStr = this.getCookie('bee_challengers');
+                if (cookieStr) {
+                    try { list = JSON.parse(cookieStr); } catch (e) { }
+                }
+                if (!Array.isArray(list) || list.length === 0) {
+                    const lsStr = localStorage.getItem('bee_challengers_list');
+                    if (lsStr) {
+                        try { list = JSON.parse(lsStr); } catch (e) { }
+                    }
+                }
+                if (!Array.isArray(list) || list.length === 0) {
+                    list = ['Guest'];
+                }
+                return list;
+            },
+            saveChallengersList(list) {
+                const json = JSON.stringify(list);
+                this.setCookie('bee_challengers', json, 365);
+                try { localStorage.setItem('bee_challengers_list', json); } catch (e) { }
+            },
+            getCurrentChallengerName() {
+                return this.getCookie('bee_current_challenger') || localStorage.getItem('bee_current_challenger') || 'Guest';
+            },
+            setCurrentChallengerName(name) {
+                this.setCookie('bee_current_challenger', name, 365);
+                try { localStorage.setItem('bee_current_challenger', name); } catch (e) { }
+            },
+            loadProfile(name) {
+                let profile = {
+                    name: name,
+                    score: 0,
+                    currentBank: '2026_Part1',
+                    currentLevel: -1,
+                    mistakes: {}
+                };
+
+                // 1. 讀取 localStorage 完整設定檔
+                const lsKey = 'bee_profile_' + name;
+                const lsData = localStorage.getItem(lsKey);
+                if (lsData) {
+                    try {
+                        const parsed = JSON.parse(lsData);
+                        if (parsed && typeof parsed === 'object') {
+                            profile = Object.assign(profile, parsed);
+                        }
+                    } catch (e) { }
+                }
+
+                // 2. 讀取 Cookie 紀錄並同步恢復 (若 localStorage 無紀錄或 Cookie 分數較新)
+                const cKey = 'bee_c_' + this.safeKey(name);
+                const cData = this.getCookie(cKey);
+                if (cData) {
+                    try {
+                        const cParsed = JSON.parse(cData);
+                        if (typeof cParsed.s === 'number' && cParsed.s > profile.score) {
+                            profile.score = cParsed.s;
+                        }
+                        if (cParsed.b && !lsData) {
+                            profile.currentBank = cParsed.b;
+                        }
+                        if (typeof cParsed.l === 'number' && !lsData) {
+                            profile.currentLevel = cParsed.l;
+                        }
+                        if (Array.isArray(cParsed.m)) {
+                            cParsed.m.forEach(entry => {
+                                const w = entry[0];
+                                if (!w) return;
+                                const key = w.toLowerCase();
+                                if (!profile.mistakes[key]) {
+                                    const found = findWordAcrossBanks(w);
+                                    profile.mistakes[key] = {
+                                        word: found ? found.word : w,
+                                        sentence: found ? found.sentence : '',
+                                        trans: found ? found.trans : '',
+                                        meaning: found ? found.meaning : '',
+                                        bank: found ? found.bank : profile.currentBank,
+                                        bankLabel: found ? found.bankLabel : getBankDisplayName(profile.currentBank),
+                                        count: entry[1] || 1,
+                                        lastWrong: entry[2] || '',
+                                        mastered: entry[3] === 1,
+                                        note: entry[4] || '',
+                                        updatedAt: Date.now()
+                                    };
+                                }
+                            });
+                        }
+                    } catch (e) { }
+                }
+
+                // 3. 向下相容舊版單人紀錄 (首次升級遷移)
+                if (name === 'Guest' && !lsData && !cData) {
+                    const oldScore = localStorage.getItem('bee_score');
+                    if (oldScore) profile.score = parseInt(oldScore) || 0;
+                    const oldBank = localStorage.getItem('bee_current_bank');
+                    if (oldBank) profile.currentBank = oldBank;
+                    const oldMistakes = localStorage.getItem('bee_mistakes');
+                    if (oldMistakes) {
+                        try {
+                            JSON.parse(oldMistakes).forEach(w => {
+                                const found = findWordAcrossBanks(w);
+                                profile.mistakes[w.toLowerCase()] = {
+                                    word: found ? found.word : w,
+                                    sentence: found ? found.sentence : '',
+                                    trans: found ? found.trans : '',
+                                    meaning: found ? found.meaning : '',
+                                    bank: found ? found.bank : '2026_Part1',
+                                    bankLabel: found ? found.bankLabel : '🐝 2026 Part 1 (25字)',
+                                    count: 1,
+                                    lastWrong: '',
+                                    mastered: false,
+                                    note: '',
+                                    updatedAt: Date.now()
+                                };
+                            });
+                        } catch (e) { }
+                    }
+                }
+
+                return profile;
+            },
+            saveCurrentProfile() {
+                const profile = {
+                    name: currentChallenger,
+                    score: score,
+                    currentBank: currentBankName,
+                    currentLevel: currentLevel,
+                    mistakes: mistakeDetails
+                };
+
+                // 儲存完整明細至 localStorage
+                try {
+                    localStorage.setItem('bee_profile_' + currentChallenger, JSON.stringify(profile));
+                } catch (e) { }
+
+                // 同步儲存精簡版至 Cookie (確保不超過 4KB 限制)
+                const compactMistakes = Object.values(mistakeDetails).map(item => [
+                    item.word,
+                    item.count || 1,
+                    (item.lastWrong || '').substring(0, 20),
+                    item.mastered ? 1 : 0,
+                    (item.note || '').substring(0, 30)
+                ]);
+
+                let cookiePayload = {
+                    s: score,
+                    b: currentBankName,
+                    l: currentLevel,
+                    m: compactMistakes
+                };
+                let serialized = JSON.stringify(cookiePayload);
+                while (encodeURIComponent(serialized).length > 3400 && cookiePayload.m.length > 0) {
+                    cookiePayload.m.pop();
+                    serialized = JSON.stringify(cookiePayload);
+                }
+
+                this.setCookie('bee_c_' + this.safeKey(currentChallenger), serialized, 365);
+                this.setCurrentChallengerName(currentChallenger);
+            },
+            deleteProfile(name) {
+                try { localStorage.removeItem('bee_profile_' + name); } catch (e) { }
+                this.deleteCookie('bee_c_' + this.safeKey(name));
+            }
+        };
+
+        // --- 3. Initialization ---
+        window.onload = function () {
+            // 1. 載入自訂題庫與預設題庫覆寫
+            const savedBanks = localStorage.getItem('bee_custom_banks');
+            if (savedBanks) {
+                try { customBanks = JSON.parse(savedBanks); } catch (e) { }
+            }
+            const savedOverrides = localStorage.getItem('bee_preset_overrides');
+            if (savedOverrides) {
+                try {
+                    presetOverrides = JSON.parse(savedOverrides);
+                    for (const k in presetOverrides) {
+                        if (presetBanks[k] && Array.isArray(presetOverrides[k])) {
+                            presetBanks[k].data = presetOverrides[k];
+                            presetBanks[k].name = getUpdatedPresetTitle(k, presetOverrides[k].length);
+                        }
+                    }
+                } catch (e) { }
+            }
+
+            // 2. 載入挑戰者清單與當前挑戰者 (Cookie + Storage)
+            challengersList = ChallengerStorage.loadChallengersList();
+            currentChallenger = ChallengerStorage.getCurrentChallengerName();
+            if (!challengersList.includes(currentChallenger)) {
+                challengersList.push(currentChallenger);
+            }
+            ChallengerStorage.saveChallengersList(challengersList);
+
+            // 3. 載入當前挑戰者的資料檔案
+            applyChallengerProfile(currentChallenger);
+
+            initVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = initVoices;
+            }
+
+            setupDragAndDrop();
+
+            // --- Keyboard Controls ---
+            document.addEventListener('keydown', handleKeyControl);
+        };
+
+        function getUpdatedPresetTitle(key, len) {
+            const baseNames = {
+                "2026_Part1": "🐝 2026 Part 1",
+                "2026_Part2": "🐝 2026 Part 2",
+                "2026_Part3": "🐝 2026 Part 3",
+                "2026_Part4": "🐝 2026 Part 4",
+                "2026_All": "🌟 2026 全部單字",
+                "default": "📚 Grade 1C 原題庫"
+            };
+            return (baseNames[key] || key) + " (" + len + "字)";
+        }
+
+        function findWordAcrossBanks(wordStr) {
+            if (!wordStr) return null;
+            const target = wordStr.trim().toLowerCase();
+            for (const key in presetBanks) {
+                const found = presetBanks[key].data.find(item => item.word.toLowerCase() === target);
+                if (found) return { ...found, bank: key, bankLabel: presetBanks[key].name };
+            }
+            for (const name in customBanks) {
+                const found = (customBanks[name] || []).find(item => item.word.toLowerCase() === target);
+                if (found) return { ...found, bank: 'custom_' + name, bankLabel: name };
+            }
+            return null;
+        }
+
+        function getBankDisplayName(bankKey) {
+            if (presetBanks[bankKey]) return presetBanks[bankKey].name;
+            if (bankKey && bankKey.startsWith('custom_')) return bankKey.replace('custom_', '');
+            return bankKey || '預設題庫';
+        }
+
+        function syncMistakeSetFromDetails() {
+            mistakeList.clear();
+            for (const key in mistakeDetails) {
+                const item = mistakeDetails[key];
+                if (item && !item.mastered) {
+                    mistakeList.add(item.word);
+                }
+            }
+        }
+
+        function applyChallengerProfile(name) {
+            currentChallenger = name;
+            const profile = ChallengerStorage.loadProfile(name);
+            score = profile.score || 0;
+            mistakeDetails = profile.mistakes || {};
+            syncMistakeSetFromDetails();
+
+            const savedBank = profile.currentBank || '2026_Part1';
+            if (presetBanks[savedBank]) {
+                currentBankName = savedBank;
+                rawData = presetBanks[savedBank].data;
+            } else if (savedBank.startsWith('custom_') && customBanks[savedBank.replace('custom_', '')]) {
+                currentBankName = savedBank;
+                rawData = customBanks[savedBank.replace('custom_', '')];
+            } else if (customBanks[savedBank]) {
+                currentBankName = 'custom_' + savedBank;
+                rawData = customBanks[savedBank];
+            } else {
+                currentBankName = '2026_Part1';
+                rawData = presetBanks['2026_Part1'].data;
+            }
+
+            populateChallengerSelect();
+            populateBankSelect();
+            updateScoreUI();
+            updateMistakeButton();
+            populateLevelSelect();
+
+            const targetLevel = (typeof profile.currentLevel === 'number') ? profile.currentLevel : -1;
+            loadLevel(targetLevel);
+            ChallengerStorage.saveCurrentProfile();
+        }
+
+        // --- 3.1 挑戰者系統介面邏輯 ---
+        function populateChallengerSelect() {
+            const select = document.getElementById('challengerSelect');
+            if (!select) return;
+            select.innerHTML = '';
+            challengersList.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                select.appendChild(opt);
+            });
+            const addOpt = document.createElement('option');
+            addOpt.value = '__ADD_NEW__';
+            addOpt.textContent = '➕ 新增挑戰者...';
+            select.appendChild(addOpt);
+            select.value = currentChallenger;
+        }
+
+        function handleChallengerSelectChange(e) {
+            const val = e.target.value;
+            if (val === '__ADD_NEW__') {
+                e.target.value = currentChallenger;
+                openChallengerModal();
+                setTimeout(() => {
+                    const inp = document.getElementById('newChallengerInput');
+                    if (inp) inp.focus();
+                }, 80);
+                return;
+            }
+            switchChallenger(val);
+        }
+
+        function switchChallenger(name) {
+            if (!name || !challengersList.includes(name)) return;
+            ChallengerStorage.saveCurrentProfile();
+            isReviewMode = false;
+            applyChallengerProfile(name);
+        }
+
+        function openChallengerModal() {
+            renderChallengerListModal();
+            document.getElementById('challengerModal').classList.add('show');
+        }
+
+        function renderChallengerListModal() {
+            const container = document.getElementById('challengerListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            challengersList.forEach(name => {
+                const prof = (name === currentChallenger)
+                    ? { score: score, mistakes: mistakeDetails }
+                    : ChallengerStorage.loadProfile(name);
+                const unmasteredCount = Object.values(prof.mistakes || {}).filter(m => !m.mastered).length;
+                const isCurrent = (name === currentChallenger);
+
+                const row = document.createElement('div');
+                row.className = 'challenger-list-item';
+                row.innerHTML = `
+                    <div>
+                        <strong style="font-size: 1rem; color: ${isCurrent ? '#0277BD' : 'var(--dark)'};">
+                            👤 ${escapeHtml(name)} ${isCurrent ? ' (目前使用中)' : ''}
+                        </strong>
+                        <div style="font-size: 0.82rem; color: #546E7A; margin-top: 2px;">
+                            ⭐ 分數：${prof.score || 0} ｜ 📕 待複習錯題：${unmasteredCount} 題
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        ${!isCurrent ? `<button class="btn btn-sm" onclick="switchChallenger('${escapeAttr(name)}'); renderChallengerListModal();">切換</button>` : ''}
+                        ${challengersList.length > 1 ? `<button class="btn btn-danger btn-sm" onclick="deleteChallenger('${escapeAttr(name)}')">🗑️</button>` : ''}
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function addNewChallengerFromModal() {
+            const input = document.getElementById('newChallengerInput');
+            const name = (input.value || '').trim();
+            if (!name) {
+                alert('請輸入挑戰者名字！');
+                return;
+            }
+            if (name === '__ADD_NEW__') return;
+            if (!challengersList.includes(name)) {
+                challengersList.push(name);
+                ChallengerStorage.saveChallengersList(challengersList);
+            }
+            input.value = '';
+            switchChallenger(name);
+            renderChallengerListModal();
+            closeModal('challengerModal');
+        }
+
+        function deleteChallenger(name) {
+            if (challengersList.length <= 1) {
+                alert('至少需要保留一位挑戰者喔！');
+                return;
+            }
+            if (!confirm(`確定要刪除挑戰者「${name}」的所有分數與錯題紀錄嗎？`)) return;
+            challengersList = challengersList.filter(n => n !== name);
+            ChallengerStorage.saveChallengersList(challengersList);
+            ChallengerStorage.deleteProfile(name);
+
+            if (currentChallenger === name) {
+                applyChallengerProfile(challengersList[0]);
+            } else {
+                populateChallengerSelect();
+            }
+            renderChallengerListModal();
+        }
+
+        // --- 3.2 快速載入單字與題庫管理 Modal 邏輯 ---
+        function openBankModal() {
+            const label = document.getElementById('modalCurrentBankLabel');
+            if (label) {
+                label.innerText = `${getBankDisplayName(currentBankName)} (共 ${rawData.length} 字)`;
+            }
+            const delBtn = document.getElementById('btnDeleteOrResetBank');
+            if (delBtn) {
+                if (currentBankName.startsWith('custom_')) {
+                    delBtn.style.display = 'inline-block';
+                    delBtn.innerText = '🗑️ 刪除此自訂題庫';
+                } else if (presetOverrides[currentBankName]) {
+                    delBtn.style.display = 'inline-block';
+                    delBtn.innerText = '↺ 還原此預設題庫初始單字';
+                } else {
+                    delBtn.style.display = 'none';
+                }
+            }
+            document.getElementById('bankModal').classList.add('show');
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('show');
+        }
+
+        function handleOverlayClick(event, id) {
+            if (event.target && event.target.id === id) {
+                closeModal(id);
+            }
+        }
+
+        function switchImportTab(tab) {
+            currentImportTab = tab;
+            document.getElementById('importTabFile').classList.toggle('active', tab === 'file');
+            document.getElementById('importTabPaste').classList.toggle('active', tab === 'paste');
+            document.getElementById('importTabSingle').classList.toggle('active', tab === 'single');
+
+            document.getElementById('importPanelFile').style.display = (tab === 'file') ? 'block' : 'none';
+            document.getElementById('importPanelPaste').style.display = (tab === 'paste') ? 'block' : 'none';
+            document.getElementById('importPanelSingle').style.display = (tab === 'single') ? 'block' : 'none';
+        }
+
+        function toggleNewBankNameInput() {
+            const radios = document.getElementsByName('bankUpdateMode');
+            let mode = 'upsert';
+            for (const r of radios) {
+                if (r.checked) mode = r.value;
+            }
+            document.getElementById('newBankNameGroup').style.display = (mode === 'new') ? 'block' : 'none';
+        }
+
+        function setupDragAndDrop() {
+            const dz = document.getElementById('dropZone');
+            if (!dz) return;
+            dz.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dz.classList.add('dragover');
+            });
+            dz.addEventListener('dragleave', () => {
+                dz.classList.remove('dragover');
+            });
+            dz.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dz.classList.remove('dragover');
+                if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    processSelectedFile(e.dataTransfer.files[0]);
+                }
+            });
+        }
+
+        function handleModalFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) processSelectedFile(file);
+            event.target.value = '';
+        }
+
+        function processSelectedFile(file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const text = e.target.result;
+                try {
+                    let parsed = null;
+                    if (file.name.toLowerCase().endsWith('.json')) {
+                        parsed = JSON.parse(text);
+                    } else {
+                        parsed = parseCSV(text);
+                    }
+                    if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].word) {
+                        pendingUploadedWords = parsed;
+                        pendingUploadedFileName = file.name.replace(/\.[^/.]+$/, "");
+                        document.getElementById('selectedFileInfo').innerText = `✅ 已解析「${file.name}」，共 ${parsed.length} 個單字！請點擊下方「確認匯入」`;
+                        const nameInp = document.getElementById('newBankNameInput');
+                        if (nameInp && !nameInp.value) nameInp.value = pendingUploadedFileName;
+                    } else {
+                        alert("檔案格式不正確！請確認包含 word 單字欄位。");
+                    }
+                } catch (err) {
+                    alert("讀取檔案失敗！請確認檔案是有效的 CSV 或 JSON 格式。");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function fillCurrentWordToSingleForm() {
+            if (currentLevelWords.length === 0) return;
+            const cur = currentLevelWords[currentIndex];
+            if (!cur) return;
+            document.getElementById('singleWordInput').value = cur.word || '';
+            document.getElementById('singleMeaningInput').value = cur.meaning || '';
+            document.getElementById('singleSentenceInput').value = cur.sentence || '';
+            document.getElementById('singleTransInput').value = cur.trans || '';
+        }
+
+        function executeQuickImport() {
+            let incomingWords = [];
+
+            if (currentImportTab === 'file') {
+                if (!pendingUploadedWords || pendingUploadedWords.length === 0) {
+                    alert('請先選擇或拖曳一個 .csv 或 .json 檔案！');
+                    return;
+                }
+                incomingWords = pendingUploadedWords;
+            } else if (currentImportTab === 'paste') {
+                const text = (document.getElementById('pasteWordsTextarea').value || '').trim();
+                if (!text) {
+                    alert('請先貼上要匯入的單字內容！');
+                    return;
+                }
+                incomingWords = parseCSV(text);
+                if (!incomingWords || incomingWords.length === 0) {
+                    alert('無法解析貼上的內容，請確認每行格式為：單字, 例句, 翻譯, 中文解釋（或 單字, 中文解釋）');
+                    return;
+                }
+            } else if (currentImportTab === 'single') {
+                const w = (document.getElementById('singleWordInput').value || '').trim();
+                const m = (document.getElementById('singleMeaningInput').value || '').trim();
+                const s = (document.getElementById('singleSentenceInput').value || '').trim();
+                const t = (document.getElementById('singleTransInput').value || '').trim();
+                if (!w || !m) {
+                    alert('請至少填寫「英文單字」與「中文解釋」！');
+                    return;
+                }
+                incomingWords = [{ word: w, sentence: s, trans: t, meaning: m }];
+            }
+
+            const radios = document.getElementsByName('bankUpdateMode');
+            let updateMode = 'upsert';
+            for (const r of radios) {
+                if (r.checked) updateMode = r.value;
+            }
+
+            if (updateMode === 'new') {
+                let bankName = (document.getElementById('newBankNameInput').value || '').trim();
+                if (!bankName) {
+                    bankName = prompt('請為這個新題庫輸入名稱：', pendingUploadedFileName || '自訂題庫_' + (Object.keys(customBanks).length + 1));
+                }
+                if (!bankName) return;
+
+                customBanks[bankName] = incomingWords;
+                saveCustomBanksToStorage();
+
+                currentBankName = 'custom_' + bankName;
+                rawData = customBanks[bankName];
+                populateBankSelect();
+                populateLevelSelect();
+                loadLevel(-1);
+                ChallengerStorage.saveCurrentProfile();
+                alert(`🎉 成功建立新題庫「${bankName}」（共 ${rawData.length} 個單字）！`);
+            } else {
+                // Upsert (合併／更新至目前題庫)
+                let targetList = [...rawData];
+                let addedCount = 0;
+                let updatedCount = 0;
+
+                incomingWords.forEach(newItem => {
+                    const wKey = (newItem.word || '').trim().toLowerCase();
+                    if (!wKey) return;
+                    const existingIdx = targetList.findIndex(item => item.word.toLowerCase() === wKey);
+                    if (existingIdx >= 0) {
+                        targetList[existingIdx] = {
+                            word: newItem.word.trim(),
+                            sentence: newItem.sentence || targetList[existingIdx].sentence || '',
+                            trans: newItem.trans || targetList[existingIdx].trans || '',
+                            meaning: newItem.meaning || targetList[existingIdx].meaning || ''
+                        };
+                        updatedCount++;
+                    } else {
+                        targetList.push({
+                            word: newItem.word.trim(),
+                            sentence: newItem.sentence || '',
+                            trans: newItem.trans || '',
+                            meaning: newItem.meaning || ''
+                        });
+                        addedCount++;
+                    }
+                });
+
+                rawData = targetList;
+                if (currentBankName.startsWith('custom_')) {
+                    const actualName = currentBankName.replace('custom_', '');
+                    customBanks[actualName] = rawData;
+                    saveCustomBanksToStorage();
+                } else if (presetBanks[currentBankName]) {
+                    presetBanks[currentBankName].data = rawData;
+                    presetBanks[currentBankName].name = getUpdatedPresetTitle(currentBankName, rawData.length);
+                    presetOverrides[currentBankName] = rawData;
+                    try {
+                        localStorage.setItem('bee_preset_overrides', JSON.stringify(presetOverrides));
+                    } catch (e) { }
+                    // 若為 2026 分區題庫更新，同步重組 2026_All
+                    if (currentBankName.startsWith('2026_Part') && presetBanks['2026_All']) {
+                        presetBanks['2026_All'].data = [
+                            ...presetBanks['2026_Part1'].data,
+                            ...presetBanks['2026_Part2'].data,
+                            ...presetBanks['2026_Part3'].data,
+                            ...presetBanks['2026_Part4'].data
+                        ];
+                        presetBanks['2026_All'].name = getUpdatedPresetTitle('2026_All', presetBanks['2026_All'].data.length);
+                    }
+                }
+
+                populateBankSelect();
+                populateLevelSelect();
+                loadLevel(currentLevel);
+                ChallengerStorage.saveCurrentProfile();
+                alert(`✅ 題庫更新完成！新增了 ${addedCount} 個單字，更新了 ${updatedCount} 個單字（目前共 ${rawData.length} 字）。`);
+            }
+
+            // 清理暫存輸入
+            pendingUploadedWords = null;
+            document.getElementById('selectedFileInfo').innerText = '';
+            document.getElementById('pasteWordsTextarea').value = '';
+            document.getElementById('singleWordInput').value = '';
+            document.getElementById('singleMeaningInput').value = '';
+            document.getElementById('singleSentenceInput').value = '';
+            document.getElementById('singleTransInput').value = '';
+            closeModal('bankModal');
+        }
+
+        function saveCustomBanksToStorage() {
+            try {
+                localStorage.setItem('bee_custom_banks', JSON.stringify(customBanks));
+            } catch (e) {
+                alert("儲存空間不足，無法永久保存此題庫，但本次仍可使用。");
+            }
+        }
+
+        function exportCurrentBank(format) {
+            const bankLabel = getBankDisplayName(currentBankName).replace(/[^\w\u4e00-\u9fa5_-]+/g, '_');
+            if (format === 'json') {
+                const jsonStr = JSON.stringify(rawData, null, 2);
+                downloadFile(jsonStr, `${bankLabel}.json`, 'application/json;charset=utf-8;');
+            } else {
+                const header = "word,sentence,trans,meaning";
+                const rows = rawData.map(item => {
+                    const w = `"${(item.word || '').replace(/"/g, '""')}"`;
+                    const s = `"${(item.sentence || '').replace(/"/g, '""')}"`;
+                    const t = `"${(item.trans || '').replace(/"/g, '""')}"`;
+                    const m = `"${(item.meaning || '').replace(/"/g, '""')}"`;
+                    return `${w},${s},${t},${m}`;
+                });
+                const csvContent = "\uFEFF" + [header, ...rows].join("\r\n");
+                downloadFile(csvContent, `${bankLabel}.csv`, 'text/csv;charset=utf-8;');
+            }
+        }
+
+        function deleteOrResetCurrentBank() {
+            if (currentBankName.startsWith('custom_')) {
+                const actualName = currentBankName.replace('custom_', '');
+                if (!confirm(`確定要刪除自訂題庫「${actualName}」嗎？`)) return;
+                delete customBanks[actualName];
+                saveCustomBanksToStorage();
+                currentBankName = '2026_Part1';
+                rawData = presetBanks['2026_Part1'].data;
+                populateBankSelect();
+                populateLevelSelect();
+                loadLevel(-1);
+                ChallengerStorage.saveCurrentProfile();
+                closeModal('bankModal');
+            } else if (presetOverrides[currentBankName]) {
+                if (!confirm('確定要將此預設題庫還原為初始單字清單嗎？')) return;
+                delete presetOverrides[currentBankName];
+                try { localStorage.setItem('bee_preset_overrides', JSON.stringify(presetOverrides)); } catch (e) { }
+                presetBanks[currentBankName] = JSON.parse(JSON.stringify(originalPresetBanks[currentBankName]));
+                rawData = presetBanks[currentBankName].data;
+                populateBankSelect();
+                populateLevelSelect();
+                loadLevel(-1);
+                closeModal('bankModal');
+            }
+        }
+
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 保留原有的隱藏 input 直接讀取自訂題庫相容函式 (不清除錯題本！)
+        function loadCustomWords(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const text = e.target.result;
+                let newData = null;
+
+                try {
+                    if (file.name.toLowerCase().endsWith('.csv')) {
+                        newData = parseCSV(text);
+                    } else {
+                        newData = JSON.parse(text);
+                    }
+
+                    if (Array.isArray(newData) && newData.length > 0 && newData[0].word) {
+                        const defaultName = file.name.replace(/\.[^/.]+$/, "");
+                        const bankName = prompt("請為這個題庫輸入一個名稱：", defaultName);
+
+                        if (!bankName) {
+                            event.target.value = '';
+                            return;
+                        }
+
+                        customBanks[bankName] = newData;
+                        saveCustomBanksToStorage();
+
+                        currentBankName = 'custom_' + bankName;
+                        rawData = newData;
+
+                        // 保留挑戰者跨題庫的錯題紀錄，不清空 mistakeList
+                        updateMistakeButton();
+
+                        populateBankSelect();
+                        populateLevelSelect();
+                        loadLevel(-1);
+                        ChallengerStorage.saveCurrentProfile();
+                        alert(`成功載入題庫「${bankName}」！共 ${rawData.length} 個新單字 🎉`);
+                    } else {
+                        alert("檔案格式不正確！請確認上傳的是包含 'word' 屬性的 JSON 或 CSV 檔案。");
+                    }
+                } catch (error) {
+                    alert("讀取失敗！請確認檔案格式是否正確。");
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // 逐行隔離解析 CSV / Tab 文字 (嚴格遵守逐行隔離策略，避免跨行吞噬)
+        function parseCSV(text) {
+            const cleanText = (text || '').replace(/^\uFEFF/, '');
+            const lines = cleanText.split(/\r?\n/);
+            if (lines.length === 0) return null;
+
+            const result = [];
+            let startIndex = 0;
+
+            const firstCol = lines[0].split(/[,\t]/)[0].trim().replace(/^"|"$/g, '').toLowerCase();
+            if (firstCol === 'word' || firstCol === 'words' || firstCol === '單字' || firstCol === '英文單字') {
+                startIndex = 1;
+            }
+
+            for (let i = startIndex; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                let parts = [];
+                if (line.includes('\t') && !line.includes(',')) {
+                    parts = line.split('\t').map(p => p.trim().replace(/^"|"$/g, ''));
+                } else {
+                    let current = '';
+                    let inQuotes = false;
+                    for (let j = 0; j < line.length; j++) {
+                        const char = line[j];
+                        if (char === '"') {
+                            if (inQuotes && line[j + 1] === '"') {
+                                current += '"';
+                                j++;
+                            } else {
+                                inQuotes = !inQuotes;
+                            }
+                        } else if (char === ',' && !inQuotes) {
+                            parts.push(current);
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    parts.push(current);
+                    parts = parts.map(p => p.trim().replace(/^"|"$/g, ''));
+                }
+
+                if (parts.length > 0 && parts[0]) {
+                    if (parts.length === 2) {
+                        result.push({
+                            word: parts[0] || "",
+                            sentence: "",
+                            trans: "",
+                            meaning: parts[1] || ""
+                        });
+                    } else if (parts.length === 3) {
+                        result.push({
+                            word: parts[0] || "",
+                            sentence: parts[1] || "",
+                            trans: "",
+                            meaning: parts[2] || ""
+                        });
+                    } else {
+                        result.push({
+                            word: parts[0] || "",
+                            sentence: parts[1] || "",
+                            trans: parts[2] || "",
+                            meaning: parts[3] || ""
+                        });
+                    }
+                }
+            }
+            return result;
+        }
+
+        // --- 4. Logic & Features ---
+
+        function handleKeyControl(e) {
+            const activeTag = document.activeElement ? document.activeElement.tagName : '';
+            const isInputFocused = (activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT');
+
+            // 若彈窗開啟中則不觸發方向鍵捷徑
+            if (document.querySelector('.modal-overlay.show')) return;
+            if (currentMode === 'notebook') return;
+
+            if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+                e.preventDefault();
+            }
+
+            switch (e.key) {
+                case 'ArrowRight':
+                    if (!isInputFocused) nextWord();
+                    break;
+                case 'ArrowLeft':
+                    if (!isInputFocused) prevWord();
+                    break;
+                case 'ArrowUp':
+                    if (currentLevelWords.length > 0) {
+                        speak(currentLevelWords[currentIndex].word);
+                    }
+                    break;
+                case 'ArrowDown':
+                    triggerCheckAction();
+                    break;
+            }
+        }
+
+        function triggerCheckAction() {
+            if (currentLevelWords.length === 0) return;
+            const data = currentLevelWords[currentIndex];
+
+            if (currentMode === 'dictation') {
+                checkDictation(data.word);
+            } else if (currentMode === 'study') {
+                toggleSyllables();
+            }
+        }
+
+        function updateScore(points) {
+            score += points;
+            const el = document.getElementById('scoreVal');
+            if (el) {
+                el.innerText = score;
+                el.classList.add('pop-anim');
+                setTimeout(() => el.classList.remove('pop-anim'), 300);
+            }
+            ChallengerStorage.saveCurrentProfile();
+        }
+
+        // 紀錄錯題至挑戰者錯題筆記本
+        function recordMistake(word, wrongAttempt = '') {
+            if (!word) return;
+            const key = word.toLowerCase();
+            const currentObj = (currentLevelWords[currentIndex] && currentLevelWords[currentIndex].word.toLowerCase() === key)
+                ? currentLevelWords[currentIndex]
+                : (rawData.find(item => item.word.toLowerCase() === key) || findWordAcrossBanks(word) || { word: word, sentence: '', trans: '', meaning: '' });
+
+            const existing = mistakeDetails[key];
+            mistakeDetails[key] = {
+                word: currentObj.word || word,
+                sentence: currentObj.sentence || (existing ? existing.sentence : ''),
+                trans: currentObj.trans || (existing ? existing.trans : ''),
+                meaning: currentObj.meaning || (existing ? existing.meaning : ''),
+                bank: existing ? existing.bank : currentBankName,
+                bankLabel: existing ? existing.bankLabel : getBankDisplayName(currentBankName),
+                count: (existing ? (existing.count || 1) : 0) + 1,
+                lastWrong: wrongAttempt || (existing ? existing.lastWrong : ''),
+                note: existing ? (existing.note || '') : '',
+                mastered: false,
+                updatedAt: Date.now()
+            };
+
+            syncMistakeSetFromDetails();
+            saveMistakes();
+            updateMistakeButton();
+        }
+
+        function removeMistake(word) {
+            if (!word) return false;
+            const key = word.toLowerCase();
+            let changed = false;
+            if (mistakeDetails[key] && !mistakeDetails[key].mastered) {
+                mistakeDetails[key].mastered = true;
+                mistakeDetails[key].updatedAt = Date.now();
+                changed = true;
+            }
+            if (mistakeList.has(word)) {
+                mistakeList.delete(word);
+                changed = true;
+            }
+            if (changed) {
+                syncMistakeSetFromDetails();
+                saveMistakes();
+                updateMistakeButton();
+                return true;
+            }
+            return false;
+        }
+
+        function saveMistakes() {
+            ChallengerStorage.saveCurrentProfile();
+        }
+
+        function updateMistakeButton() {
+            syncMistakeSetFromDetails();
+            const count = mistakeList.size;
+            const btn = document.getElementById('btnMistakeReview');
+            if (btn) {
+                if (count > 0) {
+                    btn.style.display = 'inline-block';
+                    btn.innerText = `📕 複習錯題 (${count})`;
+                } else {
+                    btn.style.display = 'none';
+                    if (isReviewMode) {
+                        alert("太棒了！待複習錯題已經全部清空了！🎉");
+                        isReviewMode = false;
+                        loadLevel(-1);
+                    }
+                }
+            }
+
+            const badge = document.getElementById('notebookBadge');
+            if (badge) {
+                if (count > 0) {
+                    badge.style.display = 'inline-block';
+                    badge.innerText = count;
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        function startMistakeReview(preferredMode) {
+            syncMistakeSetFromDetails();
+            if (mistakeList.size === 0) {
+                alert("目前沒有待複習的錯題喔！🎉");
+                return;
+            }
+            isReviewMode = true;
+
+            // 跨題庫載入所有待複習錯題的完整單字物件
+            currentLevelWords = Object.values(mistakeDetails)
+                .filter(item => item && !item.mastered)
+                .map(item => ({
+                    word: item.word,
+                    sentence: item.sentence || '',
+                    trans: item.trans || '',
+                    meaning: item.meaning || ''
+                }));
+
+            currentIndex = 0;
+            const lvlSelect = document.getElementById('levelSelect');
+            if (lvlSelect) lvlSelect.value = "";
+
+            if (preferredMode) {
+                currentMode = preferredMode;
+            } else if (currentMode === 'study' || currentMode === 'notebook') {
+                currentMode = 'block';
+            }
+            updateTabActiveUI();
+            updateProgress();
+            render();
+        }
+
+        function exitMistakeReview() {
+            isReviewMode = false;
+            loadLevel(currentLevel);
+        }
+
+        function practiceSingleMistakeWord(word) {
+            const key = (word || '').toLowerCase();
+            const item = mistakeDetails[key];
+            if (!item) return;
+            isReviewMode = true;
+            currentLevelWords = [{
+                word: item.word,
+                sentence: item.sentence || '',
+                trans: item.trans || '',
+                meaning: item.meaning || ''
+            }];
+            currentIndex = 0;
+            currentMode = 'dictation';
+            updateTabActiveUI();
+            updateProgress();
+            render();
+        }
+
+        function populateBankSelect() {
+            const select = document.getElementById('bankSelect');
+            if (!select) return;
+            select.innerHTML = '';
+
+            const g2026 = document.createElement('optgroup');
+            g2026.label = "2026 Grade 2B 題庫";
+            ['2026_Part1', '2026_Part2', '2026_Part3', '2026_Part4', '2026_All'].forEach(key => {
+                if (presetBanks[key]) {
+                    const opt = document.createElement('option');
+                    opt.value = key;
+                    opt.textContent = presetBanks[key].name;
+                    g2026.appendChild(opt);
+                }
+            });
+            select.appendChild(g2026);
+
+            const gOther = document.createElement('optgroup');
+            gOther.label = "其他預設題庫";
+            Object.keys(presetBanks).forEach(key => {
+                if (!['2026_Part1', '2026_Part2', '2026_Part3', '2026_Part4', '2026_All'].includes(key)) {
+                    const opt = document.createElement('option');
+                    opt.value = key;
+                    opt.textContent = presetBanks[key].name;
+                    gOther.appendChild(opt);
+                }
+            });
+            select.appendChild(gOther);
+
+            const customKeys = Object.keys(customBanks);
+            if (customKeys.length > 0) {
+                const gCustom = document.createElement('optgroup');
+                gCustom.label = "自訂題庫";
+                customKeys.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = 'custom_' + name;
+                    opt.textContent = `📘 ${name} (${(customBanks[name] || []).length}字)`;
+                    gCustom.appendChild(opt);
+                });
+                select.appendChild(gCustom);
+            }
+
+            select.value = currentBankName;
+        }
+
+        function switchBank() {
+            const select = document.getElementById('bankSelect');
+            currentBankName = select.value;
+
+            if (presetBanks[currentBankName]) {
+                rawData = presetBanks[currentBankName].data;
+            } else if (currentBankName.startsWith('custom_')) {
+                const actualName = currentBankName.replace('custom_', '');
+                rawData = customBanks[actualName] || presetBanks['2026_Part1'].data;
+            } else if (customBanks[currentBankName]) {
+                rawData = customBanks[currentBankName];
+            } else {
+                rawData = presetBanks['2026_Part1'].data;
+            }
+
+            // 重要：切換題庫時絕不清除錯題紀錄！
+            isReviewMode = false;
+            updateMistakeButton();
+
+            populateLevelSelect();
+            loadLevel(-1);
+            ChallengerStorage.saveCurrentProfile();
+        }
+
+        function populateLevelSelect() {
+            const select = document.getElementById('levelSelect');
+            if (!select) return;
+            select.innerHTML = '';
+
+            const allOption = document.createElement('option');
+            allOption.value = -1;
+            allOption.text = `全部單字 (共 ${rawData.length} 字)`;
+            select.appendChild(allOption);
+
+            const totalLevels = Math.ceil(rawData.length / GROUP_SIZE);
+            for (let i = 0; i < totalLevels; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                const start = i * GROUP_SIZE + 1;
+                const end = Math.min((i + 1) * GROUP_SIZE, rawData.length);
+                option.text = `Level ${i + 1} (${start}-${end})`;
+                select.appendChild(option);
+            }
+
+            select.onchange = (e) => {
+                if (e.target.value === "") return;
+                isReviewMode = false;
+                loadLevel(parseInt(e.target.value));
+                ChallengerStorage.saveCurrentProfile();
+            };
+        }
+
+        function initVoices() {
+            voices = window.speechSynthesis.getVoices();
+            const select = document.getElementById('voiceSelect');
+            if (!select) return;
+            select.innerHTML = '';
+
+            voices.sort((a, b) => {
+                if (a.lang.includes('en') && !b.lang.includes('en')) return -1;
+                if (!a.lang.includes('en') && b.lang.includes('en')) return 1;
+                return 0;
+            });
+
+            voices.forEach((voice, i) => {
+                const option = document.createElement('option');
+                option.value = i;
+                option.text = `${voice.name.substring(0, 15)}..`;
+                if (voice.name.includes("Google US") || voice.name.includes("Samantha")) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+        }
+
+        function loadLevel(levelIndex) {
+            isReviewMode = false;
+            currentLevel = levelIndex;
+            currentIndex = 0;
+            if (levelIndex === -1) {
+                currentLevelWords = rawData;
+            } else {
+                const start = levelIndex * GROUP_SIZE;
+                const end = start + GROUP_SIZE;
+                currentLevelWords = rawData.slice(start, end);
+            }
+            const lvlSelect = document.getElementById('levelSelect');
+            if (lvlSelect) {
+                lvlSelect.value = levelIndex;
+            }
+            updateProgress();
+            render();
+        }
+
+        function updateTabActiveUI() {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (currentMode === 'study') document.getElementById('tabStudy').classList.add('active');
+            else if (currentMode === 'block') document.getElementById('tabBlock').classList.add('active');
+            else if (currentMode === 'dictation') document.getElementById('tabDictation').classList.add('active');
+            else if (currentMode === 'notebook') document.getElementById('tabNotebook').classList.add('active');
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            updateTabActiveUI();
+            render();
+        }
+
+        function updateProgress() {
+            const total = currentLevelWords.length;
+            const modeText = isReviewMode ? "📕 錯題特訓" : "單字列表";
+            const progEl = document.getElementById('progressText');
+            if (progEl) {
+                progEl.innerText = total > 0 ? `${modeText}: ${currentIndex + 1} / ${total}` : `${modeText}: 0 / 0`;
+            }
+        }
+
+        function nextWord() {
+            if (currentIndex < currentLevelWords.length - 1) {
+                currentIndex++;
+                updateProgress();
+                render();
+            }
+        }
+
+        function prevWord() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateProgress();
+                render();
+            }
+        }
+
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            const voiceSelect = document.getElementById('voiceSelect');
+            const voiceIdx = voiceSelect ? voiceSelect.value : '';
+            if (voices[voiceIdx]) msg.voice = voices[voiceIdx];
+            msg.rate = 0.85;
+            window.speechSynthesis.speak(msg);
+        }
+
+        function updateScoreUI() {
+            const el = document.getElementById('scoreVal');
+            if (el) el.innerText = score;
+        }
+
+        function formatColoredWord(wordStr) {
+            let coloredWord = '';
+            const vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+            for (let char of (wordStr || '')) {
+                if (vowels.includes(char)) coloredWord += `<span class="vowel">${char}</span>`;
+                else if (/[a-zA-Z]/.test(char)) coloredWord += `<span class="consonant">${char}</span>`;
+                else coloredWord += `<span class="neutral">${char}</span>`;
+            }
+            return coloredWord;
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function escapeAttr(str) {
+            return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+
+        // --- Rendering ---
+        function render() {
+            const container = document.getElementById('gameArea');
+            const navControls = document.getElementById('navControls');
+            if (!container) return;
+
+            if (currentMode === 'notebook') {
+                if (navControls) navControls.style.display = 'none';
+                container.className = 'card';
+                renderNotebookMode(container);
+                return;
+            }
+
+            if (navControls) navControls.style.display = 'flex';
+            if (currentLevelWords.length === 0) {
+                container.innerHTML = '<div style="color:#78909C; font-size:1.1rem;">目前沒有單字可顯示</div>';
+                return;
+            }
+
+            const data = currentLevelWords[currentIndex];
+            container.innerHTML = '';
+            container.className = 'card ' + (syllableToggle ? 'syllable-mode' : '');
+
+            if (currentMode === 'study') renderStudyMode(container, data);
+            else if (currentMode === 'block') renderBlockMode(container, data);
+            else if (currentMode === 'dictation') renderDictationMode(container, data);
+        }
+
+        function getReviewBannerHtml() {
+            if (!isReviewMode) return '';
+            return `
+                <div class="review-banner">
+                    <span>📕 錯題特訓模式中（答對即可將單字標記為已熟練！）</span>
+                    <button class="btn btn-sm" style="background:#546E7A; box-shadow:none; padding:2px 10px; font-size:0.8rem;" onclick="exitMistakeReview()">結束特訓</button>
+                </div>
+            `;
+        }
+
+        // Mode A: Study
+        function renderStudyMode(container, data) {
+            const coloredWord = formatColoredWord(data.word);
+            const key = (data.word || '').toLowerCase();
+            const mNote = (mistakeDetails[key] && mistakeDetails[key].note) ? `<div style="margin-top:10px; background:#FFFDE7; border:1px solid #FFE082; padding:6px 12px; border-radius:10px; font-size:0.9rem; color:#F57F17;">💡 記憶筆記：${escapeHtml(mistakeDetails[key].note)}</div>` : '';
+
+            const html = `
+            ${getReviewBannerHtml()}
+            <div class="word-display">${coloredWord}</div>
+            <div class="controls" style="margin-bottom: 20px;">
+                <button class="btn btn-audio" onclick="speak('${escapeAttr(data.word)}')">🔊</button>
+                <button class="btn" onclick="toggleSyllables()">音節</button>
+            </div>
+            <div style="font-size:1.1rem; color:#546E7A; margin-bottom:5px;">${escapeHtml(data.sentence)}</div>
+            <div style="font-size:1rem; color:#78909C;">${escapeHtml(data.trans)}</div>
+            <div class="chinese-meaning">${escapeHtml(data.meaning)}</div>
+            ${mNote}
+        `;
+            container.innerHTML = html;
+        }
+
+        function toggleSyllables() {
+            syllableToggle = !syllableToggle;
+            render();
+        }
+
+        // Mode B: Block
+        let blockState = { target: '', current: '', shuffled: [] };
+
+        function renderBlockMode(container, data) {
+            blockState.target = data.word;
+            blockState.current = '';
+            let letters = data.word.split('');
+            for (let i = letters.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [letters[i], letters[j]] = [letters[j], letters[i]];
+            }
+            blockState.shuffled = letters.map((l, idx) => ({ letter: l, id: idx, used: false }));
+
+            const html = `
+            ${getReviewBannerHtml()}
+            <div style="margin-bottom:10px;">
+                <button class="btn btn-audio" onclick="speak('${escapeAttr(data.word)}')">🔊</button>
+            </div>
+            <div class="chinese-meaning">${escapeHtml(data.meaning)}</div>
+            <div id="answerArea" class="answer-area"></div>
+            <div id="scrambleArea" class="scramble-area"></div>
+            <div id="feedback" class="feedback"></div>
+            <div><button class="btn" style="background-color:#FF7043; font-size:0.9rem;" onclick="resetBlockGame()">重置 ↺</button></div>
+        `;
+            container.innerHTML = html;
+            updateBlockUI();
+        }
+
+        function updateBlockUI() {
+            const answerArea = document.getElementById('answerArea');
+            const scrambleArea = document.getElementById('scrambleArea');
+            if (!answerArea || !scrambleArea) return;
+
+            answerArea.innerHTML = '';
+            for (let i = 0; i < blockState.target.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'answer-slot';
+                slot.innerText = blockState.current[i] || '';
+                answerArea.appendChild(slot);
+            }
+
+            scrambleArea.innerHTML = '';
+            blockState.shuffled.forEach((item) => {
+                const btn = document.createElement('div');
+                btn.className = `letter-block ${item.used ? 'used' : ''}`;
+                btn.innerText = item.letter;
+                btn.onclick = () => {
+                    if (item.used) return;
+                    blockState.current += item.letter;
+                    item.used = true;
+                    speak(item.letter);
+                    updateBlockUI();
+                    checkBlockWin();
+                };
+                scrambleArea.appendChild(btn);
+            });
+        }
+
+        function resetBlockGame() {
+            blockState.current = '';
+            blockState.shuffled.forEach(i => i.used = false);
+            const fb = document.getElementById('feedback');
+            if (fb) fb.innerText = '';
+            updateBlockUI();
+        }
+
+        function checkBlockWin() {
+            const feedback = document.getElementById('feedback');
+            if (blockState.current.length === blockState.target.length) {
+                if (blockState.current === blockState.target) {
+                    let msg = "答對了！🎉";
+                    if (isReviewMode) {
+                        const wasRemoved = removeMistake(blockState.target);
+                        if (wasRemoved) msg += " (已標記熟練並移出待複習)";
+                    }
+                    updateScore(10);
+                    feedback.innerText = msg;
+                    feedback.className = "feedback correct";
+                    speak("Correct!");
+                } else {
+                    feedback.innerText = "再試一次 💪 (已自動加入錯題筆記)";
+                    feedback.className = "feedback wrong";
+                    recordMistake(blockState.target, blockState.current);
+                    setTimeout(resetBlockGame, 1000);
+                }
+            }
+        }
+
+        // Mode C: Dictation
+        function renderDictationMode(container, data) {
+            const html = `
+            ${getReviewBannerHtml()}
+            <div style="margin-bottom:15px;">
+                <button class="btn btn-audio" onclick="speak('${escapeAttr(data.word)}')">🔊</button>
+            </div>
+            <div class="chinese-meaning">${escapeHtml(data.meaning)}</div>
+            <input type="text" id="dictationInput" class="dictation-input" placeholder="輸入單字..." autocomplete="off">
+            <div>
+                <button class="btn btn-check" onclick="checkDictation('${escapeAttr(data.word)}')">檢查 ✅</button>
+                <button class="btn" style="background-color:#B0BEC5; font-size:0.9rem;" onclick="giveHint('${escapeAttr(data.word)}')">提示</button>
+            </div>
+            <div id="dictFeedback" class="feedback"></div>
+        `;
+            container.innerHTML = html;
+            setTimeout(() => {
+                const inp = document.getElementById('dictationInput');
+                if (inp) inp.focus();
+            }, 100);
+
+            const dictInp = document.getElementById('dictationInput');
+            if (dictInp) {
+                dictInp.addEventListener("keyup", function (event) {
+                    if (event.key === "Enter") checkDictation(data.word);
+                });
+            }
+        }
+
+        function checkDictation(target) {
+            const input = document.getElementById('dictationInput');
+            const feedback = document.getElementById('dictFeedback');
+            if (!input || !feedback) return;
+            const rawVal = input.value.trim();
+            const userVal = rawVal.toLowerCase();
+
+            if (userVal === target.toLowerCase()) {
+                let msg = "拼寫正確！🌟";
+                if (isReviewMode) {
+                    const wasRemoved = removeMistake(target);
+                    if (wasRemoved) msg += " (已標記熟練並移出待複習)";
+                }
+                updateScore(10);
+                feedback.innerText = msg;
+                feedback.className = "feedback correct";
+                speak("Wonderful!");
+            } else {
+                feedback.innerText = "加油，再試一次！ (已紀錄至錯題筆記)";
+                feedback.className = "feedback wrong";
+                recordMistake(target, rawVal || '(未填寫)');
+            }
+        }
+
+        function giveHint(word) {
+            const input = document.getElementById('dictationInput');
+            if (!input) return;
+            input.value = word.substring(0, input.value.length + 1);
+            input.focus();
+        }
+
+        // Mode D: 錯題筆記 (Wrong Question Notebook)
+        function renderNotebookMode(container) {
+            const allEntries = Object.values(mistakeDetails);
+            const unmasteredCount = allEntries.filter(m => !m.mastered).length;
+            const masteredCount = allEntries.filter(m => m.mastered).length;
+            const totalErrors = allEntries.reduce((acc, m) => acc + (m.count || 1), 0);
+
+            // 取得錯題中包含的題庫列表供篩選
+            const bankMap = {};
+            allEntries.forEach(m => {
+                if (m.bank) bankMap[m.bank] = m.bankLabel || getBankDisplayName(m.bank);
+            });
+
+            let filtered = allEntries.filter(m => {
+                if (nbFilterBank !== 'all' && m.bank !== nbFilterBank) return false;
+                if (nbFilterStatus === 'unmastered' && m.mastered) return false;
+                if (nbFilterStatus === 'mastered' && !m.mastered) return false;
+                if (nbSearchQuery) {
+                    const q = nbSearchQuery.toLowerCase();
+                    const matchWord = (m.word || '').toLowerCase().includes(q);
+                    const matchMeaning = (m.meaning || '').toLowerCase().includes(q);
+                    const matchNote = (m.note || '').toLowerCase().includes(q);
+                    if (!matchWord && !matchMeaning && !matchNote) return false;
+                }
+                return true;
+            });
+
+            // 依答錯次數由高到低排序
+            filtered.sort((a, b) => (b.count || 1) - (a.count || 1));
+
+            let bankOptionsHtml = `<option value="all" ${nbFilterBank === 'all' ? 'selected' : ''}>全部題庫</option>`;
+            for (const bKey in bankMap) {
+                bankOptionsHtml += `<option value="${escapeAttr(bKey)}" ${nbFilterBank === bKey ? 'selected' : ''}>${escapeHtml(bankMap[bKey])}</option>`;
+            }
+
+            let cardsHtml = '';
+            if (filtered.length === 0) {
+                cardsHtml = `
+                    <div style="text-align: center; padding: 35px 15px; color: #78909C;">
+                        <div style="font-size: 2.5rem; margin-bottom: 8px;">🎉</div>
+                        <div style="font-size: 1.1rem; font-weight: bold;">目前篩選條件下沒有錯題紀錄喔！</div>
+                        <div style="font-size: 0.9rem; margin-top: 5px;">在「🧩 積木」或「✍️ 聽寫」模式答錯的單字，會自動收集到這裡並可加上個人記憶口訣。</div>
+                    </div>
+                `;
+            } else {
+                cardsHtml = filtered.map(item => {
+                    const wKey = item.word.toLowerCase();
+                    const colored = formatColoredWord(item.word);
+                    return `
+                        <div class="mistake-card ${item.mastered ? 'is-mastered' : ''}">
+                            <div class="mistake-card-top">
+                                <div class="mistake-word-title">
+                                    <button class="btn btn-audio" style="width:38px; height:38px; font-size:1.1rem;" onclick="speak('${escapeAttr(item.word)}')">🔊</button>
+                                    <span>${colored}</span>
+                                    <span style="font-size: 1.15rem; color: var(--accent);">${escapeHtml(item.meaning)}</span>
+                                </div>
+                                <div class="tag-group">
+                                    <span class="badge-tag badge-bank">${escapeHtml(item.bankLabel || '題庫')}</span>
+                                    <span class="badge-tag badge-wrong-count">❌ 答錯 ${item.count || 1} 次</span>
+                                    ${item.lastWrong ? `<span class="badge-tag badge-last-wrong">上次誤拼：${escapeHtml(item.lastWrong)}</span>` : ''}
+                                    ${item.mastered ? `<span class="badge-tag badge-mastered">✅ 已熟練</span>` : ''}
+                                </div>
+                            </div>
+                            ${item.sentence ? `<div style="font-size: 0.95rem; color: #546E7A; margin-top: 4px;">${escapeHtml(item.sentence)}</div>` : ''}
+                            ${item.trans ? `<div style="font-size: 0.88rem; color: #78909C;">${escapeHtml(item.trans)}</div>` : ''}
+                            <div class="note-row">
+                                <input type="text" class="note-input" placeholder="✏️ 輸入個人記憶口訣或筆記（例如：i 在 e 前面）..."
+                                    value="${escapeHtml(item.note || '')}"
+                                    onchange="updateMistakeNote('${escapeAttr(wKey)}', this.value)"
+                                    oninput="updateMistakeNote('${escapeAttr(wKey)}', this.value, true)">
+                                <button class="btn btn-sm ${item.mastered ? '' : 'btn-check'}" onclick="toggleMistakeMastered('${escapeAttr(wKey)}')">
+                                    ${item.mastered ? '🔄 移回待複習' : '✅ 標記已熟練'}
+                                </button>
+                                <button class="btn btn-accent btn-sm" onclick="practiceSingleMistakeWord('${escapeAttr(item.word)}')">
+                                    🎯 單獨練習此字
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteMistakeEntry('${escapeAttr(wKey)}')" title="刪除此筆錯題紀錄">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            container.innerHTML = `
+                <div class="notebook-container">
+                    <div class="notebook-header">
+                        <div class="notebook-stats">
+                            👤 挑戰者：<span style="color:#0277BD;">${escapeHtml(currentChallenger)}</span> ｜
+                            📕 待複習：<span style="color:var(--danger);">${unmasteredCount}</span> 題 ｜
+                            ✅ 已熟練：<span style="color:var(--success);">${masteredCount}</span> 題 ｜
+                            累計錯誤：${totalErrors} 次
+                        </div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <button class="btn btn-danger btn-sm" onclick="startMistakeReview('block')">🧩 積木錯題特訓</button>
+                            <button class="btn btn-accent btn-sm" onclick="startMistakeReview('dictation')">✍️ 聽寫錯題特訓</button>
+                            <button class="btn btn-sm" onclick="exportMistakeNotebookCSV()">💾 匯出錯題本 CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="notebook-filters">
+                        <select onchange="nbFilterBank = this.value; render();">
+                            ${bankOptionsHtml}
+                        </select>
+                        <select onchange="nbFilterStatus = this.value; render();">
+                            <option value="all" ${nbFilterStatus === 'all' ? 'selected' : ''}>全部狀態 (${allEntries.length})</option>
+                            <option value="unmastered" ${nbFilterStatus === 'unmastered' ? 'selected' : ''}>📕 待複習 (${unmasteredCount})</option>
+                            <option value="mastered" ${nbFilterStatus === 'mastered' ? 'selected' : ''}>✅ 已熟練 (${masteredCount})</option>
+                        </select>
+                        <input type="text" placeholder="🔍 搜尋單字、解釋或筆記..." value="${escapeHtml(nbSearchQuery)}"
+                            oninput="nbSearchQuery = this.value; render();" style="flex:1; min-width:160px;">
+                    </div>
+
+                    <div>${cardsHtml}</div>
+                </div>
+            `;
+        }
+
+        function updateMistakeNote(wKey, noteText, silent = false) {
+            if (!mistakeDetails[wKey]) return;
+            mistakeDetails[wKey].note = noteText;
+            mistakeDetails[wKey].updatedAt = Date.now();
+            ChallengerStorage.saveCurrentProfile();
+        }
+
+        function toggleMistakeMastered(wKey) {
+            if (!mistakeDetails[wKey]) return;
+            mistakeDetails[wKey].mastered = !mistakeDetails[wKey].mastered;
+            mistakeDetails[wKey].updatedAt = Date.now();
+            syncMistakeSetFromDetails();
+            ChallengerStorage.saveCurrentProfile();
+            updateMistakeButton();
+            render();
+        }
+
+        function deleteMistakeEntry(wKey) {
+            if (!mistakeDetails[wKey]) return;
+            delete mistakeDetails[wKey];
+            syncMistakeSetFromDetails();
+            ChallengerStorage.saveCurrentProfile();
+            updateMistakeButton();
+            render();
+        }
+
+        function exportMistakeNotebookCSV() {
+            const entries = Object.values(mistakeDetails);
+            if (entries.length === 0) {
+                alert('目前錯題筆記本是空的喔！');
+                return;
+            }
+            const header = "word,sentence,trans,meaning,bank,wrongCount,lastWrong,status,note";
+            const rows = entries.map(item => {
+                const cols = [
+                    item.word || '',
+                    item.sentence || '',
+                    item.trans || '',
+                    item.meaning || '',
+                    item.bankLabel || item.bank || '',
+                    String(item.count || 1),
+                    item.lastWrong || '',
+                    item.mastered ? '已熟練' : '待複習',
+                    item.note || ''
+                ];
+                return cols.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',');
+            });
+            const csv = "\uFEFF" + [header, ...rows].join("\r\n");
+            downloadFile(csv, `錯題筆記_${currentChallenger}.csv`, 'text/csv;charset=utf-8;');
+        }
+    </script>
+</body>
+
+</html>

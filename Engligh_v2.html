@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spelling Bee Grade 1C - 真真英文 (v2.1)</title>
+    <style>
+        :root {
+            --primary: #4FC3F7; /* Sky Blue */
+            --secondary: #FFF176; /* Light Yellow */
+            --accent: #FF7043; /* Orange */
+            --danger: #ef5350; /* Red for mistakes */
+            --dark: #37474F;
+            --success: #66BB6A;
+            --white: #ffffff;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #E1F5FE;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            user-select: none;
+        }
+
+        /* Header Area */
+        header {
+            background-color: var(--primary);
+            padding: 10px 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .score-board {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        select {
+            padding: 6px;
+            border-radius: 15px;
+            border: none;
+            font-size: 0.9rem;
+            background: var(--white);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            background: white;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #78909C;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background-color: #FAFAFA;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Mode Specifics */
+        .word-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            word-break: break-word;
+        }
+        
+        .syllable-mode .word-display { letter-spacing: 0.2em; }
+        .vowel { color: #E53935; }
+        .consonant { color: #1E88E5; }
+        
+        .chinese-meaning {
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #0288D1;
+            transition: transform 0.1s;
+            margin: 4px;
+        }
+        
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        
+        .btn-audio {
+            background-color: var(--secondary);
+            color: var(--dark);
+            box-shadow: 0 3px 0 #FBC02D;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .btn-check { background-color: var(--success); box-shadow: 0 3px 0 #388E3C; }
+        
+        /* Mistake Button */
+        .btn-mistake {
+            background-color: var(--danger);
+            color: white;
+            box-shadow: 0 3px 0 #c62828;
+            font-weight: bold;
+            display: none; /* Hidden by default until mistakes exist */
+        }
+        
+        .btn-nav {
+            background-color: #90A4AE;
+            box-shadow: 0 3px 0 #546E7A;
+            padding: 8px 15px;
+            font-size: 1rem;
+        }
+
+        /* Block Mode */
+        .scramble-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+            min-height: 55px;
+        }
+
+        .letter-block {
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+        }
+        
+        .letter-block.used {
+            background: #EEEEEE;
+            color: #BDBDBD;
+            border-color: #E0E0E0;
+            pointer-events: none;
+            box-shadow: none;
+            transform: translateY(3px);
+        }
+
+        .answer-area {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 15px;
+            height: 50px;
+        }
+
+        .answer-slot {
+            width: 35px;
+            border-bottom: 3px solid var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Dictation Input */
+        input[type="text"] {
+            font-size: 1.8rem;
+            padding: 8px;
+            width: 85%;
+            text-align: center;
+            border: 3px solid var(--primary);
+            border-radius: 12px;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        .feedback {
+            font-size: 1.2rem;
+            font-weight: bold;
+            height: 25px;
+            margin-top: 5px;
+        }
+        .correct { color: var(--success); }
+        .wrong { color: #E53935; }
+
+        /* Nav */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        /* Animations */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .pop-anim { animation: pop 0.3s ease-in-out; }
+        
+        /* Key hint */
+        .key-hint {
+            font-size: 0.8rem;
+            color: #90A4AE;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <h1>🐝 真真英文</h1>
+        <div class="score-board">
+            <span>⭐</span>
+            <span id="scoreVal">0</span>
+        </div>
+    </div>
+    <div class="controls">
+        <select id="voiceSelect" style="max-width: 120px;">
+            <option value="">語音載入中</option>
+        </select>
+        <select id="levelSelect" style="max-width: 140px;">
+            </select>
+        <button id="btnMistakeReview" class="btn btn-mistake" onclick="startMistakeReview()">
+            📕 複習錯題 (0)
+        </button>
+    </div>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" onclick="setMode('study')">📖 學習</button>
+    <button class="tab-btn" onclick="setMode('block')">🧩 積木</button>
+    <button class="tab-btn" onclick="setMode('dictation')">✍️ 聽寫</button>
+</div>
+
+<div class="container">
+    <div id="gameArea" class="card">
+        </div>
+
+    <div class="nav-controls">
+        <button class="btn btn-nav" onclick="prevWord()">⬅️ (左鍵)</button>
+        <span id="progressText" style="font-weight: bold; font-size: 1.1rem;">1 / 10</span>
+        <button class="btn btn-nav" onclick="nextWord()">(右鍵) ➡️</button>
+    </div>
+    
+    <div class="key-hint">
+        ⌨️ 鍵盤控制：⬆️ 聽發音 | ⬇️ 檢查答案 | ⬅️ ➡️ 換題
+    </div>
+</div>
+
+<script>
+    // --- 1. Data ---
+    const rawData = [
+        // Part 1
+        {word: "album", sentence: "I put my vacation photos in an album.", trans: "我把度假照片放進相簿裡。", meaning: "專輯；相簿"},
+        {word: "anybody", sentence: "Did anybody see my pencil?", trans: "有人看到我的鉛筆嗎？", meaning: "任何人"},
+        {word: "anything", sentence: "You can eat anything you like.", trans: "你可以吃你喜歡的任何東西。", meaning: "任何事物"},
+        {word: "apartment", sentence: "We live in a small apartment in the city.", trans: "我們住在城市裡一間小公寓。", meaning: "公寓"},
+        {word: "armadillo", sentence: "The armadillo has a hard shell to protect itself.", trans: "犰狳有堅硬的外殼來保護自己。", meaning: "犰狳"},
+        {word: "belief", sentence: "She has a strong belief in kindness.", trans: "她深信善良的力量。", meaning: "信仰；信念"},
+        {word: "blacktop", sentence: "The children played on the blacktop playground.", trans: "孩子們在柏油操場上玩耍。", meaning: "柏油路"},
+        {word: "block", sentence: "Our school is one block away.", trans: "我們的學校在一個街區之外。", meaning: "街區；積木"},
+        {word: "border", sentence: "The river forms the border between two countries.", trans: "那條河形成了兩國的邊界。", meaning: "邊界"},
+        {word: "brake", sentence: "He pressed the brake to stop the car.", trans: "他踩煞車讓車停下來。", meaning: "煞車"},
+        {word: "brave", sentence: "The brave firefighter saved the cat.", trans: "那位勇敢的消防員救了貓。", meaning: "勇敢的"},
+        {word: "breathe", sentence: "Take a deep breath and relax.", trans: "深呼吸，放鬆一下。", meaning: "呼吸"},
+        {word: "buffalo", sentence: "A buffalo is a large animal that lives on the grassland.", trans: "水牛是生活在草原上的大型動物。", meaning: "水牛"},
+        {word: "bulldog", sentence: "The bulldog is strong but friendly.", trans: "鬥牛犬強壯但友善。", meaning: "鬥牛犬"},
+        {word: "bulldozer", sentence: "The bulldozer cleared the land for new buildings.", trans: "推土機清理土地以建新建築。", meaning: "推土機"},
+        {word: "burglar", sentence: "The burglar broke into the house at night.", trans: "竊賊在晚上闖入房子。", meaning: "竊賊"},
+        {word: "button", sentence: "I lost a button on my shirt.", trans: "我的襯衫少了一顆鈕扣。", meaning: "鈕扣"},
+        {word: "campfire", sentence: "We roasted marshmallows over the campfire.", trans: "我們在營火上烤棉花糖。", meaning: "營火"},
+        {word: "cellar", sentence: "The old house has a dark cellar.", trans: "那棟老房子有個黑暗的地下室。", meaning: "地下室"},
+        {word: "certainly", sentence: "I will certainly help you.", trans: "我當然會幫你。", meaning: "當然"},
+        {word: "computer", sentence: "I use my computer to do homework.", trans: "我用電腦做功課。", meaning: "電腦"},
+        {word: "country", sentence: "Japan is a beautiful country.", trans: "日本是一個美麗的國家。", meaning: "國家"},
+        {word: "crocodile", sentence: "A crocodile lives near the river.", trans: "鱷魚住在河邊。", meaning: "鱷魚"},
+        {word: "darkness", sentence: "He was afraid of the darkness.", trans: "他害怕黑暗。", meaning: "黑暗"},
+        {word: "decide", sentence: "She can’t decide what to wear today.", trans: "她今天決定不了要穿什麼。", meaning: "決定"},
+        // Part 2
+        {word: "different", sentence: "My brother and I have different hobbies.", trans: "我和我哥哥有不同的興趣。", meaning: "不同的"},
+        {word: "doubt", sentence: "I doubt it will rain today.", trans: "我懷疑今天會下雨。", meaning: "懷疑"},
+        {word: "downstairs", sentence: "She heard someone walking downstairs.", trans: "她聽到有人在樓下走動。", meaning: "樓下"},
+        {word: "downtown", sentence: "We went downtown to buy groceries.", trans: "我們去市中心買東西。", meaning: "市中心"},
+        {word: "excellent", sentence: "Your presentation was excellent.", trans: "你的簡報非常出色。", meaning: "非常好的"},
+        {word: "exercise", sentence: "I exercise every morning.", trans: "我每天早上運動。", meaning: "運動"},
+        {word: "fearful", sentence: "The cat looked fearful during the storm.", trans: "那隻貓在暴風雨中看起來很害怕。", meaning: "害怕的"},
+        {word: "fellow", sentence: "He is a good fellow to work with.", trans: "他是個很好合作的同伴。", meaning: "同伴"},
+        {word: "finance", sentence: "She works in the finance department.", trans: "她在財務部門工作。", meaning: "財務"},
+        {word: "freckles", sentence: "He has freckles on his cheeks.", trans: "他的臉頰上有雀斑。", meaning: "雀斑"},
+        {word: "government", sentence: "The government announced new rules.", trans: "政府宣布了新規定。", meaning: "政府"},
+        {word: "grasshopper", sentence: "A grasshopper jumped onto the leaf.", trans: "一隻蚱蜢跳到葉子上。", meaning: "蚱蜢"},
+        {word: "gruff", sentence: "His voice sounded gruff this morning.", trans: "他今天早上的聲音聽起來很粗魯。", meaning: "粗魯的"},
+        {word: "gulp", sentence: "She took a gulp of water after running.", trans: "她跑完步後大口喝水。", meaning: "大口吞嚥"},
+        {word: "gut", sentence: "I had a gut feeling something was wrong.", trans: "我有種事情不對的直覺。", meaning: "直覺；本能"},
+        {word: "handcuffs", sentence: "The police put on handcuffs during the arrest.", trans: "警方在逮捕時上了手銬。", meaning: "手銬"},
+        {word: "heaven", sentence: "They believe heaven is a peaceful place.", trans: "他們相信天堂是一個和平的地方。", meaning: "天堂"},
+        {word: "heavy", sentence: "The box is too heavy to lift.", trans: "這箱子太重了搬不動。", meaning: "沈重的"},
+        {word: "hidden", sentence: "The treasure was hidden under the floor.", trans: "寶藏被藏在地板下。", meaning: "隱藏的"},
+        {word: "horrible", sentence: "That movie was horrible.", trans: "那部電影很可怕。", meaning: "可怕的"},
+        {word: "however", sentence: "She wanted to go; however, it was too late.", trans: "她想去，然而時間太晚了。", meaning: "然而"},
+        {word: "illegal", sentence: "It's illegal to park here.", trans: "在這裡停車是非法的。", meaning: "非法的"},
+        {word: "important", sentence: "It's important to follow instructions.", trans: "遵守指示很重要。", meaning: "重要的"},
+        {word: "keyboard", sentence: "I bought a new keyboard for my computer.", trans: "我買了一個新的電腦鍵盤。", meaning: "鍵盤"},
+        {word: "leather", sentence: "The shoes are made of leather.", trans: "這雙鞋是用皮革做的。", meaning: "皮革"},
+        // Part 3
+        {word: "leopard", sentence: "A leopard can run very fast and climb trees easily.", trans: "豹子跑得很快，還很會爬樹。", meaning: "豹"},
+        {word: "matter", sentence: "This is an important matter for our team.", trans: "這是我們團隊的一件重要事情。", meaning: "事情；問題"},
+        {word: "mighty", sentence: "The mighty river flows through the city.", trans: "那條強大的河流穿過這座城市。", meaning: "強大的；巨大的"},
+        {word: "minute", sentence: "Please wait a minute while I finish my homework.", trans: "請等一下，讓我先寫完作業。", meaning: "分鐘；片刻"},
+        {word: "moment", sentence: "It was a happy moment for the whole family.", trans: "那是全家人都很開心的時刻。", meaning: "片刻；時刻"},
+        {word: "mystery", sentence: "The old house was full of mystery.", trans: "那棟老房子充滿了神秘感。", meaning: "神秘事物；謎"},
+        {word: "nature", sentence: "We went into nature to hike and see the mountains.", trans: "我們走進大自然爬山、看山景。", meaning: "大自然"},
+        {word: "necessary", sentence: "It is necessary to wear a helmet when you ride a bike.", trans: "騎腳踏車時戴安全帽是很有必要的。", meaning: "必要的；必須的"},
+        {word: "newspaper", sentence: "My dad reads the newspaper every morning.", trans: "我爸爸每天早上都看報紙。", meaning: "報紙"},
+        {word: "office", sentence: "My mom works in an office downtown.", trans: "我媽媽在市中心的辦公室上班。", meaning: "辦公室"},
+        {word: "oversee", sentence: "The manager will oversee the whole project.", trans: "經理會監督整個專案。", meaning: "監督；負責"},
+        {word: "panic", sentence: "Do not panic; everything is under control.", trans: "別恐慌，一切都在掌控之中。", meaning: "驚慌；恐慌"},
+        {word: "payment", sentence: "We made the final payment for the trip today.", trans: "我們今天付清了這次旅行的尾款。", meaning: "付款；支付"},
+        {word: "pluck", sentence: "He had to pluck up his courage to speak on stage.", trans: "他必須鼓起勇氣在台上說話。", meaning: "拔；鼓起（勇氣）"},
+        {word: "possible", sentence: "It is possible to finish this work today.", trans: "今天有可能把這份工作做完。", meaning: "可能的"},
+        {word: "practice", sentence: "She goes to piano practice every Saturday.", trans: "她每個星期六都去練鋼琴。", meaning: "練習"},
+        {word: "president", sentence: "The president gave a speech on live TV.", trans: "總統在電視直播上發表演說。", meaning: "總統；主席"},
+        {word: "problem", sentence: "If you have a problem, please ask for help.", trans: "如果你有問題，請記得求助。", meaning: "問題"},
+        {word: "purpose", sentence: "The purpose of this test is to check your spelling.", trans: "這次測驗的目的是檢查你的拼字。", meaning: "目的"},
+        {word: "question", sentence: "The teacher asked a hard question in class.", trans: "老師在課堂上問了一個很難的問題。", meaning: "問題；疑問"},
+        {word: "rectangle", sentence: "Draw a rectangle on your paper.", trans: "在你的紙上畫一個長方形。", meaning: "長方形"},
+        {word: "remember", sentence: "I always remember to say thank you.", trans: "我總是記得說謝謝。", meaning: "記得"},
+        {word: "riding", sentence: "We love riding our bikes after school.", trans: "我們喜歡放學後騎腳踏車。", meaning: "騎乘"},
+        {word: "roundhouse", sentence: "The train stopped at the roundhouse for repairs.", trans: "火車在維修用的圓形車庫停了下來。", meaning: "（火車）圓形車庫；機務段車庫"},
+        // Part 4
+        {word: "screen", sentence: "Do not sit too close to the screen.", trans: "不要坐離螢幕太近。", meaning: "螢幕；銀幕"},
+        {word: "several", sentence: "I have several books about animals.", trans: "我有好幾本關於動物的書。", meaning: "幾個；好幾個"},
+        {word: "sidekick", sentence: "The hero and his sidekick saved the day.", trans: "英雄和他的助手拯救了這一天。", meaning: "助手；搭檔"},
+        {word: "skateboard", sentence: "He learned how to ride a skateboard last year.", trans: "他去年學會了玩滑板。", meaning: "滑板"},
+        {word: "something", sentence: "I heard something outside the window.", trans: "我聽到窗外有點聲音。", meaning: "某件事；某種東西"},
+        {word: "sometimes", sentence: "Sometimes we eat dinner in the living room.", trans: "有時候我們會在客廳吃晚餐。", meaning: "有時候"},
+        {word: "somewhere", sentence: "Let's go somewhere quiet to talk.", trans: "我們去一個安靜的地方聊聊吧。", meaning: "某個地方"},
+        {word: "sportsman", sentence: "A true sportsman plays fair and respects others.", trans: "真正的運動員會公平比賽並尊重別人。", meaning: "運動員；有運動家精神的人"},
+        {word: "stoplight", sentence: "The car stopped at the red stoplight.", trans: "車子在紅燈的紅綠燈前停下來。", meaning: "紅綠燈"},
+        {word: "stream", sentence: "We crossed a small stream in the forest.", trans: "我們穿過森林裡的一條小溪。", meaning: "小溪；溪流"},
+        {word: "strength", sentence: "Swimming every day gives her strength.", trans: "每天游泳讓她變得更有力量。", meaning: "力量；優點"},
+        {word: "struggle", sentence: "He had to struggle to lift the heavy box.", trans: "他費了很大力氣才抬起那個重箱子。", meaning: "奮鬥；掙扎"},
+        {word: "stutter", sentence: "He began to stutter when he got nervous.", trans: "他一緊張就開始口吃。", meaning: "口吃；結巴"},
+        {word: "surprise", sentence: "The party was a big surprise for him.", trans: "那個派對對他來說是個大驚喜。", meaning: "驚喜；驚訝"},
+        {word: "swallow", sentence: "It was hard to swallow the big pill.", trans: "那顆藥丸太大，很難吞下去。", meaning: "吞嚥"},
+        {word: "therefore", sentence: "It rained all day; therefore, the game was canceled.", trans: "下了一整天的雨，因此比賽被取消了。", meaning: "因此；所以"},
+        {word: "thought", sentence: "He shared a kind thought with his friend.", trans: "他和朋友分享了一個善良的想法。", meaning: "想法；思考"},
+        {word: "thousand", sentence: "Our school has more than one thousand students.", trans: "我們學校有一千多名學生。", meaning: "一千"},
+        {word: "together", sentence: "We worked together to clean the classroom.", trans: "我們一起打掃教室。", meaning: "一起"},
+        {word: "troublemaker", sentence: "The teacher spoke to the troublemaker after class.", trans: "下課後老師找那位搗蛋鬼談話。", meaning: "搗蛋鬼；愛惹麻煩的人"},
+        {word: "typewriter", sentence: "Long ago, people used a typewriter to write letters.", trans: "很久以前，人們用打字機寫信。", meaning: "打字機"},
+        {word: "uncertain", sentence: "She felt uncertain about her answer.", trans: "她對自己的答案感到不太確定。", meaning: "不確定的"},
+        {word: "undertaking", sentence: "Building the bridge was a big undertaking.", trans: "建造這座橋是一項很大的工程。", meaning: "重要任務；工程"},
+        {word: "whether", sentence: "I don't know whether it will be sunny tomorrow.", trans: "我不知道明天是否會是晴天。", meaning: "是否"},
+        {word: "without", sentence: "I cannot leave the house without my keys.", trans: "沒帶鑰匙我就不能出門。", meaning: "沒有；不帶"},
+        {word: "wonderful", sentence: "We had a wonderful time at the park.", trans: "我們在公園度過了很棒的時光。", meaning: "很棒的；精彩的"}
+    ];
+
+    // --- 2. State & Config ---
+    const GROUP_SIZE = 10;
+    let currentMode = 'study'; 
+    let currentLevel = 0;
+    let currentIndex = 0; 
+    let currentLevelWords = [];
+    
+    // Feature: Scoring & Mistakes
+    let score = 0;
+    let mistakeList = new Set(); // Stores words
+    let isReviewMode = false;
+    
+    let voices = [];
+    let syllableToggle = false;
+
+    // --- 3. Initialization ---
+    window.onload = function() {
+        // Load data from localStorage
+        const savedScore = localStorage.getItem('bee_score');
+        if(savedScore) score = parseInt(savedScore);
+        updateScoreUI();
+
+        const savedMistakes = localStorage.getItem('bee_mistakes');
+        if(savedMistakes) {
+            JSON.parse(savedMistakes).forEach(w => mistakeList.add(w));
+        }
+        updateMistakeButton();
+
+        populateLevelSelect();
+        initVoices();
+        loadLevel(0);
+        
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = initVoices;
+        }
+
+        // --- Keyboard Controls ---
+        document.addEventListener('keydown', handleKeyControl);
+    };
+
+    // --- 4. Logic & Features ---
+
+    function handleKeyControl(e) {
+        // Check if user is typing in an input field
+        const isInputFocused = document.activeElement.tagName === 'INPUT';
+        
+        // Prevent default scrolling for Up/Down
+        if(['ArrowUp', 'ArrowDown'].includes(e.key)) {
+            e.preventDefault();
+        }
+
+        switch(e.key) {
+            case 'ArrowRight':
+                // Only allow page switch if NOT typing in input
+                if (!isInputFocused) nextWord();
+                break;
+            case 'ArrowLeft':
+                // Only allow page switch if NOT typing in input
+                if (!isInputFocused) prevWord();
+                break;
+            case 'ArrowUp':
+                // Always allow audio
+                if(currentLevelWords.length > 0) {
+                    speak(currentLevelWords[currentIndex].word);
+                }
+                break;
+            case 'ArrowDown':
+                // Trigger "Check" action based on mode
+                triggerCheckAction();
+                break;
+        }
+    }
+
+    function triggerCheckAction() {
+        if(currentLevelWords.length === 0) return;
+        const data = currentLevelWords[currentIndex];
+
+        if (currentMode === 'dictation') {
+            checkDictation(data.word);
+        } else if (currentMode === 'study') {
+            toggleSyllables(); // In study mode, Down toggles Syllables
+        }
+    }
+
+    function updateScore(points) {
+        score += points;
+        localStorage.setItem('bee_score', score);
+        const el = document.getElementById('scoreVal');
+        el.innerText = score;
+        el.classList.add('pop-anim');
+        setTimeout(() => el.classList.remove('pop-anim'), 300);
+    }
+
+    function recordMistake(word) {
+        if (!mistakeList.has(word)) {
+            mistakeList.add(word);
+            saveMistakes();
+            updateMistakeButton();
+        }
+    }
+
+    function removeMistake(word) {
+        if (mistakeList.has(word)) {
+            mistakeList.delete(word);
+            saveMistakes();
+            updateMistakeButton();
+            return true;
+        }
+        return false;
+    }
+
+    function saveMistakes() {
+        localStorage.setItem('bee_mistakes', JSON.stringify(Array.from(mistakeList)));
+    }
+
+    function updateMistakeButton() {
+        const btn = document.getElementById('btnMistakeReview');
+        if (mistakeList.size > 0) {
+            btn.style.display = 'inline-block';
+            btn.innerText = `📕 複習錯題 (${mistakeList.size})`;
+        } else {
+            btn.style.display = 'none';
+            if (isReviewMode) {
+                // If cleared all mistakes, go back to normal
+                alert("太棒了！錯題本已經清空了！🎉");
+                isReviewMode = false;
+                loadLevel(0);
+            }
+        }
+    }
+
+    function startMistakeReview() {
+        if (mistakeList.size === 0) return;
+        isReviewMode = true;
+        // Filter rawData to get full objects for the stored words
+        currentLevelWords = rawData.filter(item => mistakeList.has(item.word));
+        currentIndex = 0;
+        document.getElementById('levelSelect').value = ""; // Clear select
+        updateProgress();
+        render();
+        alert("進入「錯題特訓模式」！\n答對後，該單字會自動移出錯題本喔！💪");
+    }
+
+    function populateLevelSelect() {
+        const select = document.getElementById('levelSelect');
+        select.innerHTML = '';
+        
+        const totalLevels = Math.ceil(rawData.length / GROUP_SIZE);
+        const allOption = document.createElement('option');
+        allOption.value = -1;
+        allOption.text = `全部單字`;
+        select.appendChild(allOption);
+
+        for (let i = 0; i < totalLevels; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            const start = i * GROUP_SIZE + 1;
+            const end = Math.min((i + 1) * GROUP_SIZE, rawData.length);
+            option.text = `Level ${i + 1} (${start}-${end})`;
+            select.appendChild(option);
+        }
+
+        select.addEventListener('change', (e) => {
+            if(e.target.value === "") return;
+            isReviewMode = false;
+            loadLevel(parseInt(e.target.value));
+        });
+    }
+
+    function initVoices() {
+        voices = window.speechSynthesis.getVoices();
+        const select = document.getElementById('voiceSelect');
+        select.innerHTML = '';
+        
+        voices.sort((a, b) => {
+            if(a.lang.includes('en') && !b.lang.includes('en')) return -1;
+            if(!a.lang.includes('en') && b.lang.includes('en')) return 1;
+            return 0;
+        });
+
+        voices.forEach((voice, i) => {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = `${voice.name.substring(0,15)}..`; 
+            if (voice.name.includes("Google US") || voice.name.includes("Samantha")) {
+                option.selected = true;
+            }
+            select.appendChild(option);
+        });
+    }
+
+    function loadLevel(levelIndex) {
+        isReviewMode = false;
+        currentLevel = levelIndex;
+        currentIndex = 0;
+        if (levelIndex === -1) {
+            currentLevelWords = rawData;
+        } else {
+            const start = levelIndex * GROUP_SIZE;
+            const end = start + GROUP_SIZE;
+            currentLevelWords = rawData.slice(start, end);
+        }
+        updateProgress();
+        render();
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        if(mode === 'study') document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        if(mode === 'block') document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        if(mode === 'dictation') document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        render();
+    }
+
+    function updateProgress() {
+        const total = currentLevelWords.length;
+        const modeText = isReviewMode ? "📕 錯題特訓" : "單字列表";
+        document.getElementById('progressText').innerText = `${modeText}: ${currentIndex + 1} / ${total}`;
+    }
+
+    function nextWord() {
+        if (currentIndex < currentLevelWords.length - 1) {
+            currentIndex++;
+            updateProgress();
+            render();
+        }
+    }
+
+    function prevWord() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateProgress();
+            render();
+        }
+    }
+
+    function speak(text) {
+        window.speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        const voiceIdx = document.getElementById('voiceSelect').value;
+        if (voices[voiceIdx]) msg.voice = voices[voiceIdx];
+        msg.rate = 0.85;
+        window.speechSynthesis.speak(msg);
+    }
+
+    function updateScoreUI() {
+        document.getElementById('scoreVal').innerText = score;
+    }
+
+    // --- Rendering ---
+    function render() {
+        if(currentLevelWords.length === 0) return;
+        
+        const data = currentLevelWords[currentIndex];
+        const container = document.getElementById('gameArea');
+        container.innerHTML = '';
+        container.className = 'card ' + (syllableToggle ? 'syllable-mode' : '');
+
+        if (currentMode === 'study') renderStudyMode(container, data);
+        else if (currentMode === 'block') renderBlockMode(container, data);
+        else if (currentMode === 'dictation') renderDictationMode(container, data);
+    }
+
+    // Mode A: Study
+    function renderStudyMode(container, data) {
+        let coloredWord = '';
+        const vowels = ['a','e','i','o','u','A','E','I','O','U'];
+        for (let char of data.word) {
+            if (vowels.includes(char)) coloredWord += `<span class="vowel">${char}</span>`;
+            else if (/[a-zA-Z]/.test(char)) coloredWord += `<span class="consonant">${char}</span>`;
+            else coloredWord += `<span class="neutral">${char}</span>`;
+        }
+
+        const html = `
+            <div class="word-display">${coloredWord}</div>
+            <div class="controls" style="margin-bottom: 20px;">
+                <button class="btn btn-audio" onclick="speak('${data.word}')">🔊</button>
+                <button class="btn" onclick="toggleSyllables()">音節</button>
+            </div>
+            <div style="font-size:1.1rem; color:#546E7A; margin-bottom:5px;">${data.sentence}</div>
+            <div style="font-size:1rem; color:#78909C;">${data.trans}</div>
+            <div class="chinese-meaning">${data.meaning}</div>
+        `;
+        container.innerHTML = html;
+    }
+
+    function toggleSyllables() {
+        syllableToggle = !syllableToggle;
+        render();
+    }
+
+    // Mode B: Block
+    let blockState = { target: '', current: '', shuffled: [] };
+
+    function renderBlockMode(container, data) {
+        blockState.target = data.word;
+        blockState.current = '';
+        let letters = data.word.split('');
+        for (let i = letters.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [letters[i], letters[j]] = [letters[j], letters[i]];
+        }
+        blockState.shuffled = letters.map((l, idx) => ({letter: l, id: idx, used: false}));
+
+        const html = `
+            <div style="margin-bottom:10px;">
+                <button class="btn btn-audio" onclick="speak('${data.word}')">🔊 聽發音</button>
+            </div>
+            <div class="chinese-meaning">${data.meaning}</div>
+            <div id="answerArea" class="answer-area"></div>
+            <div id="scrambleArea" class="scramble-area"></div>
+            <div id="feedback" class="feedback"></div>
+            <div><button class="btn" style="background-color:#FF7043; font-size:0.9rem;" onclick="resetBlockGame()">重置 ↺</button></div>
+        `;
+        container.innerHTML = html;
+        updateBlockUI();
+    }
+
+    function updateBlockUI() {
+        const answerArea = document.getElementById('answerArea');
+        const scrambleArea = document.getElementById('scrambleArea');
+        
+        answerArea.innerHTML = '';
+        for(let i=0; i<blockState.target.length; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'answer-slot';
+            slot.innerText = blockState.current[i] || '';
+            answerArea.appendChild(slot);
+        }
+
+        scrambleArea.innerHTML = '';
+        blockState.shuffled.forEach((item) => {
+            const btn = document.createElement('div');
+            btn.className = `letter-block ${item.used ? 'used' : ''}`;
+            btn.innerText = item.letter;
+            btn.onclick = () => {
+                if(item.used) return;
+                blockState.current += item.letter;
+                item.used = true;
+                speak(item.letter);
+                updateBlockUI();
+                checkBlockWin();
+            };
+            scrambleArea.appendChild(btn);
+        });
+    }
+
+    function resetBlockGame() {
+        blockState.current = '';
+        blockState.shuffled.forEach(i => i.used = false);
+        document.getElementById('feedback').innerText = '';
+        updateBlockUI();
+    }
+
+    function checkBlockWin() {
+        const feedback = document.getElementById('feedback');
+        if (blockState.current.length === blockState.target.length) {
+            if (blockState.current === blockState.target) {
+                let msg = "答對了！🎉";
+                if(isReviewMode) {
+                    removeMistake(blockState.target);
+                    msg += " (已移除錯題)";
+                }
+                updateScore(10);
+                feedback.innerText = msg;
+                feedback.className = "feedback correct";
+                speak("Correct!");
+            } else {
+                feedback.innerText = "再試一次 💪";
+                feedback.className = "feedback wrong";
+                recordMistake(blockState.target);
+                setTimeout(resetBlockGame, 1000);
+            }
+        }
+    }
+
+    // Mode C: Dictation
+    function renderDictationMode(container, data) {
+        const html = `
+            <div style="margin-bottom:15px;">
+                <button class="btn btn-audio" onclick="speak('${data.word}')">🔊 聽發音</button>
+            </div>
+            <div class="chinese-meaning">${data.meaning}</div>
+            <input type="text" id="dictationInput" placeholder="輸入單字..." autocomplete="off">
+            <div>
+                <button class="btn btn-check" onclick="checkDictation('${data.word}')">檢查 ✅</button>
+                <button class="btn" style="background-color:#B0BEC5; font-size:0.9rem;" onclick="giveHint('${data.word}')">提示</button>
+            </div>
+            <div id="dictFeedback" class="feedback"></div>
+        `;
+        container.innerHTML = html;
+        setTimeout(() => document.getElementById('dictationInput').focus(), 100);
+        
+        document.getElementById('dictationInput').addEventListener("keyup", function(event) {
+            if (event.key === "Enter") checkDictation(data.word);
+        });
+    }
+
+    function checkDictation(target) {
+        const input = document.getElementById('dictationInput');
+        const feedback = document.getElementById('dictFeedback');
+        const userVal = input.value.trim().toLowerCase();
+
+        if (userVal === target.toLowerCase()) {
+            let msg = "拼寫正確！🌟";
+            if(isReviewMode) {
+                removeMistake(target);
+                msg += " (已移除錯題)";
+            }
+            updateScore(10);
+            feedback.innerText = msg;
+            feedback.className = "feedback correct";
+            speak("Wonderful!");
+        } else {
+            feedback.innerText = "加油，再試一次！";
+            feedback.className = "feedback wrong";
+            recordMistake(target);
+        }
+    }
+
+    function giveHint(word) {
+        const input = document.getElementById('dictationInput');
+        input.value = word.substring(0, input.value.length + 1);
+        input.focus();
+    }
+
+</script>
+</body>
+</html>
