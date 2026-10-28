@@ -244,15 +244,30 @@ function syncHtmlDatabase() {
     'test_words.csv'
   ]);
 
-  const files = fs.readdirSync(__dirname).filter(f => f.toLowerCase().endsWith('.csv') && !ignoreFiles.has(f));
-  for (const file of files) {
+  // 掃描專案根目錄與 wordbanks/（photo_to_csv.js 的預設輸出資料夾）
+  const scanDirs = [__dirname, path.join(__dirname, 'wordbanks')].filter(d => fs.existsSync(d));
+  const files = [];
+  for (const dir of scanDirs) {
+    fs.readdirSync(dir)
+      .filter(f => f.toLowerCase().endsWith('.csv') && !ignoreFiles.has(f))
+      .forEach(f => files.push(path.join(dir, f)));
+  }
+  for (const filePath of files) {
+    const file = path.basename(filePath);
     try {
-      const content = fs.readFileSync(path.join(__dirname, file), 'utf8');
+      const content = fs.readFileSync(filePath, 'utf8');
       const parsed = parseCSVText(content);
       if (parsed.length > 0) {
         const key = path.basename(file, path.extname(file));
+        let displayName = `📘 ${key} (${parsed.length}字)`;
+        const m = key.match(/^Grade2B_Week0?(\d+)$/i);
+        if (m) {
+          displayName = `📘 Grade 2B - Week ${m[1]} (${parsed.length}字)`;
+        } else if (key === 'Grade2B_All') {
+          displayName = `🌟 Grade 2B 全部單字 (${parsed.length}字)`;
+        }
         presetBanksObj[key] = {
-          name: `📘 ${key} (${parsed.length}字)`,
+          name: displayName,
           data: parsed
         };
       }

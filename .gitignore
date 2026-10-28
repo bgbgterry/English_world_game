@@ -1,0 +1,6 @@
+# Local tools and temporary files
+photo_to_csv.js
+2B_word_list/
+wordbanks/
+*.json
+!package.json
