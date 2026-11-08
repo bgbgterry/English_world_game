@@ -36,10 +36,10 @@ function parseArgs(argv) {
   const opts = {
     spreadsheetId: process.env.GDRIVE_SPREADSHEET_ID || DEFAULT_SPREADSHEET_ID,
     sheet: '2026_spelling_bee',
-    batch: 10,
+    batch: 5,
     forceAll: false,
     syncOnly: false,
-    model: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
+    model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -79,23 +79,32 @@ function enrichPrompt(words) {
 ${words.map((w, i) => `${i + 1}. ${w}`).join('\n')}`;
 }
 
-async function callGemini({ model, parts, schema, apiKey, timeoutMs = 90000, maxAttempts = 6 }) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-  const generationConfig = {
-    temperature: 0,
-    responseMimeType: 'application/json',
-    responseSchema: schema,
-  };
-  if (model.includes('3.8')) {
-    generationConfig.thinkingConfig = { thinkingLevel: 'low' };
-  }
-  const body = {
-    contents: [{ role: 'user', parts }],
-    generationConfig,
-  };
+async function callGemini({ model, parts, schema, apiKey, timeoutMs = 60000, maxAttempts = 6 }) {
+  const candidateModels = [
+    model,
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-2.5-pro'
+  ].filter((m, idx, arr) => m && arr.indexOf(m) === idx);
 
+  let currentModelIdx = 0;
   let lastError = null;
+
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const curModel = candidateModels[currentModelIdx] || candidateModels[0];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${curModel}:generateContent?key=${apiKey}`;
+    const generationConfig = {
+      temperature: 0.1,
+      responseMimeType: 'application/json',
+      responseSchema: schema,
+    };
+
+    const body = {
+      contents: [{ role: 'user', parts }],
+      generationConfig,
+    };
+
     try {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -120,21 +129,38 @@ async function callGemini({ model, parts, schema, apiKey, timeoutMs = 90000, max
         continue;
       }
       if (res.status === 429 || res.status >= 500) {
-        const wait = Math.min(45000, 6000 * Math.pow(1.8, attempt - 1));
-        console.warn(`   ⏳ API 回應 ${res.status}，等待 ${Math.round(wait / 1000)} 秒後重試...`);
+        if (currentModelIdx + 1 < candidateModels.length) {
+          currentModelIdx++;
+          console.warn(
+            `   ⚠️ 模型 [${curModel}] 回應 ${res.status}（伺服器忙碌），自動切換至備援模型 [${candidateModels[currentModelIdx]}]...`
+          );
+        }
+        const wait = Math.min(25000, 3000 * Math.pow(1.4, attempt - 1));
+        console.warn(`   ⏳ 等待 ${Math.round(wait / 1000)} 秒後自動重試（第 ${attempt}/${maxAttempts} 次）...`);
         await new Promise((r) => setTimeout(r, wait));
         continue;
       }
       throw new Error(`Gemini API 錯誤 ${res.status}：${errText.slice(0, 400)}`);
     } catch (err) {
       lastError = err;
-      if (attempt < maxAttempts) {
-        const wait = Math.min(45000, 7000 * Math.pow(1.8, attempt - 1));
-        console.warn(`   ⏳ 網路重試 (${err.message})，等待 ${Math.round(wait / 1000)} 秒...`);
+      const isNetworkOrTimeout =
+        err.name === 'AbortError' ||
+        /fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|socket hang up|aborted|network/i.test(err.message);
+
+      if (isNetworkOrTimeout && attempt < maxAttempts) {
+        if (currentModelIdx + 1 < candidateModels.length) {
+          currentModelIdx++;
+          console.warn(
+            `   ⚠️ 模型 [${curModel}] 回應逾時或瞬斷 (${err.message})，自動切換至備援模型 [${candidateModels[currentModelIdx]}]...`
+          );
+        }
+        const wait = Math.min(25000, 3000 * Math.pow(1.4, attempt - 1));
+        console.warn(`   ⏳ 網路瞬斷或逾時 (${err.message})，等待 ${Math.round(wait / 1000)} 秒後自動重試...`);
         await new Promise((r) => setTimeout(r, wait));
         continue;
       }
-      throw lastError;
+      if (attempt >= maxAttempts) throw lastError;
+      throw err;
     }
   }
   throw lastError;
@@ -225,8 +251,8 @@ async function enrichGoogleSheet({
   spreadsheetId = DEFAULT_SPREADSHEET_ID,
   sheetName = '2026_spelling_bee',
   apiKey,
-  model = 'gemini-3.8-flash',
-  batchSize = 10,
+  model = 'gemini-2.5-flash',
+  batchSize = 5,
   forceAll = false,
 }) {
   console.log(`\n📖 讀取 Google Drive 試算表 [${sheetName}]...`);
