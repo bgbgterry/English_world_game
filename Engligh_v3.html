@@ -744,13 +744,11 @@
             </div>
         </div>
         <div class="controls">
-            <select id="bankSelect" style="max-width: 175px;" onchange="switchBank()">
-                <option value="2026_Part1">🐝 2026 Part 1 (25字)</option>
+            <select id="bankSelect" style="max-width: 240px;" onchange="switchBank()">
+                <option value="2026_spelling_bee__Part_1">🐝 雲端題庫載入中...</option>
             </select>
-            <select id="voiceSelect" style="max-width: 120px;">
+            <select id="voiceSelect" style="max-width: 130px;">
                 <option value="">語音載入中</option>
-            </select>
-            <select id="levelSelect" style="max-width: 155px;">
             </select>
             <button id="btnMistakeReview" class="btn btn-mistake btn-sm" onclick="startMistakeReview()">
                 📕 複習錯題 (0)
@@ -2399,26 +2397,7 @@
         }
 
         function populateLevelSelect() {
-            const select = document.getElementById('levelSelect');
-            if (!select) return;
-            select.innerHTML = '';
-
-            const totalLevels = Math.max(1, Math.ceil(rawData.length / GROUP_SIZE));
-            for (let i = 0; i < totalLevels; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                const start = i * GROUP_SIZE + 1;
-                const end = Math.min((i + 1) * GROUP_SIZE, rawData.length);
-                option.text = `Level ${i + 1} (${start}-${end})`;
-                select.appendChild(option);
-            }
-
-            select.onchange = (e) => {
-                if (e.target.value === "") return;
-                isReviewMode = false;
-                loadLevel(parseInt(e.target.value));
-                ChallengerStorage.saveCurrentProfile();
-            };
+            // 已移除 Level 關卡下拉選單，直接依據所選題庫 Part / Week 載入單字
         }
 
         function initVoices() {
@@ -2446,19 +2425,9 @@
 
         function loadLevel(levelIndex) {
             isReviewMode = false;
-            const totalLevels = Math.max(1, Math.ceil(rawData.length / GROUP_SIZE));
-            if (typeof levelIndex !== 'number' || levelIndex < 0 || levelIndex >= totalLevels) {
-                levelIndex = 0;
-            }
-            currentLevel = levelIndex;
+            currentLevel = -1;
             currentIndex = 0;
-            const start = levelIndex * GROUP_SIZE;
-            const end = start + GROUP_SIZE;
-            currentLevelWords = rawData.slice(start, end);
-            const lvlSelect = document.getElementById('levelSelect');
-            if (lvlSelect) {
-                lvlSelect.value = levelIndex;
-            }
+            currentLevelWords = rawData;
             updateProgress();
             render();
         }
