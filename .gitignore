@@ -5,3 +5,4 @@ wordbanks/
 *.json
 !package.json
 !gdrive_banks.json
+!gdrive_banks.js

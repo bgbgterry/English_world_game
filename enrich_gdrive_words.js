@@ -195,7 +195,13 @@ function syncGDriveSnapshot(spreadsheetId) {
 
   const outPath = path.join(__dirname, 'gdrive_banks.json');
   fs.writeFileSync(outPath, JSON.stringify(snapshot, null, 2), 'utf8');
-  console.log(`✅ 已更新 gdrive_banks.json（共 ${Object.keys(banks).length} 個題庫分組）`);
+
+  // 同時輸出 gdrive_banks.js（供本機 file:// 雙擊開啟時免受 CORS 限制直接載入）
+  const jsOutPath = path.join(__dirname, 'gdrive_banks.js');
+  const jsContent = `// Google Drive 雲端題庫本機快照（供本機直接開啟 HTML 時載入）\nwindow.GDRIVE_BANKS_SNAPSHOT = ${JSON.stringify(snapshot, null, 2)};\n`;
+  fs.writeFileSync(jsOutPath, jsContent, 'utf8');
+
+  console.log(`✅ 已更新 gdrive_banks.json 與 gdrive_banks.js（共 ${Object.keys(banks).length} 個題庫分組）`);
   return snapshot;
 }
 

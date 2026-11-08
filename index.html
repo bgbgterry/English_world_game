@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Spelling Bee Grade 2B - 真真英文 (v3.0)</title>
+    <!-- 本地雙擊開啟 (file://) 免 CORS 限制之雲端題庫快照 -->
+    <script src="gdrive_banks.js"></script>
     <style>
         :root {
             --primary: #4FC3F7;
@@ -1143,30 +1145,37 @@
                         }));
                     } catch (e) { }
                 } catch (liveErr) {
-                    // 2. 次優先：讀取專案從 Google Drive 同步產出的 gdrive_banks.json 快照
-                    try {
-                        const snap = await this.fetchFromCloudSnapshot();
-                        loadedBanks = snap.banks;
+                    // 2. 次優先：讀取已載入的 window.GDRIVE_BANKS_SNAPSHOT（本機 file:// 開啟時不受 CORS 限制）
+                    if (window.GDRIVE_BANKS_SNAPSHOT && window.GDRIVE_BANKS_SNAPSHOT.banks && Object.keys(window.GDRIVE_BANKS_SNAPSHOT.banks).length > 0) {
+                        loadedBanks = window.GDRIVE_BANKS_SNAPSHOT.banks;
                         cloudSyncState.source = 'snapshot';
-                        cloudSyncState.updatedAt = snap.updatedAt ? new Date(snap.updatedAt).toLocaleString() : '雲端同步快照';
+                        cloudSyncState.updatedAt = window.GDRIVE_BANKS_SNAPSHOT.updatedAt ? new Date(window.GDRIVE_BANKS_SNAPSHOT.updatedAt).toLocaleString() : '本地快照';
+                    } else {
+                        // 3. 次次優先：讀取專案從 Google Drive 同步產出的 gdrive_banks.json 快照
                         try {
-                            localStorage.setItem('bee_cloud_banks_v1', JSON.stringify({
-                                updatedAt: cloudSyncState.updatedAt,
-                                banks: loadedBanks
-                            }));
-                        } catch (e) { }
-                    } catch (snapErr) {
-                        // 3. 離線快取備援：讀取 localStorage 快取
-                        const cached = localStorage.getItem('bee_cloud_banks_v1');
-                        if (cached) {
+                            const snap = await this.fetchFromCloudSnapshot();
+                            loadedBanks = snap.banks;
+                            cloudSyncState.source = 'snapshot';
+                            cloudSyncState.updatedAt = snap.updatedAt ? new Date(snap.updatedAt).toLocaleString() : '雲端同步快照';
                             try {
-                                const parsed = JSON.parse(cached);
-                                if (parsed && parsed.banks) {
-                                    loadedBanks = parsed.banks;
-                                    cloudSyncState.source = 'cache';
-                                    cloudSyncState.updatedAt = parsed.updatedAt || '本地快取';
-                                }
+                                localStorage.setItem('bee_cloud_banks_v1', JSON.stringify({
+                                    updatedAt: cloudSyncState.updatedAt,
+                                    banks: loadedBanks
+                                }));
                             } catch (e) { }
+                        } catch (snapErr) {
+                            // 4. 離線快取備援：讀取 localStorage 快取
+                            const cached = localStorage.getItem('bee_cloud_banks_v1');
+                            if (cached) {
+                                try {
+                                    const parsed = JSON.parse(cached);
+                                    if (parsed && parsed.banks) {
+                                        loadedBanks = parsed.banks;
+                                        cloudSyncState.source = 'cache';
+                                        cloudSyncState.updatedAt = parsed.updatedAt || '本地快取';
+                                    }
+                                } catch (e) { }
+                            }
                         }
                     }
                 }
@@ -1254,7 +1263,13 @@
             if (label) {
                 label.innerText = getBankDisplayName(currentBankName) + ' (共 ' + rawData.length + ' 字)';
             }
-            alert('☁️ 已成功從 Google Drive「英文單字題庫」同步最新題庫！');
+            if (cloudSyncState.source === 'live') {
+                alert('☁️ 已成功即時連線 Google Drive「英文單字題庫」並同步最新題庫！');
+            } else if (cloudSyncState.source === 'snapshot' || cloudSyncState.source === 'cache') {
+                alert('☁️ 已成功載入 Google Drive 雲端題庫快照！\n\n💡 提示：若希望在 Google 試算表修改單字後能「即時直連」更新，請在 Google Drive 將「英文單字題庫」試算表右上角共用權限設為「知道連結的任何人 → 檢視者」。');
+            } else {
+                alert('❌ 無法連線雲端題庫！請檢查網路連線，或確認試算表共用權限已設為「知道連結的任何人 → 檢視者」。');
+            }
         }
 
         // --- 2. State & Config ---
