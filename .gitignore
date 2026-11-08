@@ -4,3 +4,4 @@ photo_to_csv.js
 wordbanks/
 *.json
 !package.json
+!gdrive_banks.json

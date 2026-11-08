@@ -223,73 +223,11 @@ fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part4.csv'), "\ufeff" +
 const allWords = [...part1, ...part2, ...part3, ...part4];
 fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_All.csv'), "\ufeff" + toCSV(allWords), 'utf8');
 
-// 自動掃描目錄下其他 CSV 題庫並同步至 HTML 內建題庫 (若執行 node generate_csv.js --sync)
+// 同步 Google Drive 雲端題庫快照至 gdrive_banks.json（不再將題庫靜態寫入 HTML）
 function syncHtmlDatabase() {
-  const htmlFiles = ['index.html', 'Engligh_v3.html'];
-  const presetBanksObj = {
-    "2026_Part1": { name: "🐝 2026 Part 1 (25字)", data: part1 },
-    "2026_Part2": { name: "🐝 2026 Part 2 (25字)", data: part2 },
-    "2026_Part3": { name: "🐝 2026 Part 3 (25字)", data: part3 },
-    "2026_Part4": { name: "🐝 2026 Part 4 (25字)", data: part4 },
-    "2026_All": { name: "🌟 2026 全部單字 (100字)", data: allWords },
-    "default": { name: "📚 Grade 1C 原題庫 (25字)", data: defaultData }
-  };
-
-  const ignoreFiles = new Set([
-    '2026_Spelling_Bee_Part1.csv',
-    '2026_Spelling_Bee_Part2.csv',
-    '2026_Spelling_Bee_Part3.csv',
-    '2026_Spelling_Bee_Part4.csv',
-    '2026_Spelling_Bee_All.csv',
-    'test_words.csv'
-  ]);
-
-  // 掃描專案根目錄與 wordbanks/（photo_to_csv.js 的預設輸出資料夾）
-  const scanDirs = [__dirname, path.join(__dirname, 'wordbanks')].filter(d => fs.existsSync(d));
-  const files = [];
-  for (const dir of scanDirs) {
-    fs.readdirSync(dir)
-      .filter(f => f.toLowerCase().endsWith('.csv') && !ignoreFiles.has(f))
-      .forEach(f => files.push(path.join(dir, f)));
-  }
-  for (const filePath of files) {
-    const file = path.basename(filePath);
-    try {
-      const content = fs.readFileSync(filePath, 'utf8');
-      const parsed = parseCSVText(content);
-      if (parsed.length > 0) {
-        const key = path.basename(file, path.extname(file));
-        let displayName = `📘 ${key} (${parsed.length}字)`;
-        const m = key.match(/^Grade2B_Week0?(\d+)$/i);
-        if (m) {
-          displayName = `📘 Grade 2B - Week ${m[1]} (${parsed.length}字)`;
-        } else if (key === 'Grade2B_All') {
-          displayName = `🌟 Grade 2B 全部單字 (${parsed.length}字)`;
-        }
-        presetBanksObj[key] = {
-          name: displayName,
-          data: parsed
-        };
-      }
-    } catch (e) {
-      console.warn(`略過無法解析的 CSV: ${file}`, e.message);
-    }
-  }
-
-  for (const htmlFile of htmlFiles) {
-    const fullPath = path.join(__dirname, htmlFile);
-    if (!fs.existsSync(fullPath)) continue;
-    let html = fs.readFileSync(fullPath, 'utf8');
-    const markerStart = '// --- BEGIN_PRESET_BANKS ---';
-    const markerEnd = '// --- END_PRESET_BANKS ---';
-    if (html.includes(markerStart) && html.includes(markerEnd)) {
-      const replacement = `${markerStart}\n        const presetBanks = ${JSON.stringify(presetBanksObj, null, 12)};\n        ${markerEnd}`;
-      const regex = new RegExp(`${markerStart}[\\s\\S]*?${markerEnd}`);
-      html = html.replace(regex, replacement);
-      fs.writeFileSync(fullPath, html, 'utf8');
-      console.log(`已同步更新 ${htmlFile} 內建題庫！`);
-    }
-  }
+  const { syncGDriveSnapshot } = require('./enrich_gdrive_words.js');
+  const spreadsheetId = process.env.GDRIVE_SPREADSHEET_ID || '1bv_OzB2UutDUxc-M1tLFnVa6OVWGW2xRl0oWlAXxieE';
+  return syncGDriveSnapshot(spreadsheetId);
 }
 
 if (require.main === module) {
