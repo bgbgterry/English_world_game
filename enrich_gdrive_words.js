@@ -184,15 +184,6 @@ function syncGDriveSnapshot(spreadsheetId) {
         data: items,
       };
     }
-
-    if (partGroups.size > 1) {
-      banks[`${sheetTitle}__All`] = {
-        name: `🌟 ${sheetTitle} - 全部單字 (${allItems.length}字)`,
-        sheet: sheetTitle,
-        part: 'All',
-        data: allItems,
-      };
-    }
   }
 
   const snapshot = {

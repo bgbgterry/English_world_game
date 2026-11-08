@@ -956,7 +956,7 @@
         // --- 1. Data (Google Drive 雲端動態題庫載入器) ---
         // 已移除原本內建寫死的題庫，全部改由 Google Drive「真真/英文/單字題庫/英文單字題庫」動態取得
         const GDRIVE_DEFAULT_SPREADSHEET_ID = '1bv_OzB2UutDUxc-M1tLFnVa6OVWGW2xRl0oWlAXxieE';
-        const GDRIVE_DEFAULT_SHEETS = ['2026_spelling_bee', 'Grade_2B', 'Grade_1C'];
+        const GDRIVE_DEFAULT_SHEETS = ['2026_spelling_bee', 'Test', 'Grade_2B', 'Grade_1C'];
 
         // --- BEGIN_PRESET_BANKS ---
         let presetBanks = {};
@@ -980,7 +980,7 @@
             '2026_Part2': '2026_spelling_bee__Part_2',
             '2026_Part3': '2026_spelling_bee__Part_3',
             '2026_Part4': '2026_spelling_bee__Part_4',
-            '2026_All': '2026_spelling_bee__All',
+            '2026_All': '2026_spelling_bee__Part_1',
             'Grade2B_Week01': 'Grade_2B__Week_1',
             'Grade2B_Week02': 'Grade_2B__Week_2',
             'Grade2B_Week03': 'Grade_2B__Week_3',
@@ -989,7 +989,7 @@
             'Grade2B_Week06': 'Grade_2B__Week_6',
             'Grade2B_Week07': 'Grade_2B__Week_7',
             'Grade2B_Week08': 'Grade_2B__Week_8',
-            'Grade2B_All': 'Grade_2B__All',
+            'Grade2B_All': 'Grade_2B__Week_1',
             'default': 'Grade_1C__Part_1'
         };
 
@@ -1075,14 +1075,6 @@
                 };
             });
 
-            if (partGroups.size > 1) {
-                sheetBanks[sheetTitle + '__All'] = {
-                    name: '🌟 ' + sheetTitle + ' - 全部單字 (' + allItems.length + '字)',
-                    sheet: sheetTitle,
-                    part: 'All',
-                    data: allItems
-                };
-            }
             return sheetBanks;
         }
 
@@ -2411,12 +2403,7 @@
             if (!select) return;
             select.innerHTML = '';
 
-            const allOption = document.createElement('option');
-            allOption.value = -1;
-            allOption.text = `全部單字 (共 ${rawData.length} 字)`;
-            select.appendChild(allOption);
-
-            const totalLevels = Math.ceil(rawData.length / GROUP_SIZE);
+            const totalLevels = Math.max(1, Math.ceil(rawData.length / GROUP_SIZE));
             for (let i = 0; i < totalLevels; i++) {
                 const option = document.createElement('option');
                 option.value = i;
@@ -2459,15 +2446,15 @@
 
         function loadLevel(levelIndex) {
             isReviewMode = false;
+            const totalLevels = Math.max(1, Math.ceil(rawData.length / GROUP_SIZE));
+            if (typeof levelIndex !== 'number' || levelIndex < 0 || levelIndex >= totalLevels) {
+                levelIndex = 0;
+            }
             currentLevel = levelIndex;
             currentIndex = 0;
-            if (levelIndex === -1) {
-                currentLevelWords = rawData;
-            } else {
-                const start = levelIndex * GROUP_SIZE;
-                const end = start + GROUP_SIZE;
-                currentLevelWords = rawData.slice(start, end);
-            }
+            const start = levelIndex * GROUP_SIZE;
+            const end = start + GROUP_SIZE;
+            currentLevelWords = rawData.slice(start, end);
             const lvlSelect = document.getElementById('levelSelect');
             if (lvlSelect) {
                 lvlSelect.value = levelIndex;
