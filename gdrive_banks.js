@@ -1,7 +1,7 @@
 // Google Drive 雲端題庫本機快照（供本機直接開啟 HTML 時載入）
 window.GDRIVE_BANKS_SNAPSHOT = {
   "spreadsheetId": "1bv_OzB2UutDUxc-M1tLFnVa6OVWGW2xRl0oWlAXxieE",
-  "updatedAt": "2026-11-08T05:37:38.727Z",
+  "updatedAt": "2026-11-08T05:44:42.033Z",
   "sheets": [
     "2026_spelling_bee",
     "Test",

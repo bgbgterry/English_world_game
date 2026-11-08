@@ -11,7 +11,24 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { execSync } = require('child_process');
+
+function getGSheetsCmd() {
+  const userProfile = process.env.USERPROFILE || '';
+  const candidates = [
+    path.join(userProfile, '.gemini', 'antigravity', 'bin', 'gsheets.cmd'),
+    path.join(userProfile, '.gemini', 'config', 'plugins', 'gsheets', 'skills', 'gsheets', 'scripts', 'gsheets.cmd')
+  ];
+  const pluginBinDir = path.join(userProfile, '.gemini', 'antigravity', 'plugin_data', 'gsheets', 'bin');
+  if (fs.existsSync(pluginBinDir)) {
+    const exes = fs.readdirSync(pluginBinDir).filter(f => f.startsWith('gsheets') && f.endsWith('.exe'));
+    if (exes.length > 0) candidates.push(path.join(pluginBinDir, exes[0]));
+  }
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return `"${c}"`;
+  }
+  return 'gsheets';
+}
 
 const DEFAULT_SPREADSHEET_ID = '1bv_OzB2UutDUxc-M1tLFnVa6OVWGW2xRl0oWlAXxieE';
 
@@ -124,18 +141,17 @@ async function callGemini({ model, parts, schema, apiKey, timeoutMs = 90000, max
 }
 
 function readSheetRows(spreadsheetId, sheetName) {
-  const out = execFileSync(
-    'gsheets',
-    ['readonly', 'read', spreadsheetId, `${sheetName}!A1:E1000`, '--json'],
-    { encoding: 'utf8', shell: true }
-  );
+  const gsheetsCmd = getGSheetsCmd();
+  const out = execSync(`${gsheetsCmd} readonly read ${spreadsheetId} "${sheetName}!A1:E1000" --json`, {
+    encoding: 'utf8'
+  });
   return JSON.parse(out) || [];
 }
 
 function listAllSheets(spreadsheetId) {
-  const out = execFileSync('gsheets', ['readonly', 'list-sheets', spreadsheetId, '--json'], {
-    encoding: 'utf8',
-    shell: true,
+  const gsheetsCmd = getGSheetsCmd();
+  const out = execSync(`${gsheetsCmd} readonly list-sheets ${spreadsheetId} --json`, {
+    encoding: 'utf8'
   });
   return JSON.parse(out) || [];
 }
@@ -286,9 +302,9 @@ async function enrichGoogleSheet({
       JSON.stringify([{ op: 'write', range: `${sheetName}!A1`, data: rows }], null, 2),
       'utf8'
     );
-    execFileSync('gsheets', ['mutate', 'batch', spreadsheetId, '-f', batchFile], {
-      stdio: 'inherit',
-      shell: true,
+    const gsheetsCmd = getGSheetsCmd();
+    execSync(`${gsheetsCmd} mutate batch ${spreadsheetId} -f "${batchFile}"`, {
+      stdio: 'inherit'
     });
 
     if (p + batchSize < pendingIndices.length) {
