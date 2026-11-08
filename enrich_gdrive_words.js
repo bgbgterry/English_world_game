@@ -39,7 +39,7 @@ function parseArgs(argv) {
     batch: 5,
     forceAll: false,
     syncOnly: false,
-    model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+    model: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -79,13 +79,13 @@ function enrichPrompt(words) {
 ${words.map((w, i) => `${i + 1}. ${w}`).join('\n')}`;
 }
 
-async function callGemini({ model, parts, schema, apiKey, timeoutMs = 60000, maxAttempts = 6 }) {
+async function callGemini({ model, parts, schema, apiKey, timeoutMs = 120000, maxAttempts = 6 }) {
   const candidateModels = [
     model,
-    'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-flash',
-    'gemini-2.5-pro'
+    'gemini-3.8-flash',
+    'gemini-3.5-flash-lite',
+    'gemini-3.1-flash-lite',
+    'gemini-3.1-pro',
   ].filter((m, idx, arr) => m && arr.indexOf(m) === idx);
 
   let currentModelIdx = 0;
@@ -99,6 +99,10 @@ async function callGemini({ model, parts, schema, apiKey, timeoutMs = 60000, max
       responseMimeType: 'application/json',
       responseSchema: schema,
     };
+
+    if (curModel.includes('3.8') || curModel.includes('3.')) {
+      generationConfig.thinkingConfig = { thinkingLevel: 'LOW' };
+    }
 
     const body = {
       contents: [{ role: 'user', parts }],
@@ -128,15 +132,24 @@ async function callGemini({ model, parts, schema, apiKey, timeoutMs = 60000, max
         delete body.generationConfig.thinkingConfig;
         continue;
       }
-      if (res.status === 429 || res.status >= 500) {
+      if (res.status === 404) {
         if (currentModelIdx + 1 < candidateModels.length) {
+          currentModelIdx++;
+          console.warn(
+            `   ⚠️ 模型 [${curModel}] 回應 404（模型停用或不存在），自動切換至備援模型 [${candidateModels[currentModelIdx]}]...`
+          );
+          continue;
+        }
+      }
+      if (res.status === 429 || res.status >= 500) {
+        if (attempt >= 2 && currentModelIdx + 1 < candidateModels.length) {
           currentModelIdx++;
           console.warn(
             `   ⚠️ 模型 [${curModel}] 回應 ${res.status}（伺服器忙碌），自動切換至備援模型 [${candidateModels[currentModelIdx]}]...`
           );
         }
         const wait = Math.min(25000, 3000 * Math.pow(1.4, attempt - 1));
-        console.warn(`   ⏳ 等待 ${Math.round(wait / 1000)} 秒後自動重試（第 ${attempt}/${maxAttempts} 次）...`);
+        console.warn(`   ⏳ 模型 [${curModel}] 伺服器忙碌 (${res.status})，等待 ${Math.round(wait / 1000)} 秒後自動重試（第 ${attempt}/${maxAttempts} 次）...`);
         await new Promise((r) => setTimeout(r, wait));
         continue;
       }
@@ -148,7 +161,7 @@ async function callGemini({ model, parts, schema, apiKey, timeoutMs = 60000, max
         /fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|socket hang up|aborted|network/i.test(err.message);
 
       if (isNetworkOrTimeout && attempt < maxAttempts) {
-        if (currentModelIdx + 1 < candidateModels.length) {
+        if (attempt >= 2 && currentModelIdx + 1 < candidateModels.length) {
           currentModelIdx++;
           console.warn(
             `   ⚠️ 模型 [${curModel}] 回應逾時或瞬斷 (${err.message})，自動切換至備援模型 [${candidateModels[currentModelIdx]}]...`
