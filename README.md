@@ -1,6 +1,6 @@
 # 🐝 真真英文練習遊戲 (English Word Game)
 
-專為國小學童設計的現代化互動式英文單字練習遊戲。採用純前端架構（HTML5 / CSS3 / Vanilla JavaScript），結合 **Google Drive 雲端試算表動態題庫系統**，支援 GitHub Pages 線上免安裝遊玩！
+專為國小學童設計的現代化互動式英文單字練習遊戲。採用純前端架構（HTML5 / CSS3 / Vanilla JavaScript），結合 **Google Drive 雲端試算表動態題庫系統**，支援 GitHub Pages 線上免安裝遊玩與本機直接雙擊開啟！
 
 ---
 
@@ -8,11 +8,11 @@
 
 ### 1. ☁️ Google Drive 雲端動態題庫架構
 * **全面移除靜態內建題庫與次級 Level 選單**：遊戲主程式（`index.html` 與 `Engligh_v3.html`）不再寫死單字資料，全面改由 Google Drive 中的「**`真真 -> 英文 -> 單字題庫 -> 英文單字題庫`**」雲端試算表動態取得題庫，並直接依試算表內的 `Part` / `Week` 分組載入單字。
-* **四層智慧載入與離線快取 (`CloudBankLoader`)**：
-  1. **Google Sheets 即時直連（線上與本機皆支援）**：試算表已開啟「知道連結的任何人可檢視」，網頁開啟或點擊「🔄 立即從雲端重新同步」即可直接連線 Google Drive 拉取最新單字。
-  2. **本機獨立腳本快照 (`gdrive_banks.js`)**：為本機直接雙擊開啟（`file:///` 協議）提供零 CORS 限制的題庫快照，即使本機不架本地伺服器也能瞬間載入。
+* **零 CORS 限制之 JSONP 即時直連與四層容錯載入 (`CloudBankLoader`)**：
+  1. **Google Sheets JSONP 即時直連（線上與本機 `file:///` 皆全面支援）**：採用動態 Script 注入（JSONP）技術，突破瀏覽器對本地檔案協定（`file:///`）的 CORS 限制。無論是雙擊本機 HTML 還是造訪 GitHub Pages，都能即時直連 Google Drive 試算表載入最新單字。
+  2. **本機獨立快照腳本 (`gdrive_banks.js`)**：若無網路或未連線時，本機自動載入快照變數 `window.GDRIVE_BANKS_SNAPSHOT`，即使完全斷網也能離線遊玩。
   3. **雲端同步快照 (`gdrive_banks.json`)**：專案定期從 Google Drive 同步產出快照，供 GitHub Pages 備援載入。
-  4. **瀏覽器離線快取 (`localStorage`)**：自動快取最近一次載入的雲端題庫，無網路環境也能隨時練習。
+  4. **瀏覽器離線快取 (`localStorage`)**：自動快取最近一次載入的雲端題庫，強化容錯與載入速度。
 
 ### 2. 三大核心練習模式
 * **📖 學習模式**：
@@ -50,7 +50,7 @@
 
 | 雲端工作表 (Tab) | Part / 週次分組 | 單字量 | 說明 |
 | :--- | :--- | :---: | :--- |
-| **`2026_spelling_bee`** | `Part 1` ~ `Part 4` | 各 25 字（共 100 字） | 2026 Spelling Bee 單字表，依 Part 順序排列並由 Gemini 生成中文翻譯與例句 |
+| **`2026_spelling_bee`** | `Part 1` ~ `Part 4` | 各 25 字（共 100 字） | 2026 Spelling Bee 單字表，由 Gemini 生成中文翻譯與例句並自動依 Part 順序排列 |
 | **`Grade_2B`** | `Week 1` ~ `Week 8` | 每週 20~30 字（共 187 字） | 國小二年級每週進度單字題庫 |
 | **`Grade_1C`** | `Part 1` | 25 字 | 國小一年級基礎複習題庫 |
 
@@ -63,38 +63,54 @@
 
 ## 🛠️ 開發工具鏈與自動化擴充
 
-本專案提供從「單字照片辨識」→「上傳 Google Drive」→「Gemini 生成翻譯與例句」→「網頁遊戲動態讀取」的完整自動化工具鏈：
+本專案提供**三合一整合工具**，一鍵完成「單字照片辨識」→「Gemini 生成中文翻譯與例句」→「上傳 Google Drive」→「同步網頁快照」：
 
 ```
 [單字表照片 (.jpg/.png)]
        │
-       ▼  1. node photo_to_csv.js (Gemini Vision OCR + 依 Part 排序上傳)
-[Google Drive：真真/英文/單字題庫/英文單字題庫 (2026_spelling_bee)]
+       ▼  一鍵執行 node photo_to_csv.js
+┌──────────────────────────────────────────────────────────┐
+│ 步驟 1：Gemini Vision OCR 辨識單字表（依 Part/Week 排序）    │
+│ 步驟 2：Gemini 自動生成國小學童適用之中文釋義與生活化例句     │
+│ 步驟 3：自動批次寫入 Google Drive 試算表並產出本地同步快照    │
+└──────────────────────────────────────────────────────────┘
        │
-       ▼  2. node enrich_gdrive_words.js (Gemini 自動生成中文翻譯與例句並回寫雲端)
-[完整雲端題庫 + gdrive_banks.json 同步快照]
+       ▼  即時自動更新
+[Google Drive：真真/英文/單字題庫/英文單字題庫 + gdrive_banks.js/json]
        │
-       ▼  3. CloudBankLoader 動態載入
+       ▼  CloudBankLoader 動態直連載入（支援本機 file:// 與線上）
 [遊戲主程式 (index.html / Engligh_v3.html)]
 ```
 
-### 1. 照片文字辨識並上傳 Google Drive (`photo_to_csv.js`)
-* 透過 Google Gemini Vision API（預設 `gemini-3.8-flash`）辨識照片上的單字，自動依 Part 順序排列並寫入 Google Drive 的 `英文單字題庫` 試算表。
-* 執行指令：
+### 1. 三合一自動化腳本 (`photo_to_csv.js`)
+* **整合流程**：
+  1. **OCR 辨識**：辨識照片單字，支援快取斷點續傳（若已辨識過自動沿用，節省時間與額度）。
+  2. **Gemini 智慧擴充**：批次生成繁體中文解釋、生活化英文例句及例句中文翻譯。
+  3. **Google Sheets 上傳與同步**：直接寫入 Google Drive 試算表指定分頁（A~E 欄完整格式化），並自動更新 `gdrive_banks.json` 與 `gdrive_banks.js`。
+* **執行指令範例**：
   ```powershell
+  # 設定 Gemini API Key
   $env:GEMINI_API_KEY="你的Gemini金鑰"
-  node photo_to_csv.js .\2026_spelling_bee.jpg --prefix 2026_spelling_bee --sheet 2026_spelling_bee --upload
+
+  # 一鍵執行完整三合一流程（辨識 2026_spelling_bee.jpg、生成中文與例句、上傳工作表）
+  node photo_to_csv.js .\2026_spelling_bee.jpg --sheet 2026_spelling_bee
   ```
+* **常用選項說明**：
+  * `--sheet <名稱>`：指定上傳之工作表名稱（若不存在會自動建立）。
+  * `--prefix <名稱>`：中繼暫存檔前綴（預設同工作表名稱）。
+  * `--part-size <數量>`：無週次標記時每個 Part 的單字數（預設 25 字）。
+  * `--force-ocr`：強制重新 OCR 辨識（忽略先前暫存快取）。
+  * `--no-enrich`：僅辨識單字，不上傳中文翻譯與例句。
+  * `--no-upload`：僅在本地完成辨識與生成，不上傳 Google Drive。
 
-### 2. Gemini 自動生成雲端題庫中文翻譯與例句 (`enrich_gdrive_words.js`)
-* 讀取 Google Drive 試算表中尚未填寫中文翻譯或例句的單字，批次呼叫 Gemini API 生成國小學童適用的解釋與例句，直接寫回 Google 試算表並更新 `gdrive_banks.json`。
-* 執行指令：
+### 2. Google 試算表補齊與單純同步工具 (`enrich_gdrive_words.js`)
+* 若已直接在 Google 試算表手動修改單字，可使用此工具快速同步最新快照至本機專案：
   ```powershell
-  # 為指定工作表生成缺漏的中文翻譯與例句並回寫雲端
-  node enrich_gdrive_words.js --sheet 2026_spelling_bee
-
-  # 若已在 Google 試算表手動編輯單字，僅同步最新快照至專案
+  # 僅同步最新快照至專案（產生 gdrive_banks.json 與 gdrive_banks.js）
   node enrich_gdrive_words.js --sync-only
+
+  # 掃描指定試算表並使用 Gemini 補齊缺漏的中文與例句
+  node enrich_gdrive_words.js --sheet 2026_spelling_bee
   ```
 
 ### 3. 雲端題庫 Skill (`generate-wordbank`)
@@ -106,11 +122,12 @@
 
 ```text
 English_world_game/
-├── index.html               # 遊戲主程式（GitHub Pages 入口頁面，動態載入 Google Drive 題庫）
+├── index.html               # 遊戲主程式（GitHub Pages 入口頁面，支援 JSONP 即時動態連線）
 ├── Engligh_v3.html          # 開發主程式同步版本
-├── gdrive_banks.json        # 從 Google Drive 試算表同步之雲端題庫快照
-├── enrich_gdrive_words.js   # Gemini 雲端試算表翻譯/例句生成與同步腳本
-├── generate_csv.js          # 題庫轉換與雲端快照同步輔助模組
+├── gdrive_banks.js          # 本機免 CORS 限制之題庫快照腳本（供 file:/// 直接雙擊開啟）
+├── gdrive_banks.json        # Google Drive 試算表題庫備援快照
+├── enrich_gdrive_words.js   # 試算表同步與例句補齊輔助模組
+├── generate_csv.js          # 題庫資料格式轉換模組
 ├── .gitignore               # Git 忽略設定（保護本機 photo_to_csv.js、暫存檔與照片）
 ├── AGENTS.md                # AI 協作與 README 強制更新準則
 ├── README.md                # 專案說明與更新規範文件
@@ -130,7 +147,7 @@ English_world_game/
 ## 🚀 部署與上線 (GitHub Pages)
 
 1. 當推送程式碼至 GitHub 遠端儲存庫 `bgbgterry/English_world_game` 的 `main` 分支時，`.github/workflows/deploy.yml` 會自動觸發建置與部署。
-2. 若希望在 Google 試算表直接修改文字後，網頁連重新部署都不需要就能即時生效，只需在 Google Drive 將「`英文單字題庫`」共用設定改為「**知道連結的任何人 → 檢視者**」，遊戲前端即會進入 `🟢 Google Drive 即時連線` 模式！
+2. 試算表已設定為「**知道連結的任何人 → 檢視者**」，遊戲前端透過 JSONP / GViz 協定即時直連，因此**在 Google 試算表修改任何單字，網頁端點擊「🔄 立即從雲端重新同步」即可立刻生效**，無需重新 build 或部署！
 
 ---
 

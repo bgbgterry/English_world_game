@@ -1078,6 +1078,51 @@
             return sheetBanks;
         }
 
+        function parseCloudSheetTable(table, sheetTitle) {
+            if (!table || !table.rows) return {};
+            const rows = [];
+            for (const r of table.rows) {
+                if (!r || !r.c) continue;
+                rows.push(r.c.map(cell => (cell && cell.v !== null && cell.v !== undefined) ? String(cell.v).trim() : ''));
+            }
+            if (rows.length === 0) return {};
+            let startIdx = 0;
+            const headerCol1 = (rows[0][1] || '').toLowerCase();
+            if (headerCol1 === '單字' || headerCol1 === 'word' || headerCol1 === 'words') {
+                startIdx = 1;
+            }
+            const partGroups = new Map();
+            const allItems = [];
+            for (let i = startIdx; i < rows.length; i++) {
+                const cols = rows[i];
+                const partName = (cols[0] || 'Part 1').trim();
+                const word = (cols[1] || '').trim();
+                if (!word) continue;
+                const meaning = (cols[2] || '').trim() || word;
+                const sentence = (cols[3] || '').trim() || ('This is the word ' + word + '.');
+                const trans = (cols[4] || '').trim() || meaning;
+
+                const item = { word, meaning, sentence, trans, part: partName };
+                allItems.push(item);
+                if (!partGroups.has(partName)) partGroups.set(partName, []);
+                partGroups.get(partName).push(item);
+            }
+
+            const sheetBanks = {};
+            if (allItems.length === 0) return sheetBanks;
+            const icon = sheetTitle.toLowerCase().includes('spelling_bee') ? '🐝' : '📘';
+            partGroups.forEach((items, partName) => {
+                const bankKey = sheetTitle + '__' + partName.replace(/\s+/g, '_');
+                sheetBanks[bankKey] = {
+                    name: icon + ' ' + sheetTitle + ' - ' + partName + ' (' + items.length + '字)',
+                    sheet: sheetTitle,
+                    part: partName,
+                    data: items
+                };
+            });
+            return sheetBanks;
+        }
+
         const CloudBankLoader = {
             loadConfig() {
                 try {
@@ -1098,23 +1143,73 @@
                     localStorage.setItem('bee_gdrive_sheets', sheetsArr.join(', '));
                 } catch (e) { }
             },
+            fetchSheetViaJsonp(spreadsheetId, sheetName) {
+                return new Promise((resolve, reject) => {
+                    const callbackName = 'gvizCb_' + Math.floor(Math.random() * 10000000) + '_' + Date.now();
+                    const script = document.createElement('script');
+                    let timer = null;
+
+                    window[callbackName] = function (response) {
+                        cleanup();
+                        if (response && response.status === 'ok' && response.table) {
+                            resolve(response.table);
+                        } else {
+                            reject(new Error(response && response.errors ? response.errors[0].message : 'GViz response error'));
+                        }
+                    };
+
+                    function cleanup() {
+                        if (timer) clearTimeout(timer);
+                        try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+                        if (script.parentNode) script.parentNode.removeChild(script);
+                    }
+
+                    timer = setTimeout(() => {
+                        cleanup();
+                        reject(new Error('JSONP timeout for ' + sheetName));
+                    }, 8000);
+
+                    script.onerror = function () {
+                        cleanup();
+                        reject(new Error('JSONP failed for ' + sheetName));
+                    };
+
+                    script.src = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(spreadsheetId) +
+                        '/gviz/tq?sheet=' + encodeURIComponent(sheetName) +
+                        '&tqx=responseHandler:' + callbackName +
+                        '&_t=' + Date.now();
+                    document.head.appendChild(script);
+                });
+            },
             async fetchLiveFromGoogleSheets(spreadsheetId, sheetsList) {
                 const combinedBanks = {};
                 let loadedCount = 0;
 
                 for (const sheetName of sheetsList) {
-                    const url = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(spreadsheetId) +
-                        '/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName) + '&_t=' + Date.now();
-                    const res = await fetch(url, { cache: 'no-store' });
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    const text = await res.text();
-                    // 檢查是否被導向 Google 登入頁 HTML
-                    if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
-                        throw new Error('Requires public view permission');
+                    let parsed = null;
+                    // 優先使用 JSONP（支援本地 file:// 協定且完全不受瀏覽器 CORS 限制）
+                    try {
+                        const table = await this.fetchSheetViaJsonp(spreadsheetId, sheetName);
+                        parsed = parseCloudSheetTable(table, sheetName);
+                    } catch (jsonpErr) {
+                        // 次選：標準 Fetch CSV（適用於 http/https 託管環境）
+                        try {
+                            const url = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(spreadsheetId) +
+                                '/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName) + '&_t=' + Date.now();
+                            const res = await fetch(url, { cache: 'no-store' });
+                            if (res.ok) {
+                                const text = await res.text();
+                                if (!text.trim().startsWith('<!DOCTYPE') && !text.trim().startsWith('<html')) {
+                                    parsed = parseCloudSheetCSV(text, sheetName);
+                                }
+                            }
+                        } catch (fetchErr) { }
                     }
-                    const parsed = parseCloudSheetCSV(text, sheetName);
-                    Object.assign(combinedBanks, parsed);
-                    loadedCount += Object.keys(parsed).length;
+
+                    if (parsed && Object.keys(parsed).length > 0) {
+                        Object.assign(combinedBanks, parsed);
+                        loadedCount += Object.keys(parsed).length;
+                    }
                 }
 
                 if (loadedCount === 0) throw new Error('No words found in live sheets');
@@ -1727,6 +1822,7 @@
 
         // --- 3.2 快速載入單字與題庫管理 Modal 邏輯 ---
         function openBankModal() {
+            updateCloudSyncUI();
             const label = document.getElementById('modalCurrentBankLabel');
             if (label) {
                 label.innerText = `${getBankDisplayName(currentBankName)} (共 ${rawData.length} 字)`;

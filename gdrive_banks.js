@@ -1,739 +1,740 @@
 // Google Drive 雲端題庫本機快照（供本機直接開啟 HTML 時載入）
 window.GDRIVE_BANKS_SNAPSHOT = {
   "spreadsheetId": "1bv_OzB2UutDUxc-M1tLFnVa6OVWGW2xRl0oWlAXxieE",
-  "updatedAt": "2026-11-08T05:44:42.033Z",
+  "updatedAt": "2026-11-08T06:07:06.006Z",
   "sheets": [
     "2026_spelling_bee",
     "Test",
     "Grade_2B",
-    "Grade_1C"
+    "Grade_1C",
+    "2026_spelling_bee2"
   ],
   "banks": {
-    "2026_spelling_bee__Part_1": {
-      "name": "🐝 2026_spelling_bee - Part 1 (25字)",
+    "2026_spelling_bee__Week_1": {
+      "name": "🐝 2026_spelling_bee - Week 1 (25字)",
       "sheet": "2026_spelling_bee",
-      "part": "Part 1",
+      "part": "Week 1",
       "data": [
         {
           "word": "aboard",
-          "meaning": "在船（飛機、車）上",
-          "sentence": "All passengers are now aboard the plane.",
-          "trans": "所有乘客現在都登機了。",
-          "part": "Part 1"
+          "meaning": "aboard",
+          "sentence": "This is the word aboard.",
+          "trans": "aboard",
+          "part": "Week 1"
         },
         {
           "word": "advance",
-          "meaning": "前進；進步",
-          "sentence": "The soldiers began to advance through the forest.",
-          "trans": "士兵們開始穿過森林向前推進。",
-          "part": "Part 1"
+          "meaning": "advance",
+          "sentence": "This is the word advance.",
+          "trans": "advance",
+          "part": "Week 1"
         },
         {
           "word": "affair",
-          "meaning": "事情；事件",
-          "sentence": "The party was a grand affair with music and dancing.",
-          "trans": "這場聚會是個有音樂和舞蹈的盛大活動。",
-          "part": "Part 1"
+          "meaning": "affair",
+          "sentence": "This is the word affair.",
+          "trans": "affair",
+          "part": "Week 1"
         },
         {
           "word": "airfield",
-          "meaning": "小型機場；飛機場",
-          "sentence": "Small planes land on the grassy airfield.",
-          "trans": "小型飛機降落在草地起降場上。",
-          "part": "Part 1"
+          "meaning": "airfield",
+          "sentence": "This is the word airfield.",
+          "trans": "airfield",
+          "part": "Week 1"
         },
         {
           "word": "apply",
-          "meaning": "塗抹；申請；應用",
-          "sentence": "You should apply sunscreen before going outside.",
-          "trans": "出門前你應該塗防曬乳。",
-          "part": "Part 1"
+          "meaning": "apply",
+          "sentence": "This is the word apply.",
+          "trans": "apply",
+          "part": "Week 1"
         },
         {
           "word": "attempt",
-          "meaning": "嘗試；企圖",
-          "sentence": "She made an attempt to climb the tall tree.",
-          "trans": "她嘗試爬上那棵高樹。",
-          "part": "Part 1"
+          "meaning": "attempt",
+          "sentence": "This is the word attempt.",
+          "trans": "attempt",
+          "part": "Week 1"
         },
         {
           "word": "attention",
-          "meaning": "注意力；專心",
-          "sentence": "Please pay attention to the teacher in class.",
-          "trans": "上課時請注意聽老師講課。",
-          "part": "Part 1"
+          "meaning": "attention",
+          "sentence": "This is the word attention.",
+          "trans": "attention",
+          "part": "Week 1"
         },
         {
           "word": "basis",
-          "meaning": "基礎；根據",
-          "sentence": "Trust is the basis of good friendship.",
-          "trans": "信任是良好友誼的基礎。",
-          "part": "Part 1"
+          "meaning": "basis",
+          "sentence": "This is the word basis.",
+          "trans": "basis",
+          "part": "Week 1"
         },
         {
           "word": "beautify",
-          "meaning": "美化；使美麗",
-          "sentence": "We planted flowers to beautify our school garden.",
-          "trans": "我們種花來美化學校花園。",
-          "part": "Part 1"
+          "meaning": "beautify",
+          "sentence": "This is the word beautify.",
+          "trans": "beautify",
+          "part": "Week 1"
         },
         {
           "word": "blueberry",
-          "meaning": "藍莓",
-          "sentence": "Mom baked a sweet blueberry pie for dessert.",
-          "trans": "媽媽烤了一個香甜的藍莓派當點心。",
-          "part": "Part 1"
+          "meaning": "blueberry",
+          "sentence": "This is the word blueberry.",
+          "trans": "blueberry",
+          "part": "Week 1"
         },
         {
           "word": "branch",
-          "meaning": "樹枝；分枝",
-          "sentence": "A little bird is singing on the tree branch.",
-          "trans": "一隻小鳥在樹枝上唱歌。",
-          "part": "Part 1"
+          "meaning": "branch",
+          "sentence": "This is the word branch.",
+          "trans": "branch",
+          "part": "Week 1"
         },
         {
           "word": "brook",
-          "meaning": "小溪；小河",
-          "sentence": "The clear water flows gently in the brook.",
-          "trans": "清澈的水在小溪裡緩緩流動。",
-          "part": "Part 1"
+          "meaning": "brook",
+          "sentence": "This is the word brook.",
+          "trans": "brook",
+          "part": "Week 1"
         },
         {
           "word": "brownie",
-          "meaning": "布朗尼蛋糕",
-          "sentence": "He ate a delicious chocolate brownie after lunch.",
-          "trans": "他午餐後吃了一塊美味的巧克力布朗尼。",
-          "part": "Part 1"
+          "meaning": "brownie",
+          "sentence": "This is the word brownie.",
+          "trans": "brownie",
+          "part": "Week 1"
         },
         {
           "word": "bulb",
-          "meaning": "燈泡；球莖",
-          "sentence": "Dad changed the light bulb in my bedroom.",
-          "trans": "爸爸換了我臥室的燈泡。",
-          "part": "Part 1"
+          "meaning": "bulb",
+          "sentence": "This is the word bulb.",
+          "trans": "bulb",
+          "part": "Week 1"
         },
         {
           "word": "business",
-          "meaning": "商業；生意；事務",
-          "sentence": "My uncle runs a small bakery business.",
-          "trans": "我的叔叔經營一家小麵包店生意。",
-          "part": "Part 1"
+          "meaning": "business",
+          "sentence": "This is the word business.",
+          "trans": "business",
+          "part": "Week 1"
         },
         {
           "word": "capital",
-          "meaning": "首都；大寫字母；資金",
-          "sentence": "Taipei is the capital city of Taiwan.",
-          "trans": "台北是台灣的首都。",
-          "part": "Part 1"
+          "meaning": "capital",
+          "sentence": "This is the word capital.",
+          "trans": "capital",
+          "part": "Week 1"
         },
         {
           "word": "cause",
-          "meaning": "引起；原因",
-          "sentence": "Heavy rain can cause flooding in the streets.",
-          "trans": "大雨會導致街道淹水。",
-          "part": "Part 1"
+          "meaning": "cause",
+          "sentence": "This is the word cause.",
+          "trans": "cause",
+          "part": "Week 1"
         },
         {
           "word": "century",
-          "meaning": "世紀；一百年",
-          "sentence": "This ancient castle was built a century ago.",
-          "trans": "這座古老的城堡是一百年前建造的。",
-          "part": "Part 1"
+          "meaning": "century",
+          "sentence": "This is the word century.",
+          "trans": "century",
+          "part": "Week 1"
         },
         {
           "word": "chubby",
-          "meaning": "圓胖的；豐滿的",
-          "sentence": "The baby has chubby cheeks and a cute smile.",
-          "trans": "那個小寶寶有著圓滾滾的臉頰和可愛的笑容。",
-          "part": "Part 1"
+          "meaning": "chubby",
+          "sentence": "This is the word chubby.",
+          "trans": "chubby",
+          "part": "Week 1"
         },
         {
           "word": "closet",
-          "meaning": "衣櫥；壁櫥",
-          "sentence": "I hang my jackets neatly in the closet.",
-          "trans": "我把外套整齊地掛在衣櫥裡。",
-          "part": "Part 1"
+          "meaning": "closet",
+          "sentence": "This is the word closet.",
+          "trans": "closet",
+          "part": "Week 1"
         },
         {
           "word": "coast",
-          "meaning": "海岸；海濱",
-          "sentence": "We walked along the sandy coast and found seashells.",
-          "trans": "我們沿著沙灘海岸漫步並撿到了貝殼。",
-          "part": "Part 1"
+          "meaning": "coast",
+          "sentence": "This is the word coast.",
+          "trans": "coast",
+          "part": "Week 1"
         },
         {
           "word": "company",
-          "meaning": "公司；陪伴",
-          "sentence": "Her mother works for a computer company.",
-          "trans": "她的媽媽在一間電腦公司上班。",
-          "part": "Part 1"
+          "meaning": "company",
+          "sentence": "This is the word company.",
+          "trans": "company",
+          "part": "Week 1"
         },
         {
           "word": "continue",
-          "meaning": "繼續；持續",
-          "sentence": "Please continue reading the story from page ten.",
-          "trans": "請從第十頁繼續讀這個故事。",
-          "part": "Part 1"
+          "meaning": "continue",
+          "sentence": "This is the word continue.",
+          "trans": "continue",
+          "part": "Week 1"
         },
         {
           "word": "craft",
-          "meaning": "手工藝；技藝",
-          "sentence": "We made paper lanterns in arts and crafts class.",
-          "trans": "我們在美勞課上製作了紙燈籠。",
-          "part": "Part 1"
+          "meaning": "craft",
+          "sentence": "This is the word craft.",
+          "trans": "craft",
+          "part": "Week 1"
         },
         {
           "word": "crew",
-          "meaning": "全體工作人員；船員；機組人員",
-          "sentence": "The ship's crew worked hard to sail safely.",
-          "trans": "全體船員努力工作以安全航行。",
-          "part": "Part 1"
+          "meaning": "crew",
+          "sentence": "This is the word crew.",
+          "trans": "crew",
+          "part": "Week 1"
         }
       ]
     },
-    "2026_spelling_bee__Part_2": {
-      "name": "🐝 2026_spelling_bee - Part 2 (25字)",
+    "2026_spelling_bee__Week_2": {
+      "name": "🐝 2026_spelling_bee - Week 2 (25字)",
       "sheet": "2026_spelling_bee",
-      "part": "Part 2",
+      "part": "Week 2",
       "data": [
         {
           "word": "crime",
-          "meaning": "罪行；犯罪",
-          "sentence": "Stealing is a serious crime that hurts others.",
-          "trans": "偷竊是一種傷害他人的嚴重犯罪行為。",
-          "part": "Part 2"
+          "meaning": "crime",
+          "sentence": "This is the word crime.",
+          "trans": "crime",
+          "part": "Week 2"
         },
         {
           "word": "crop",
-          "meaning": "農作物；莊稼",
-          "sentence": "Corn is an important crop grown by farmers here.",
-          "trans": "玉米是這裡農夫種植的重要農作物。",
-          "part": "Part 2"
+          "meaning": "crop",
+          "sentence": "This is the word crop.",
+          "trans": "crop",
+          "part": "Week 2"
         },
         {
           "word": "crowd",
-          "meaning": "人群；群眾",
-          "sentence": "A cheerful crowd cheered for the runners.",
-          "trans": "熱情的人群為跑者歡呼。",
-          "part": "Part 2"
+          "meaning": "crowd",
+          "sentence": "This is the word crowd.",
+          "trans": "crowd",
+          "part": "Week 2"
         },
         {
           "word": "dare",
-          "meaning": "敢；膽敢",
-          "sentence": "He did not dare to jump into the cold water.",
-          "trans": "他不敢跳進冰冷的水裡。",
-          "part": "Part 2"
+          "meaning": "dare",
+          "sentence": "This is the word dare.",
+          "trans": "dare",
+          "part": "Week 2"
         },
         {
           "word": "disagree",
-          "meaning": "不同意；意見不合",
-          "sentence": "It is okay to disagree as long as we are polite.",
-          "trans": "只要我們有禮貌，意見不同也是沒關係的。",
-          "part": "Part 2"
+          "meaning": "disagree",
+          "sentence": "This is the word disagree.",
+          "trans": "disagree",
+          "part": "Week 2"
         },
         {
           "word": "dresser",
-          "meaning": "梳妝台；矮衣櫃",
-          "sentence": "She keeps her socks and t-shirts in the dresser.",
-          "trans": "她把襪子和T恤收在梳妝台衣櫃裡。",
-          "part": "Part 2"
+          "meaning": "dresser",
+          "sentence": "This is the word dresser.",
+          "trans": "dresser",
+          "part": "Week 2"
         },
         {
           "word": "drift",
-          "meaning": "漂流；漂移",
-          "sentence": "Leaves drift slowly down the quiet river.",
-          "trans": "樹葉在平靜的小河上緩緩漂流。",
-          "part": "Part 2"
+          "meaning": "drift",
+          "sentence": "This is the word drift.",
+          "trans": "drift",
+          "part": "Week 2"
         },
         {
           "word": "elevator",
-          "meaning": "電梯",
-          "sentence": "We took the elevator to the tenth floor.",
-          "trans": "我們搭電梯到十樓。",
-          "part": "Part 2"
+          "meaning": "elevator",
+          "sentence": "This is the word elevator.",
+          "trans": "elevator",
+          "part": "Week 2"
         },
         {
           "word": "everywhere",
-          "meaning": "到處；處處",
-          "sentence": "In spring, colorful flowers bloom everywhere.",
-          "trans": "春天時，到處都盛開著繽紛的花朵。",
-          "part": "Part 2"
+          "meaning": "everywhere",
+          "sentence": "This is the word everywhere.",
+          "trans": "everywhere",
+          "part": "Week 2"
         },
         {
           "word": "expect",
-          "meaning": "預期；期待",
-          "sentence": "We expect sunny weather for our picnic tomorrow.",
-          "trans": "我們期盼明天的野餐會是晴天。",
-          "part": "Part 2"
+          "meaning": "expect",
+          "sentence": "This is the word expect.",
+          "trans": "expect",
+          "part": "Week 2"
         },
         {
           "word": "explain",
-          "meaning": "解釋；說明",
-          "sentence": "Can you explain how to solve this math problem?",
-          "trans": "你能解釋一下如何解這道數學題嗎？",
-          "part": "Part 2"
+          "meaning": "explain",
+          "sentence": "This is the word explain.",
+          "trans": "explain",
+          "part": "Week 2"
         },
         {
           "word": "famous",
-          "meaning": "著名的；出名的",
-          "sentence": "The Eiffel Tower is a famous landmark in Paris.",
-          "trans": "艾菲爾鐵塔是巴黎著名的地標。",
-          "part": "Part 2"
+          "meaning": "famous",
+          "sentence": "This is the word famous.",
+          "trans": "famous",
+          "part": "Week 2"
         },
         {
           "word": "figure",
-          "meaning": "身影；身材；數字；圖形",
-          "sentence": "I saw a shadowy figure standing in the doorway.",
-          "trans": "我看見一個模糊的身影站在門口。",
-          "part": "Part 2"
+          "meaning": "figure",
+          "sentence": "This is the word figure.",
+          "trans": "figure",
+          "part": "Week 2"
         },
         {
           "word": "fitting",
-          "meaning": "合適的；恰當的",
-          "sentence": "A warm coat is fitting for a cold winter day.",
-          "trans": "一件暖和的外套適合寒冷的冬日穿著。",
-          "part": "Part 2"
+          "meaning": "fitting",
+          "sentence": "This is the word fitting.",
+          "trans": "fitting",
+          "part": "Week 2"
         },
         {
           "word": "flaw",
-          "meaning": "瑕疵；缺點",
-          "sentence": "The diamond has a tiny flaw, but it still sparkles.",
-          "trans": "這顆鑽石有個微小的瑕疵，但依然閃閃發光。",
-          "part": "Part 2"
+          "meaning": "flaw",
+          "sentence": "This is the word flaw.",
+          "trans": "flaw",
+          "part": "Week 2"
         },
         {
           "word": "flood",
-          "meaning": "水災；洪水",
-          "sentence": "The river overflowed and caused a flood in the village.",
-          "trans": "河水暴漲，導致村莊發生水災。",
-          "part": "Part 2"
+          "meaning": "flood",
+          "sentence": "This is the word flood.",
+          "trans": "flood",
+          "part": "Week 2"
         },
         {
           "word": "forth",
-          "meaning": "向前；向外",
-          "sentence": "The little swing moved back and forth in the wind.",
-          "trans": "小鞦韆在風中前後擺動。",
-          "part": "Part 2"
+          "meaning": "forth",
+          "sentence": "This is the word forth.",
+          "trans": "forth",
+          "part": "Week 2"
         },
         {
           "word": "friendship",
-          "meaning": "友誼；友情",
-          "sentence": "Their friendship grew stronger over the school years.",
-          "trans": "經過這些學年，他們的友誼更加深厚了。",
-          "part": "Part 2"
+          "meaning": "friendship",
+          "sentence": "This is the word friendship.",
+          "trans": "friendship",
+          "part": "Week 2"
         },
         {
           "word": "gale",
-          "meaning": "強風；大風",
-          "sentence": "The strong gale blew hats off people's heads.",
-          "trans": "強勁的大風把人們頭上的帽子吹跑了。",
-          "part": "Part 2"
+          "meaning": "gale",
+          "sentence": "This is the word gale.",
+          "trans": "gale",
+          "part": "Week 2"
         },
         {
           "word": "gallon",
-          "meaning": "加侖（容量單位）",
-          "sentence": "Mom bought a gallon of fresh milk at the store.",
-          "trans": "媽媽在商店買了一加侖的新鮮牛奶。",
-          "part": "Part 2"
+          "meaning": "gallon",
+          "sentence": "This is the word gallon.",
+          "trans": "gallon",
+          "part": "Week 2"
         },
         {
           "word": "general",
-          "meaning": "將軍；一般的；普遍的",
-          "sentence": "The general led his army with great courage.",
-          "trans": "將軍以無比的勇氣率領他的軍隊。",
-          "part": "Part 2"
+          "meaning": "general",
+          "sentence": "This is the word general.",
+          "trans": "general",
+          "part": "Week 2"
         },
         {
           "word": "hale",
-          "meaning": "健壯的；矍鑠的",
-          "sentence": "My grandfather is eighty years old, yet still hale and healthy.",
-          "trans": "我爺爺八十歲了，但身體依然健壯硬朗。",
-          "part": "Part 2"
+          "meaning": "hale",
+          "sentence": "This is the word hale.",
+          "trans": "hale",
+          "part": "Week 2"
         },
         {
           "word": "handle",
-          "meaning": "把手；處理",
-          "sentence": "Turn the door handle gently to open the door.",
-          "trans": "輕輕轉動門把來打開門。",
-          "part": "Part 2"
+          "meaning": "handle",
+          "sentence": "This is the word handle.",
+          "trans": "handle",
+          "part": "Week 2"
         },
         {
           "word": "haste",
-          "meaning": "匆忙；倉促",
-          "sentence": "In his haste to catch the bus, he dropped his bag.",
-          "trans": "在他匆忙趕公車時，他不小心把書包掉了。",
-          "part": "Part 2"
+          "meaning": "haste",
+          "sentence": "This is the word haste.",
+          "trans": "haste",
+          "part": "Week 2"
         },
         {
           "word": "hunger",
-          "meaning": "飢餓；渴望",
-          "sentence": "After a long hike, the boys felt great hunger.",
-          "trans": "長途健行後，男孩們感到非常飢餓。",
-          "part": "Part 2"
+          "meaning": "hunger",
+          "sentence": "This is the word hunger.",
+          "trans": "hunger",
+          "part": "Week 2"
         }
       ]
     },
-    "2026_spelling_bee__Part_3": {
-      "name": "🐝 2026_spelling_bee - Part 3 (25字)",
+    "2026_spelling_bee__Week_3": {
+      "name": "🐝 2026_spelling_bee - Week 3 (25字)",
       "sheet": "2026_spelling_bee",
-      "part": "Part 3",
+      "part": "Week 3",
       "data": [
         {
           "word": "invent",
-          "meaning": "發明；創造",
-          "sentence": "Thomas Edison helped invent the electric light bulb.",
-          "trans": "愛迪生協助發明了電燈泡。",
-          "part": "Part 3"
+          "meaning": "invent",
+          "sentence": "This is the word invent.",
+          "trans": "invent",
+          "part": "Week 3"
         },
         {
           "word": "jingle",
-          "meaning": "叮噹響；短歌；短曲",
-          "sentence": "The keys jingle in my pocket when I run.",
-          "trans": "當我跑步時，口袋裡的鑰匙發出叮噹聲。",
-          "part": "Part 3"
+          "meaning": "jingle",
+          "sentence": "This is the word jingle.",
+          "trans": "jingle",
+          "part": "Week 3"
         },
         {
           "word": "kilogram",
-          "meaning": "公斤",
-          "sentence": "A bag of flour weighs about one kilogram.",
-          "trans": "一袋麵粉大約重一公斤。",
-          "part": "Part 3"
+          "meaning": "kilogram",
+          "sentence": "This is the word kilogram.",
+          "trans": "kilogram",
+          "part": "Week 3"
         },
         {
           "word": "kilometer",
-          "meaning": "公里",
-          "sentence": "We walked one kilometer around the park.",
-          "trans": "我們繞著公園走了一公里。",
-          "part": "Part 3"
+          "meaning": "kilometer",
+          "sentence": "This is the word kilometer.",
+          "trans": "kilometer",
+          "part": "Week 3"
         },
         {
           "word": "lawn",
-          "meaning": "草坪；草地",
-          "sentence": "Dad mowed the green lawn in the front yard.",
-          "trans": "爸爸修剪了前院的綠色草坪。",
-          "part": "Part 3"
+          "meaning": "lawn",
+          "sentence": "This is the word lawn.",
+          "trans": "lawn",
+          "part": "Week 3"
         },
         {
           "word": "length",
-          "meaning": "長度",
-          "sentence": "The swimmer swam the entire length of the pool.",
-          "trans": "游泳選手游完了整座泳池的長度。",
-          "part": "Part 3"
+          "meaning": "length",
+          "sentence": "This is the word length.",
+          "trans": "length",
+          "part": "Week 3"
         },
         {
           "word": "lord",
-          "meaning": "領主；貴族；主人",
-          "sentence": "The medieval lord lived in a magnificent castle.",
-          "trans": "中世紀的領主住在一座壯麗的城堡裡。",
-          "part": "Part 3"
+          "meaning": "lord",
+          "sentence": "This is the word lord.",
+          "trans": "lord",
+          "part": "Week 3"
         },
         {
           "word": "malt",
-          "meaning": "麥芽",
-          "sentence": "Malt is used to make cereal and yummy drinks.",
-          "trans": "麥芽可用來製作穀麥食品和美味飲料。",
-          "part": "Part 3"
+          "meaning": "malt",
+          "sentence": "This is the word malt.",
+          "trans": "malt",
+          "part": "Week 3"
         },
         {
           "word": "meek",
-          "meaning": "溫順的；謙恭的",
-          "sentence": "The meek little rabbit hid quietly under the bush.",
-          "trans": "那隻溫順的小兔子安靜地躲在灌木叢下。",
-          "part": "Part 3"
+          "meaning": "meek",
+          "sentence": "This is the word meek.",
+          "trans": "meek",
+          "part": "Week 3"
         },
         {
           "word": "method",
-          "meaning": "方法；辦法",
-          "sentence": "She discovered an easy method to memorize words.",
-          "trans": "她發現了一個背單字的簡單方法。",
-          "part": "Part 3"
+          "meaning": "method",
+          "sentence": "This is the word method.",
+          "trans": "method",
+          "part": "Week 3"
         },
         {
           "word": "modern",
-          "meaning": "現代的；新式的",
-          "sentence": "The new library has many modern computers.",
-          "trans": "新圖書館裡有許多現代化的電腦。",
-          "part": "Part 3"
+          "meaning": "modern",
+          "sentence": "This is the word modern.",
+          "trans": "modern",
+          "part": "Week 3"
         },
         {
           "word": "mount",
-          "meaning": "登上；騎上；山峰",
-          "sentence": "The rider will mount the brown horse.",
-          "trans": "騎士準備騎上那匹棕色的馬。",
-          "part": "Part 3"
+          "meaning": "mount",
+          "sentence": "This is the word mount.",
+          "trans": "mount",
+          "part": "Week 3"
         },
         {
           "word": "natural",
-          "meaning": "天然的；自然的",
-          "sentence": "Honey is a natural sweetener made by bees.",
-          "trans": "蜂蜜是由蜜蜂製造的天然甜味劑。",
-          "part": "Part 3"
+          "meaning": "natural",
+          "sentence": "This is the word natural.",
+          "trans": "natural",
+          "part": "Week 3"
         },
         {
           "word": "neighbor",
-          "meaning": "鄰居",
-          "sentence": "Our friendly neighbor waved hello across the fence.",
-          "trans": "我們友善的鄰居越過籬笆向我們揮手問好。",
-          "part": "Part 3"
+          "meaning": "neighbor",
+          "sentence": "This is the word neighbor.",
+          "trans": "neighbor",
+          "part": "Week 3"
         },
         {
           "word": "objective",
-          "meaning": "目標；客觀的",
-          "sentence": "Our main objective is to finish the project on time.",
-          "trans": "我們的主要目標是準時完成專案。",
-          "part": "Part 3"
+          "meaning": "objective",
+          "sentence": "This is the word objective.",
+          "trans": "objective",
+          "part": "Week 3"
         },
         {
           "word": "parade",
-          "meaning": "遊行；閱兵",
-          "sentence": "We watched the marching band in the holiday parade.",
-          "trans": "我們在節慶遊行中觀看樂旗隊表演。",
-          "part": "Part 3"
+          "meaning": "parade",
+          "sentence": "This is the word parade.",
+          "trans": "parade",
+          "part": "Week 3"
         },
         {
           "word": "pitch",
-          "meaning": "投球；瀝青；音高",
-          "sentence": "The pitcher threw a fastball pitch to the batter.",
-          "trans": "投手向打擊者投出了一記快速球。",
-          "part": "Part 3"
+          "meaning": "pitch",
+          "sentence": "This is the word pitch.",
+          "trans": "pitch",
+          "part": "Week 3"
         },
         {
           "word": "plentiful",
-          "meaning": "豐富的；充足的",
-          "sentence": "Apples are plentiful in the orchard during autumn.",
-          "trans": "秋天時果園裡的蘋果非常豐富充足。",
-          "part": "Part 3"
+          "meaning": "plentiful",
+          "sentence": "This is the word plentiful.",
+          "trans": "plentiful",
+          "part": "Week 3"
         },
         {
           "word": "position",
-          "meaning": "位置；姿勢；職位",
-          "sentence": "The goalkeeper moved into position before the kick.",
-          "trans": "守門員在球被踢出前就定位了。",
-          "part": "Part 3"
+          "meaning": "position",
+          "sentence": "This is the word position.",
+          "trans": "position",
+          "part": "Week 3"
         },
         {
           "word": "produce",
-          "meaning": "生產；製造；農產品",
-          "sentence": "Bees produce sweet honey in their hives.",
-          "trans": "蜜蜂在蜂巢裡生產香甜的蜂蜜。",
-          "part": "Part 3"
+          "meaning": "produce",
+          "sentence": "This is the word produce.",
+          "trans": "produce",
+          "part": "Week 3"
         },
         {
           "word": "raindrops",
-          "meaning": "雨滴；雨點",
-          "sentence": "Cool raindrops began to patter on the window.",
-          "trans": "冰涼的雨滴開始滴滴答答落在窗戶上。",
-          "part": "Part 3"
+          "meaning": "raindrops",
+          "sentence": "This is the word raindrops.",
+          "trans": "raindrops",
+          "part": "Week 3"
         },
         {
           "word": "refrigerator",
-          "meaning": "冰箱",
-          "sentence": "Please put the milk back into the refrigerator.",
-          "trans": "請把牛奶放回冰箱裡。",
-          "part": "Part 3"
+          "meaning": "refrigerator",
+          "sentence": "This is the word refrigerator.",
+          "trans": "refrigerator",
+          "part": "Week 3"
         },
         {
           "word": "refuse",
-          "meaning": "拒絕",
-          "sentence": "He had to refuse the invitation because he was sick.",
-          "trans": "他因為生病而不得不拒絕這份邀請。",
-          "part": "Part 3"
+          "meaning": "refuse",
+          "sentence": "This is the word refuse.",
+          "trans": "refuse",
+          "part": "Week 3"
         },
         {
           "word": "respect",
-          "meaning": "尊敬；尊重",
-          "sentence": "We should always show respect to our elders.",
-          "trans": "我們應該時常對長輩展現尊敬。",
-          "part": "Part 3"
+          "meaning": "respect",
+          "sentence": "This is the word respect.",
+          "trans": "respect",
+          "part": "Week 3"
         },
         {
           "word": "slide",
-          "meaning": "滑動；溜滑梯",
-          "sentence": "The children love to slide down the playground slide.",
-          "trans": "孩子們喜歡在遊樂場的溜滑梯上滑下來。",
-          "part": "Part 3"
+          "meaning": "slide",
+          "sentence": "This is the word slide.",
+          "trans": "slide",
+          "part": "Week 3"
         }
       ]
     },
-    "2026_spelling_bee__Part_4": {
-      "name": "🐝 2026_spelling_bee - Part 4 (25字)",
+    "2026_spelling_bee__Week_4": {
+      "name": "🐝 2026_spelling_bee - Week 4 (25字)",
       "sheet": "2026_spelling_bee",
-      "part": "Part 4",
+      "part": "Week 4",
       "data": [
         {
           "word": "smooth",
-          "meaning": "平滑的；光滑的",
-          "sentence": "The polished stone felt cool and smooth in my hand.",
-          "trans": "磨光的石頭在我手中感覺冰涼且平滑。",
-          "part": "Part 4"
+          "meaning": "smooth",
+          "sentence": "This is the word smooth.",
+          "trans": "smooth",
+          "part": "Week 4"
         },
         {
           "word": "special",
-          "meaning": "特別的；特殊的",
-          "sentence": "Today is a special day because it is my birthday.",
-          "trans": "今天是個特別的日子，因為是我的生日。",
-          "part": "Part 4"
+          "meaning": "special",
+          "sentence": "This is the word special.",
+          "trans": "special",
+          "part": "Week 4"
         },
         {
           "word": "spirit",
-          "meaning": "精神；靈魂；氣魄",
-          "sentence": "The soccer team played with energetic team spirit.",
-          "trans": "足球隊帶著充沛的團隊精神比賽。",
-          "part": "Part 4"
+          "meaning": "spirit",
+          "sentence": "This is the word spirit.",
+          "trans": "spirit",
+          "part": "Week 4"
         },
         {
           "word": "spread",
-          "meaning": "塗抹；展開；傳播",
-          "sentence": "She used a butter knife to spread jam on toast.",
-          "trans": "她用奶油刀在吐司上抹果醬。",
-          "part": "Part 4"
+          "meaning": "spread",
+          "sentence": "This is the word spread.",
+          "trans": "spread",
+          "part": "Week 4"
         },
         {
           "word": "stink",
-          "meaning": "發出臭味；惡臭",
-          "sentence": "Rotten eggs produce a terrible stink.",
-          "trans": "腐爛的蛋會散發可怕的臭味。",
-          "part": "Part 4"
+          "meaning": "stink",
+          "sentence": "This is the word stink.",
+          "trans": "stink",
+          "part": "Week 4"
         },
         {
           "word": "stomach",
-          "meaning": "胃；肚子",
-          "sentence": "Eating too much candy gave him a stomach ache.",
-          "trans": "吃太多糖果讓他胃痛肚子痛。",
-          "part": "Part 4"
+          "meaning": "stomach",
+          "sentence": "This is the word stomach.",
+          "trans": "stomach",
+          "part": "Week 4"
         },
         {
           "word": "strike",
-          "meaning": "擊打；襲擊；罷工",
-          "sentence": "Lightning can strike tall trees during a thunderstorm.",
-          "trans": "雷雨時閃電可能會擊中高大的樹木。",
-          "part": "Part 4"
+          "meaning": "strike",
+          "sentence": "This is the word strike.",
+          "trans": "strike",
+          "part": "Week 4"
         },
         {
           "word": "suggest",
-          "meaning": "建議；提議",
-          "sentence": "I suggest we read a book while waiting.",
-          "trans": "我建議我們在等待的時候看本書。",
-          "part": "Part 4"
+          "meaning": "suggest",
+          "sentence": "This is the word suggest.",
+          "trans": "suggest",
+          "part": "Week 4"
         },
         {
           "word": "suntan",
-          "meaning": "曬黑；曬成棕褐色的皮膚",
-          "sentence": "He got a golden suntan after spending the day at the beach.",
-          "trans": "在海灘度過一天後，他曬出了金黃的古銅色肌膚。",
-          "part": "Part 4"
+          "meaning": "suntan",
+          "sentence": "This is the word suntan.",
+          "trans": "suntan",
+          "part": "Week 4"
         },
         {
           "word": "suppose",
-          "meaning": "猜想；以為；假定",
-          "sentence": "I suppose we should leave now before it starts raining.",
-          "trans": "我想我們應該在下雨前現在就出發。",
-          "part": "Part 4"
+          "meaning": "suppose",
+          "sentence": "This is the word suppose.",
+          "trans": "suppose",
+          "part": "Week 4"
         },
         {
           "word": "sweetness",
-          "meaning": "甜味；芳香；溫柔",
-          "sentence": "The natural sweetness of ripe watermelon is delightful.",
-          "trans": "熟透西瓜的天然甜味令人心情愉悅。",
-          "part": "Part 4"
+          "meaning": "sweetness",
+          "sentence": "This is the word sweetness.",
+          "trans": "sweetness",
+          "part": "Week 4"
         },
         {
           "word": "system",
-          "meaning": "系統；體制",
-          "sentence": "The planets travel around the sun in the solar system.",
-          "trans": "太陽系中的行星繞著太陽運轉。",
-          "part": "Part 4"
+          "meaning": "system",
+          "sentence": "This is the word system.",
+          "trans": "system",
+          "part": "Week 4"
         },
         {
           "word": "talent",
-          "meaning": "天賦；才華",
-          "sentence": "She has a wonderful talent for playing the piano.",
-          "trans": "她很有彈鋼琴的才華。",
-          "part": "Part 4"
+          "meaning": "talent",
+          "sentence": "This is the word talent.",
+          "trans": "talent",
+          "part": "Week 4"
         },
         {
           "word": "taught",
-          "meaning": "教導（teach 的過去式）",
-          "sentence": "Our teacher taught us how to draw funny cartoons.",
-          "trans": "我們的老師教我們如何畫有趣的卡通漫畫。",
-          "part": "Part 4"
+          "meaning": "taught",
+          "sentence": "This is the word taught.",
+          "trans": "taught",
+          "part": "Week 4"
         },
         {
           "word": "teaspoon",
-          "meaning": "茶匙；一茶匙的量",
-          "sentence": "Add one teaspoon of sugar into your warm tea.",
-          "trans": "在溫茶裡加入一茶匙的糖。",
-          "part": "Part 4"
+          "meaning": "teaspoon",
+          "sentence": "This is the word teaspoon.",
+          "trans": "teaspoon",
+          "part": "Week 4"
         },
         {
           "word": "toothpaste",
-          "meaning": "牙膏",
-          "sentence": "Squeeze a little toothpaste onto your toothbrush.",
-          "trans": "擠一點牙膏在你的牙刷上。",
-          "part": "Part 4"
+          "meaning": "toothpaste",
+          "sentence": "This is the word toothpaste.",
+          "trans": "toothpaste",
+          "part": "Week 4"
         },
         {
           "word": "trend",
-          "meaning": "趨勢；潮流",
-          "sentence": "Wearing colorful sneakers is a popular fashion trend.",
-          "trans": "穿彩色球鞋是一種流行的時尚趨勢。",
-          "part": "Part 4"
+          "meaning": "trend",
+          "sentence": "This is the word trend.",
+          "trans": "trend",
+          "part": "Week 4"
         },
         {
           "word": "trio",
-          "meaning": "三人組；三重奏",
-          "sentence": "The trio of musicians played sweet violin melodies.",
-          "trans": "這三人音樂組演奏了悠揚的小提琴旋律。",
-          "part": "Part 4"
+          "meaning": "trio",
+          "sentence": "This is the word trio.",
+          "trans": "trio",
+          "part": "Week 4"
         },
         {
           "word": "tulip",
-          "meaning": "鬱金香",
-          "sentence": "A bright yellow tulip bloomed in the spring sun.",
-          "trans": "一朵亮黃色的鬱金香在春陽下盛開。",
-          "part": "Part 4"
+          "meaning": "tulip",
+          "sentence": "This is the word tulip.",
+          "trans": "tulip",
+          "part": "Week 4"
         },
         {
           "word": "useless",
-          "meaning": "無用的；無效的",
-          "sentence": "An umbrella with holes is useless in heavy rain.",
-          "trans": "破了洞的雨傘在大雨中是毫無用處的。",
-          "part": "Part 4"
+          "meaning": "useless",
+          "sentence": "This is the word useless.",
+          "trans": "useless",
+          "part": "Week 4"
         },
         {
           "word": "vacation",
-          "meaning": "假期；度假",
-          "sentence": "Our family went to the beach during summer vacation.",
-          "trans": "暑假期間我們全家去了海灘度假。",
-          "part": "Part 4"
+          "meaning": "vacation",
+          "sentence": "This is the word vacation.",
+          "trans": "vacation",
+          "part": "Week 4"
         },
         {
           "word": "valley",
-          "meaning": "山谷；溪谷",
-          "sentence": "A quiet village lies peacefully between the green valley.",
-          "trans": "一座安靜的村莊座落在綠意盎然的山谷之間。",
-          "part": "Part 4"
+          "meaning": "valley",
+          "sentence": "This is the word valley.",
+          "trans": "valley",
+          "part": "Week 4"
         },
         {
           "word": "woodpecker",
-          "meaning": "啄木鳥",
-          "sentence": "The woodpecker used its sharp beak to peck the tree trunk.",
-          "trans": "啄木鳥用牠尖銳的鳥喙啄著樹幹。",
-          "part": "Part 4"
+          "meaning": "woodpecker",
+          "sentence": "This is the word woodpecker.",
+          "trans": "woodpecker",
+          "part": "Week 4"
         },
         {
           "word": "yank",
-          "meaning": "猛拉；急抽",
-          "sentence": "Give the rope a firm yank to ring the bell.",
-          "trans": "用力猛拉一下繩子來敲鐘。",
-          "part": "Part 4"
+          "meaning": "yank",
+          "sentence": "This is the word yank.",
+          "trans": "yank",
+          "part": "Week 4"
         },
         {
           "word": "yeast",
-          "meaning": "酵母；酵母菌",
-          "sentence": "Bakers use yeast to make dough rise into fluffy bread.",
-          "trans": "烘焙師使用酵母讓麵團發酵成蓬鬆的麵包。",
-          "part": "Part 4"
+          "meaning": "yeast",
+          "sentence": "This is the word yeast.",
+          "trans": "yeast",
+          "part": "Week 4"
         }
       ]
     },
@@ -2470,6 +2471,734 @@ window.GDRIVE_BANKS_SNAPSHOT = {
           "sentence": "She can’t decide what to wear today.",
           "trans": "她今天決定不了要穿什麼。",
           "part": "Part 1"
+        }
+      ]
+    },
+    "2026_spelling_bee2__Week_1": {
+      "name": "🐝 2026_spelling_bee2 - Week 1 (25字)",
+      "sheet": "2026_spelling_bee2",
+      "part": "Week 1",
+      "data": [
+        {
+          "word": "aboard",
+          "meaning": "aboard",
+          "sentence": "This is the word aboard.",
+          "trans": "aboard",
+          "part": "Week 1"
+        },
+        {
+          "word": "advance",
+          "meaning": "advance",
+          "sentence": "This is the word advance.",
+          "trans": "advance",
+          "part": "Week 1"
+        },
+        {
+          "word": "affair",
+          "meaning": "affair",
+          "sentence": "This is the word affair.",
+          "trans": "affair",
+          "part": "Week 1"
+        },
+        {
+          "word": "airfield",
+          "meaning": "airfield",
+          "sentence": "This is the word airfield.",
+          "trans": "airfield",
+          "part": "Week 1"
+        },
+        {
+          "word": "apply",
+          "meaning": "apply",
+          "sentence": "This is the word apply.",
+          "trans": "apply",
+          "part": "Week 1"
+        },
+        {
+          "word": "attempt",
+          "meaning": "attempt",
+          "sentence": "This is the word attempt.",
+          "trans": "attempt",
+          "part": "Week 1"
+        },
+        {
+          "word": "attention",
+          "meaning": "attention",
+          "sentence": "This is the word attention.",
+          "trans": "attention",
+          "part": "Week 1"
+        },
+        {
+          "word": "basis",
+          "meaning": "basis",
+          "sentence": "This is the word basis.",
+          "trans": "basis",
+          "part": "Week 1"
+        },
+        {
+          "word": "beautify",
+          "meaning": "beautify",
+          "sentence": "This is the word beautify.",
+          "trans": "beautify",
+          "part": "Week 1"
+        },
+        {
+          "word": "blueberry",
+          "meaning": "blueberry",
+          "sentence": "This is the word blueberry.",
+          "trans": "blueberry",
+          "part": "Week 1"
+        },
+        {
+          "word": "branch",
+          "meaning": "branch",
+          "sentence": "This is the word branch.",
+          "trans": "branch",
+          "part": "Week 1"
+        },
+        {
+          "word": "brook",
+          "meaning": "brook",
+          "sentence": "This is the word brook.",
+          "trans": "brook",
+          "part": "Week 1"
+        },
+        {
+          "word": "brownie",
+          "meaning": "brownie",
+          "sentence": "This is the word brownie.",
+          "trans": "brownie",
+          "part": "Week 1"
+        },
+        {
+          "word": "bulb",
+          "meaning": "bulb",
+          "sentence": "This is the word bulb.",
+          "trans": "bulb",
+          "part": "Week 1"
+        },
+        {
+          "word": "business",
+          "meaning": "business",
+          "sentence": "This is the word business.",
+          "trans": "business",
+          "part": "Week 1"
+        },
+        {
+          "word": "capital",
+          "meaning": "capital",
+          "sentence": "This is the word capital.",
+          "trans": "capital",
+          "part": "Week 1"
+        },
+        {
+          "word": "cause",
+          "meaning": "cause",
+          "sentence": "This is the word cause.",
+          "trans": "cause",
+          "part": "Week 1"
+        },
+        {
+          "word": "century",
+          "meaning": "century",
+          "sentence": "This is the word century.",
+          "trans": "century",
+          "part": "Week 1"
+        },
+        {
+          "word": "chubby",
+          "meaning": "chubby",
+          "sentence": "This is the word chubby.",
+          "trans": "chubby",
+          "part": "Week 1"
+        },
+        {
+          "word": "closet",
+          "meaning": "closet",
+          "sentence": "This is the word closet.",
+          "trans": "closet",
+          "part": "Week 1"
+        },
+        {
+          "word": "coast",
+          "meaning": "coast",
+          "sentence": "This is the word coast.",
+          "trans": "coast",
+          "part": "Week 1"
+        },
+        {
+          "word": "company",
+          "meaning": "company",
+          "sentence": "This is the word company.",
+          "trans": "company",
+          "part": "Week 1"
+        },
+        {
+          "word": "continue",
+          "meaning": "continue",
+          "sentence": "This is the word continue.",
+          "trans": "continue",
+          "part": "Week 1"
+        },
+        {
+          "word": "craft",
+          "meaning": "craft",
+          "sentence": "This is the word craft.",
+          "trans": "craft",
+          "part": "Week 1"
+        },
+        {
+          "word": "crew",
+          "meaning": "crew",
+          "sentence": "This is the word crew.",
+          "trans": "crew",
+          "part": "Week 1"
+        }
+      ]
+    },
+    "2026_spelling_bee2__Week_2": {
+      "name": "🐝 2026_spelling_bee2 - Week 2 (25字)",
+      "sheet": "2026_spelling_bee2",
+      "part": "Week 2",
+      "data": [
+        {
+          "word": "crime",
+          "meaning": "crime",
+          "sentence": "This is the word crime.",
+          "trans": "crime",
+          "part": "Week 2"
+        },
+        {
+          "word": "crop",
+          "meaning": "crop",
+          "sentence": "This is the word crop.",
+          "trans": "crop",
+          "part": "Week 2"
+        },
+        {
+          "word": "crowd",
+          "meaning": "crowd",
+          "sentence": "This is the word crowd.",
+          "trans": "crowd",
+          "part": "Week 2"
+        },
+        {
+          "word": "dare",
+          "meaning": "dare",
+          "sentence": "This is the word dare.",
+          "trans": "dare",
+          "part": "Week 2"
+        },
+        {
+          "word": "disagree",
+          "meaning": "disagree",
+          "sentence": "This is the word disagree.",
+          "trans": "disagree",
+          "part": "Week 2"
+        },
+        {
+          "word": "dresser",
+          "meaning": "dresser",
+          "sentence": "This is the word dresser.",
+          "trans": "dresser",
+          "part": "Week 2"
+        },
+        {
+          "word": "drift",
+          "meaning": "drift",
+          "sentence": "This is the word drift.",
+          "trans": "drift",
+          "part": "Week 2"
+        },
+        {
+          "word": "elevator",
+          "meaning": "elevator",
+          "sentence": "This is the word elevator.",
+          "trans": "elevator",
+          "part": "Week 2"
+        },
+        {
+          "word": "everywhere",
+          "meaning": "everywhere",
+          "sentence": "This is the word everywhere.",
+          "trans": "everywhere",
+          "part": "Week 2"
+        },
+        {
+          "word": "expect",
+          "meaning": "expect",
+          "sentence": "This is the word expect.",
+          "trans": "expect",
+          "part": "Week 2"
+        },
+        {
+          "word": "explain",
+          "meaning": "explain",
+          "sentence": "This is the word explain.",
+          "trans": "explain",
+          "part": "Week 2"
+        },
+        {
+          "word": "famous",
+          "meaning": "famous",
+          "sentence": "This is the word famous.",
+          "trans": "famous",
+          "part": "Week 2"
+        },
+        {
+          "word": "figure",
+          "meaning": "figure",
+          "sentence": "This is the word figure.",
+          "trans": "figure",
+          "part": "Week 2"
+        },
+        {
+          "word": "fitting",
+          "meaning": "fitting",
+          "sentence": "This is the word fitting.",
+          "trans": "fitting",
+          "part": "Week 2"
+        },
+        {
+          "word": "flaw",
+          "meaning": "flaw",
+          "sentence": "This is the word flaw.",
+          "trans": "flaw",
+          "part": "Week 2"
+        },
+        {
+          "word": "flood",
+          "meaning": "flood",
+          "sentence": "This is the word flood.",
+          "trans": "flood",
+          "part": "Week 2"
+        },
+        {
+          "word": "forth",
+          "meaning": "forth",
+          "sentence": "This is the word forth.",
+          "trans": "forth",
+          "part": "Week 2"
+        },
+        {
+          "word": "friendship",
+          "meaning": "friendship",
+          "sentence": "This is the word friendship.",
+          "trans": "friendship",
+          "part": "Week 2"
+        },
+        {
+          "word": "gale",
+          "meaning": "gale",
+          "sentence": "This is the word gale.",
+          "trans": "gale",
+          "part": "Week 2"
+        },
+        {
+          "word": "gallon",
+          "meaning": "gallon",
+          "sentence": "This is the word gallon.",
+          "trans": "gallon",
+          "part": "Week 2"
+        },
+        {
+          "word": "general",
+          "meaning": "general",
+          "sentence": "This is the word general.",
+          "trans": "general",
+          "part": "Week 2"
+        },
+        {
+          "word": "hale",
+          "meaning": "hale",
+          "sentence": "This is the word hale.",
+          "trans": "hale",
+          "part": "Week 2"
+        },
+        {
+          "word": "handle",
+          "meaning": "handle",
+          "sentence": "This is the word handle.",
+          "trans": "handle",
+          "part": "Week 2"
+        },
+        {
+          "word": "haste",
+          "meaning": "haste",
+          "sentence": "This is the word haste.",
+          "trans": "haste",
+          "part": "Week 2"
+        },
+        {
+          "word": "hunger",
+          "meaning": "hunger",
+          "sentence": "This is the word hunger.",
+          "trans": "hunger",
+          "part": "Week 2"
+        }
+      ]
+    },
+    "2026_spelling_bee2__Week_3": {
+      "name": "🐝 2026_spelling_bee2 - Week 3 (25字)",
+      "sheet": "2026_spelling_bee2",
+      "part": "Week 3",
+      "data": [
+        {
+          "word": "invent",
+          "meaning": "invent",
+          "sentence": "This is the word invent.",
+          "trans": "invent",
+          "part": "Week 3"
+        },
+        {
+          "word": "jingle",
+          "meaning": "jingle",
+          "sentence": "This is the word jingle.",
+          "trans": "jingle",
+          "part": "Week 3"
+        },
+        {
+          "word": "kilogram",
+          "meaning": "kilogram",
+          "sentence": "This is the word kilogram.",
+          "trans": "kilogram",
+          "part": "Week 3"
+        },
+        {
+          "word": "kilometer",
+          "meaning": "kilometer",
+          "sentence": "This is the word kilometer.",
+          "trans": "kilometer",
+          "part": "Week 3"
+        },
+        {
+          "word": "lawn",
+          "meaning": "lawn",
+          "sentence": "This is the word lawn.",
+          "trans": "lawn",
+          "part": "Week 3"
+        },
+        {
+          "word": "length",
+          "meaning": "length",
+          "sentence": "This is the word length.",
+          "trans": "length",
+          "part": "Week 3"
+        },
+        {
+          "word": "lord",
+          "meaning": "lord",
+          "sentence": "This is the word lord.",
+          "trans": "lord",
+          "part": "Week 3"
+        },
+        {
+          "word": "malt",
+          "meaning": "malt",
+          "sentence": "This is the word malt.",
+          "trans": "malt",
+          "part": "Week 3"
+        },
+        {
+          "word": "meek",
+          "meaning": "meek",
+          "sentence": "This is the word meek.",
+          "trans": "meek",
+          "part": "Week 3"
+        },
+        {
+          "word": "method",
+          "meaning": "method",
+          "sentence": "This is the word method.",
+          "trans": "method",
+          "part": "Week 3"
+        },
+        {
+          "word": "modern",
+          "meaning": "modern",
+          "sentence": "This is the word modern.",
+          "trans": "modern",
+          "part": "Week 3"
+        },
+        {
+          "word": "mount",
+          "meaning": "mount",
+          "sentence": "This is the word mount.",
+          "trans": "mount",
+          "part": "Week 3"
+        },
+        {
+          "word": "natural",
+          "meaning": "natural",
+          "sentence": "This is the word natural.",
+          "trans": "natural",
+          "part": "Week 3"
+        },
+        {
+          "word": "neighbor",
+          "meaning": "neighbor",
+          "sentence": "This is the word neighbor.",
+          "trans": "neighbor",
+          "part": "Week 3"
+        },
+        {
+          "word": "objective",
+          "meaning": "objective",
+          "sentence": "This is the word objective.",
+          "trans": "objective",
+          "part": "Week 3"
+        },
+        {
+          "word": "parade",
+          "meaning": "parade",
+          "sentence": "This is the word parade.",
+          "trans": "parade",
+          "part": "Week 3"
+        },
+        {
+          "word": "pitch",
+          "meaning": "pitch",
+          "sentence": "This is the word pitch.",
+          "trans": "pitch",
+          "part": "Week 3"
+        },
+        {
+          "word": "plentiful",
+          "meaning": "plentiful",
+          "sentence": "This is the word plentiful.",
+          "trans": "plentiful",
+          "part": "Week 3"
+        },
+        {
+          "word": "position",
+          "meaning": "position",
+          "sentence": "This is the word position.",
+          "trans": "position",
+          "part": "Week 3"
+        },
+        {
+          "word": "produce",
+          "meaning": "produce",
+          "sentence": "This is the word produce.",
+          "trans": "produce",
+          "part": "Week 3"
+        },
+        {
+          "word": "raindrops",
+          "meaning": "raindrops",
+          "sentence": "This is the word raindrops.",
+          "trans": "raindrops",
+          "part": "Week 3"
+        },
+        {
+          "word": "refrigerator",
+          "meaning": "refrigerator",
+          "sentence": "This is the word refrigerator.",
+          "trans": "refrigerator",
+          "part": "Week 3"
+        },
+        {
+          "word": "refuse",
+          "meaning": "refuse",
+          "sentence": "This is the word refuse.",
+          "trans": "refuse",
+          "part": "Week 3"
+        },
+        {
+          "word": "respect",
+          "meaning": "respect",
+          "sentence": "This is the word respect.",
+          "trans": "respect",
+          "part": "Week 3"
+        },
+        {
+          "word": "slide",
+          "meaning": "slide",
+          "sentence": "This is the word slide.",
+          "trans": "slide",
+          "part": "Week 3"
+        }
+      ]
+    },
+    "2026_spelling_bee2__Week_4": {
+      "name": "🐝 2026_spelling_bee2 - Week 4 (25字)",
+      "sheet": "2026_spelling_bee2",
+      "part": "Week 4",
+      "data": [
+        {
+          "word": "smooth",
+          "meaning": "smooth",
+          "sentence": "This is the word smooth.",
+          "trans": "smooth",
+          "part": "Week 4"
+        },
+        {
+          "word": "special",
+          "meaning": "special",
+          "sentence": "This is the word special.",
+          "trans": "special",
+          "part": "Week 4"
+        },
+        {
+          "word": "spirit",
+          "meaning": "spirit",
+          "sentence": "This is the word spirit.",
+          "trans": "spirit",
+          "part": "Week 4"
+        },
+        {
+          "word": "spread",
+          "meaning": "spread",
+          "sentence": "This is the word spread.",
+          "trans": "spread",
+          "part": "Week 4"
+        },
+        {
+          "word": "stink",
+          "meaning": "stink",
+          "sentence": "This is the word stink.",
+          "trans": "stink",
+          "part": "Week 4"
+        },
+        {
+          "word": "stomach",
+          "meaning": "stomach",
+          "sentence": "This is the word stomach.",
+          "trans": "stomach",
+          "part": "Week 4"
+        },
+        {
+          "word": "strike",
+          "meaning": "strike",
+          "sentence": "This is the word strike.",
+          "trans": "strike",
+          "part": "Week 4"
+        },
+        {
+          "word": "suggest",
+          "meaning": "suggest",
+          "sentence": "This is the word suggest.",
+          "trans": "suggest",
+          "part": "Week 4"
+        },
+        {
+          "word": "suntan",
+          "meaning": "suntan",
+          "sentence": "This is the word suntan.",
+          "trans": "suntan",
+          "part": "Week 4"
+        },
+        {
+          "word": "suppose",
+          "meaning": "suppose",
+          "sentence": "This is the word suppose.",
+          "trans": "suppose",
+          "part": "Week 4"
+        },
+        {
+          "word": "sweetness",
+          "meaning": "sweetness",
+          "sentence": "This is the word sweetness.",
+          "trans": "sweetness",
+          "part": "Week 4"
+        },
+        {
+          "word": "system",
+          "meaning": "system",
+          "sentence": "This is the word system.",
+          "trans": "system",
+          "part": "Week 4"
+        },
+        {
+          "word": "talent",
+          "meaning": "talent",
+          "sentence": "This is the word talent.",
+          "trans": "talent",
+          "part": "Week 4"
+        },
+        {
+          "word": "taught",
+          "meaning": "taught",
+          "sentence": "This is the word taught.",
+          "trans": "taught",
+          "part": "Week 4"
+        },
+        {
+          "word": "teaspoon",
+          "meaning": "teaspoon",
+          "sentence": "This is the word teaspoon.",
+          "trans": "teaspoon",
+          "part": "Week 4"
+        },
+        {
+          "word": "toothpaste",
+          "meaning": "toothpaste",
+          "sentence": "This is the word toothpaste.",
+          "trans": "toothpaste",
+          "part": "Week 4"
+        },
+        {
+          "word": "trend",
+          "meaning": "trend",
+          "sentence": "This is the word trend.",
+          "trans": "trend",
+          "part": "Week 4"
+        },
+        {
+          "word": "trio",
+          "meaning": "trio",
+          "sentence": "This is the word trio.",
+          "trans": "trio",
+          "part": "Week 4"
+        },
+        {
+          "word": "tulip",
+          "meaning": "tulip",
+          "sentence": "This is the word tulip.",
+          "trans": "tulip",
+          "part": "Week 4"
+        },
+        {
+          "word": "useless",
+          "meaning": "useless",
+          "sentence": "This is the word useless.",
+          "trans": "useless",
+          "part": "Week 4"
+        },
+        {
+          "word": "vacation",
+          "meaning": "vacation",
+          "sentence": "This is the word vacation.",
+          "trans": "vacation",
+          "part": "Week 4"
+        },
+        {
+          "word": "valley",
+          "meaning": "valley",
+          "sentence": "This is the word valley.",
+          "trans": "valley",
+          "part": "Week 4"
+        },
+        {
+          "word": "woodpecker",
+          "meaning": "woodpecker",
+          "sentence": "This is the word woodpecker.",
+          "trans": "woodpecker",
+          "part": "Week 4"
+        },
+        {
+          "word": "yank",
+          "meaning": "yank",
+          "sentence": "This is the word yank.",
+          "trans": "yank",
+          "part": "Week 4"
+        },
+        {
+          "word": "yeast",
+          "meaning": "yeast",
+          "sentence": "This is the word yeast.",
+          "trans": "yeast",
+          "part": "Week 4"
         }
       ]
     }
