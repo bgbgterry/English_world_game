@@ -966,7 +966,7 @@
         let rawData = [];
         let customBanks = {};
         let presetOverrides = {};
-        let currentBankName = '2026_spelling_bee__Part_1';
+        let currentBankName = '2026_spelling_bee__Week_1';
         let cloudSyncState = {
             spreadsheetId: GDRIVE_DEFAULT_SPREADSHEET_ID,
             sheets: [...GDRIVE_DEFAULT_SHEETS],
@@ -974,13 +974,17 @@
             updatedAt: ''
         };
 
-        // 舊版題庫 Key 對照表（確保挑戰者歷史紀錄無縫銜接雲端題庫）
+        // 舊版題庫 Key 對照表（確保挑戰者歷史紀錄無縫銜接雲端題庫，Part 即 Week）
         const LEGACY_BANK_KEY_MAP = {
-            '2026_Part1': '2026_spelling_bee__Part_1',
-            '2026_Part2': '2026_spelling_bee__Part_2',
-            '2026_Part3': '2026_spelling_bee__Part_3',
-            '2026_Part4': '2026_spelling_bee__Part_4',
-            '2026_All': '2026_spelling_bee__Part_1',
+            '2026_Part1': '2026_spelling_bee__Week_1',
+            '2026_Part2': '2026_spelling_bee__Week_2',
+            '2026_Part3': '2026_spelling_bee__Week_3',
+            '2026_Part4': '2026_spelling_bee__Week_4',
+            '2026_All': '2026_spelling_bee__Week_1',
+            '2026_spelling_bee__Part_1': '2026_spelling_bee__Week_1',
+            '2026_spelling_bee__Part_2': '2026_spelling_bee__Week_2',
+            '2026_spelling_bee__Part_3': '2026_spelling_bee__Week_3',
+            '2026_spelling_bee__Part_4': '2026_spelling_bee__Week_4',
             'Grade2B_Week01': 'Grade_2B__Week_1',
             'Grade2B_Week02': 'Grade_2B__Week_2',
             'Grade2B_Week03': 'Grade_2B__Week_3',
@@ -990,8 +994,17 @@
             'Grade2B_Week07': 'Grade_2B__Week_7',
             'Grade2B_Week08': 'Grade_2B__Week_8',
             'Grade2B_All': 'Grade_2B__Week_1',
-            'default': 'Grade_1C__Part_1'
+            'default': 'Grade_1C__Week_1',
+            'Grade_1C__Part_1': 'Grade_1C__Week_1'
         };
+
+        function normalizePartToWeek(val) {
+            const s = String(val || '').trim();
+            if (!s) return 'Week 1';
+            const m = s.match(/^(?:part|week|wk|p|w)?\s*0*(\d+)$/i);
+            if (m) return 'Week ' + parseInt(m[1], 10);
+            return s.replace(/^part\s*/i, 'Week ');
+        }
 
         function resolveBankKey(key) {
             if (!key) return getDefaultBankKey();
@@ -999,13 +1012,16 @@
             if (LEGACY_BANK_KEY_MAP[key] && presetBanks[LEGACY_BANK_KEY_MAP[key]]) {
                 return LEGACY_BANK_KEY_MAP[key];
             }
+            const weekMapped = key.replace(/__Part_(\d+)$/i, '__Week_$1');
+            if (presetBanks[weekMapped]) return weekMapped;
             return key;
         }
 
         function getDefaultBankKey() {
+            if (presetBanks['2026_spelling_bee__Week_1']) return '2026_spelling_bee__Week_1';
             if (presetBanks['2026_spelling_bee__Part_1']) return '2026_spelling_bee__Part_1';
             const keys = Object.keys(presetBanks);
-            return keys.length > 0 ? keys[0] : '2026_spelling_bee__Part_1';
+            return keys.length > 0 ? keys[0] : '2026_spelling_bee__Week_1';
         }
 
         // 嚴格逐行隔離解析 Google Sheet 匯出的 CSV（欄位：Part, 單字, 中文翻譯, 例句, 例句翻譯）
@@ -1047,7 +1063,7 @@
                     if (c0 === 'part' || c1 === '單字' || c1 === 'word') continue;
                 }
 
-                const partName = (cols[0] || 'Part 1').trim();
+                const partName = normalizePartToWeek(cols[0] || 'Week 1');
                 const word = (cols[1] || '').trim();
                 if (!word) continue;
                 const meaning = (cols[2] || '').trim() || word;
@@ -1095,7 +1111,7 @@
             const allItems = [];
             for (let i = startIdx; i < rows.length; i++) {
                 const cols = rows[i];
-                const partName = (cols[0] || 'Part 1').trim();
+                const partName = normalizePartToWeek(cols[0] || 'Week 1');
                 const word = (cols[1] || '').trim();
                 if (!word) continue;
                 const meaning = (cols[2] || '').trim() || word;

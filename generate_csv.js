@@ -13,7 +13,7 @@ const defaultData = [
   { word: "border", sentence: "The river forms the border between two countries.", trans: "那條河形成了兩國的邊界。", meaning: "邊界" },
   { word: "brake", sentence: "He pressed the brake to stop the car.", trans: "他踩煞車讓車停下來。", meaning: "煞車" },
   { word: "brave", sentence: "The brave firefighter saved the cat.", trans: "那位勇敢的消防員救了貓。", meaning: "勇敢的" },
-  { word: "breathe", sentence: "Take a deep breath and relax.", trans: "深呼吸，放鬆一下。", meaning: "呼吸" },
+  { word: "breathe", sentence: "Remember to breathe deeply when you feel nervous.", trans: "覺得緊張時，記得深呼吸。", meaning: "呼吸" },
   { word: "buffalo", sentence: "A buffalo is a large animal that lives on the grassland.", trans: "水牛是生活在草原上的大型動物。", meaning: "水牛" },
   { word: "bulldog", sentence: "The bulldog is strong but friendly.", trans: "鬥牛犬強壯但友善。", meaning: "鬥牛犬" },
   { word: "bulldozer", sentence: "The bulldozer cleared the land for new buildings.", trans: "推土機清理土地以建新建築。", meaning: "推土機" },
@@ -53,7 +53,7 @@ const part1 = [
   { word: "coast", sentence: "We walked along the sandy coast and found seashells.", trans: "我們沿著沙灘海岸漫步並撿到了貝殼。", meaning: "海岸；海濱" },
   { word: "company", sentence: "Her mother works for a computer company.", trans: "她的媽媽在一間電腦公司上班。", meaning: "公司；陪伴" },
   { word: "continue", sentence: "Please continue reading the story from page ten.", trans: "請從第十頁繼續讀這個故事。", meaning: "繼續；持續" },
-  { word: "craft", sentence: "We made paper lanterns in arts and crafts class.", trans: "我們在美勞課上製作了紙燈籠。", meaning: "手工藝；技藝" },
+  { word: "craft", sentence: "Making paper lanterns is a traditional craft.", trans: "製作紙燈籠是一項傳統的手工藝。", meaning: "手工藝；技藝" },
   { word: "crew", sentence: "The ship's crew worked hard to sail safely.", trans: "全體船員努力工作以安全航行。", meaning: "全體工作人員；船員；機組人員" }
 ];
 
@@ -214,14 +214,7 @@ function toCSV(items) {
   return [header, ...rows].join("\r\n");
 }
 
-// 寫出預設 CSV 檔案
-fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part1.csv'), "\ufeff" + toCSV(part1), 'utf8');
-fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part2.csv'), "\ufeff" + toCSV(part2), 'utf8');
-fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part3.csv'), "\ufeff" + toCSV(part3), 'utf8');
-fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part4.csv'), "\ufeff" + toCSV(part4), 'utf8');
-
 const allWords = [...part1, ...part2, ...part3, ...part4];
-fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_All.csv'), "\ufeff" + toCSV(allWords), 'utf8');
 
 // 同步 Google Drive 雲端題庫快照至 gdrive_banks.json（不再將題庫靜態寫入 HTML）
 function syncHtmlDatabase() {
@@ -231,6 +224,12 @@ function syncHtmlDatabase() {
 }
 
 if (require.main === module) {
+  // 寫出預設 CSV 檔案
+  fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part1.csv'), "\ufeff" + toCSV(part1), 'utf8');
+  fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part2.csv'), "\ufeff" + toCSV(part2), 'utf8');
+  fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part3.csv'), "\ufeff" + toCSV(part3), 'utf8');
+  fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_Part4.csv'), "\ufeff" + toCSV(part4), 'utf8');
+  fs.writeFileSync(path.join(__dirname, '2026_Spelling_Bee_All.csv'), "\ufeff" + toCSV(allWords), 'utf8');
   syncHtmlDatabase();
 }
 

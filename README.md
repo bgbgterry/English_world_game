@@ -48,30 +48,31 @@
 雲端試算表路徑：**`我的雲端硬碟 / 真真 / 英文 / 單字題庫 / 英文單字題庫`**  
 （Spreadsheet ID: `1bv_OzB2UutDUxc-M1tLFnVa6OVWGW2xRl0oWlAXxieE`）
 
-| 雲端工作表 (Tab) | Part / 週次分組 | 單字量 | 說明 |
+| 雲端工作表 (Tab) | Part（即 Week 分組） | 單字量 | 說明 |
 | :--- | :--- | :---: | :--- |
-| **`2026_spelling_bee`** | `Part 1` ~ `Part 4` | 各 25 字（共 100 字） | 2026 Spelling Bee 單字表，由 Gemini 生成中文翻譯與例句並自動依 Part 順序排列 |
-| **`Grade_2B`** | `Week 1` ~ `Week 8` | 每週 20~30 字（共 187 字） | 國小二年級每週進度單字題庫 |
-| **`Grade_1C`** | `Part 1` | 25 字 | 國小一年級基礎複習題庫 |
+| **`2026_spelling_bee`** | `Week 1` ~ `Week 4` | 各 25 字（共 100 字） | 2026 Spelling Bee 單字表，提供完整中文翻譯與小學四年級（Grade 4）水準例句，Part 欄位統一對應為 Week |
+| **`Grade_2B`** | `Week 1` ~ `Week 8` | 每週 20~30 字（共 187 字） | 國小二年級每週進度單字題庫（含完整中文翻譯與四年級水準例句） |
+| **`Grade_1C`** | `Week 1` | 25 字 | 國小一年級基礎複習題庫 |
 
-### 試算表標準欄位格式
+### 試算表標準欄位格式（Part 即 Week，例句符合小學四年級單字與文法水準）
 | A 欄 (`Part`) | B 欄 (`單字`) | C 欄 (`中文翻譯`) | D 欄 (`例句`) | E 欄 (`例句翻譯`) |
 | :---: | :---: | :--- | :--- | :--- |
-| `Part 1` | `aboard` | 在船（飛機、車）上 | All passengers are now aboard the plane. | 所有乘客現在都登機了。 |
+| `Week 1` | `separated` | 分開的；分離的 | The two cats were separated by a low fence. | 這兩隻貓被一道低矮的柵欄分開了。 |
+| `Week 1` | `aboard` | 在船（飛機、車）上 | All passengers are now aboard the plane. | 所有乘客現在都登機了。 |
 
 ---
 
 ## 🛠️ 開發工具鏈與自動化擴充
 
-本專案提供**三合一整合工具**，一鍵完成「單字照片辨識」→「Gemini 生成中文翻譯與例句」→「上傳 Google Drive」→「同步網頁快照」：
+本專案提供**三合一整合工具**，一鍵完成「單字照片辨識」→「生成單字中文翻譯與小學四年級（Grade 4）例句」→「上傳 Google Drive」→「同步網頁快照」：
 
 ```
 [單字表照片 (.jpg/.png)]
        │
        ▼  一鍵執行 node photo_to_csv.js
 ┌──────────────────────────────────────────────────────────┐
-│ 步驟 1：Gemini Vision OCR 辨識單字表（依 Part/Week 排序）    │
-│ 步驟 2：Gemini 自動生成國小學童適用之中文釋義與生活化例句     │
+│ 步驟 1：Gemini Vision OCR 辨識單字表（Part 統一轉為 Week）   │
+│ 步驟 2：自動提供單字中文翻譯、小學四年級水準英文例句與翻譯     │
 │ 步驟 3：自動批次寫入 Google Drive 試算表並產出本地同步快照    │
 └──────────────────────────────────────────────────────────┘
        │
@@ -84,8 +85,8 @@
 
 ### 1. 三合一自動化腳本 (`photo_to_csv.js`)
 * **整合流程**：
-  1. **OCR 辨識**：辨識照片單字，支援快取斷點續傳（若已辨識過自動沿用，節省時間與額度）。
-  2. **Gemini 智慧擴充**：批次生成繁體中文解釋、生活化英文例句及例句中文翻譯。
+  1. **OCR 辨識**：辨識照片單字，將 `Part` 統一標準化為 `Week 1`、`Week 2`...，並支援快取斷點續傳（若已辨識過自動沿用，節省時間與額度）。
+  2. **四年級水準智慧擴充**：提供必填之「單字中文翻譯」（多義以 `；` 分隔）、符合「小學四年級（Grade 4）」單字與文法水準的英文例句及例句中文翻譯（內建精選四年級字典並結合 Gemini API 自動生成）。
   3. **Google Sheets 上傳與同步**：直接寫入 Google Drive 試算表指定分頁（A~E 欄完整格式化），並自動更新 `gdrive_banks.json` 與 `gdrive_banks.js`。
 * **執行指令範例**：
   ```powershell
@@ -105,14 +106,17 @@
   * `--no-enrich`：僅辨識單字，不上傳中文翻譯與例句。
   * `--no-upload`：僅在本地完成辨識與生成，不上傳 Google Drive。
 
-### 2. Google 試算表補齊與單純同步工具 (`enrich_gdrive_words.js`)
-* 若已直接在 Google 試算表手動修改單字，可使用此工具快速同步最新快照至本機專案：
+### 2. Google 試算表補齊與同步工具 (`enrich_gdrive_words.js`)
+* 自動將工作表 `Part` 欄位標準化為 `Week`（例如 `Part 1` → `Week 1`），並確保每個單字均提供完整的「單字中文翻譯」以及符合「小學四年級（Grade 4）單字與文法水準」的「英文例句」與「例句翻譯」：
   ```powershell
-  # 僅同步最新快照至專案（產生 gdrive_banks.json 與 gdrive_banks.js）
-  node enrich_gdrive_words.js --sync-only
-
-  # 掃描指定試算表並使用 Gemini 補齊缺漏的中文與例句
+  # 掃描指定試算表，自動正規化 Week 並補齊缺漏的單字中文翻譯與四年級水準例句
   node enrich_gdrive_words.js --sheet 2026_spelling_bee
+
+  # 強制重新檢視並更新整張工作表所有單字之中文翻譯與四年級例句
+  node enrich_gdrive_words.js --sheet 2026_spelling_bee --force
+
+  # 若已在 Google 試算表手動修改單字，僅同步最新快照至專案（產生 gdrive_banks.json 與 gdrive_banks.js）
+  node enrich_gdrive_words.js --sync-only
   ```
 
 ### 3. 雲端題庫 Skill (`generate-wordbank`)
